@@ -10,8 +10,6 @@ It includes features like authorizations, product search and filtering, sorting 
 - **Frontend**: HTML, SCSS, TypeScript, Angular
 - **Backend**: CommerceTools
 - **Formating**: ESLint, Prettier, Husky
-- **Testing**: Jest
-- **Bundling**: Webpack
 
 ## Running locally
 To run our app locally: 
