@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+cd e-commerce
+npm run lint
+npx validate-branch-name
