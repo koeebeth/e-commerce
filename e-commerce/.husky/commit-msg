@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+cd e-commerce
+npx --no -- commitlint --edit ${1}

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+cd e-commerce
+npm run ci:format
