@@ -1,1 +1,29 @@
 /* You can add global styles to this file, and also import other style files */
+@use 'sass:color';
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+/* fonts */
+@mixin font-primary {
+  font-family: 'Manrope', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@mixin font-heading {
+  font-family: 'Manrope', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+  font-style: normal;
+}
+
+/* colors */
+$color-primary-100: #001c30;
+$color-primary-200: color.mix($color-primary-100, $color-primary-300);
+$color-primary-300: #176b87;
+$color-primary-400: color.mix($color-primary-300, $color-primary-500);
+$color-primary-500: #64ccc5;
+$color-primary-600: color.mix($color-primary-500, $color-primary-700);
+$color-primary-700: #dafffb;
+$color-secondary: #cf0529;
