@@ -27,3 +27,5 @@ $color-primary-200: color.mix($color-primary-100, $color-primary-300);
 $color-primary-400: color.mix($color-primary-300, $color-primary-500);
 $color-primary-600: color.mix($color-primary-500, $color-primary-700);
 $color-secondary: #cf0529;
+
+$background-gradient: linear-gradient($color-primary-100, $color-primary-200 150%);
