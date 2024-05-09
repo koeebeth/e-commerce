@@ -8,8 +8,8 @@ import { FormControl, ValidatorFn, ReactiveFormsModule, Validators } from '@angu
   imports: [ReactiveFormsModule, CommonModule],
   template: `
     <div class="input-group">
-      <label>{{ label }}</label>
-      <input [type]="type" [formControl]="control" />
+      <label [for]="name">{{ label }}</label>
+      <input [type]="type" [formControl]="control" [name]="name" />
       <div class="input-errors" *ngIf="control.invalid && control.dirty">
         <p *ngIf="control.errors?.['minlength']">
           Field should be at least {{ validation.minlength }} characters long.
@@ -24,9 +24,13 @@ import { FormControl, ValidatorFn, ReactiveFormsModule, Validators } from '@angu
   `,
   styleUrl: './input.component.scss',
 })
-export class InputComponent {
+export default class InputComponent {
+  @Input() name: string = '';
+
   @Input() type: string = 'text';
+
   @Input() label: string = '';
+
   @Input() validation: {
     minlength?: number;
     pattern?: {
@@ -38,16 +42,15 @@ export class InputComponent {
   } = {};
 
   control!: FormControl;
-  validators: ValidatorFn[] = [];
 
-  constructor() {}
+  validators: ValidatorFn[] = [];
 
   ngOnInit() {
     const { minlength, pattern, email, required } = this.validation;
-    minlength && this.validators.push(Validators.minLength(minlength));
-    email && this.validators.push(Validators.email);
-    required && this.validators.push(Validators.required);
-    pattern && this.validators.push(Validators.pattern(pattern.regex));
+    if (minlength) this.validators.push(Validators.minLength(minlength));
+    if (email) this.validators.push(Validators.email);
+    if (required) this.validators.push(Validators.required);
+    if (pattern) this.validators.push(Validators.pattern(pattern.regex));
 
     this.control = new FormControl('', this.validators);
   }
