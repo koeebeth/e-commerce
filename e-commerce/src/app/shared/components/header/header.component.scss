@@ -1,0 +1,19 @@
+@import '../../../../styles.scss';
+
+header {
+  color: white;
+  box-sizing: border-box;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: $color-primary-200;
+  position: fixed;
+  height: 3.4rem;
+
+  .logo {
+    @include font-heading;
+    font-size: 1.5rem;
+  }
+}
