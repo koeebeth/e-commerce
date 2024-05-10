@@ -6,22 +6,7 @@ import { FormControl, ValidatorFn, ReactiveFormsModule, Validators } from '@angu
   selector: 'app-input',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
-  template: `
-    <div class="input-group">
-      <label [for]="name">{{ label }}</label>
-      <input [type]="type" [formControl]="control" [name]="name" />
-      <div class="input-errors" *ngIf="control.invalid && control.dirty">
-        <p *ngIf="control.errors?.['minlength']">
-          Field should be at least {{ validation.minlength }} characters long.
-        </p>
-        <p *ngIf="control.errors?.['email']">Field should in format abc&#64;example.com</p>
-        <p *ngIf="control.errors?.['required']">Field is required</p>
-        <p *ngIf="control.errors?.['pattern']">
-          {{ validation.pattern?.errorMsg }}
-        </p>
-      </div>
-    </div>
-  `,
+  templateUrl: './input.component.html',
   styleUrl: './input.component.scss',
 })
 export default class InputComponent {
