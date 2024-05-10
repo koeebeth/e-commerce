@@ -3,10 +3,8 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class TokenStorageService {
+export default class TokenStorageService {
   private namespace = 'user';
-
-  constructor() {}
 
   getToken(): string | null {
     return localStorage.getItem(`${this.namespace}_token`);

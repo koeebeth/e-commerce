@@ -1,19 +1,24 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../environment';
+import environment from '../../../../environment';
 import { AuthData } from './apitypes';
-import { TokenStorageService } from '../tokenStorage/tokenstorage.service';
+import TokenStorageService from '../tokenStorage/tokenstorage.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService {
+export default class AuthService {
   private ctpAuthUrl = environment.ctpAuthUrl;
+
   private projectKey = environment.ctpProjectKey;
+
   private authUrl = `${this.ctpAuthUrl}/oauth/${this.projectKey}/customers/token`;
+
   private clientId = environment.ctpClientId;
+
   private clientSecret = environment.ctpClientSecret;
+
   private scopes = environment.ctpScopes;
 
   constructor(
