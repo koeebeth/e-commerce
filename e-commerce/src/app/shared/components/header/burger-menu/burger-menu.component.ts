@@ -7,7 +7,7 @@ import { Component } from '@angular/core';
   templateUrl: './burger-menu.component.html',
   styleUrl: './burger-menu.component.scss',
 })
-export class BurgerMenuComponent {
+export default class BurgerMenuComponent {
   isOpen: boolean = false;
 
   onClick() {

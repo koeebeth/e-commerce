@@ -7,4 +7,4 @@ import { Component } from '@angular/core';
   templateUrl: './profile-authorized.component.html',
   styleUrl: './profile-authorized.component.scss',
 })
-export class ProfileAuthorizedComponent {}
+export default class ProfileAuthorizedComponent {}
