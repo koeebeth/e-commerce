@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environment';
+import { AuthData } from './apitypes';
+import { TokenStorageService } from '../tokenStorage/tokenstorage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +16,10 @@ export class AuthService {
   private clientSecret = environment.ctpClientSecret;
   private scopes = environment.ctpScopes;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private tokenStorageService: TokenStorageService,
+  ) {}
 
   authentication(username: string, password: string): Observable<AuthData> {
     const body = new URLSearchParams();
@@ -37,6 +42,9 @@ export class AuthService {
     this.authentication(username, userPassword).subscribe({
       next: (data) => {
         console.log('Authentication data:', data);
+        if (data && data.access_token) {
+          this.tokenStorageService.saveToken(data.access_token);
+        }
       },
       error: (error) => {
         console.error('Authentication error:', error);
