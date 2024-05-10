@@ -90,22 +90,6 @@
 
   a {
     @include font-primary;
-    cursor: pointer;
-
-    &::after {
-      width: 0;
-      height: 1px;
-      background-color: white;
-      position: relative;
-      bottom: -2px;
-      content: '';
-      display: block;
-      transition: all 0.2s ease-out;
-      margin: auto;
-    }
-
-    &:hover::after {
-      width: 100%;
-    }
+    @include link-element;
   }
 }

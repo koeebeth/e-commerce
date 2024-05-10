@@ -18,6 +18,27 @@
   font-style: normal;
 }
 
+@mixin link-element {
+  @include font-primary;
+  cursor: pointer;
+
+  &::after {
+    width: 0;
+    height: 1px;
+    background-color: white;
+    position: relative;
+    bottom: -2px;
+    content: '';
+    display: block;
+    transition: all 0.2s ease-out;
+    margin: auto;
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
 /* colors */
 $color-primary-100: #001c30;
 $color-primary-300: #176b87;
@@ -29,10 +50,6 @@ $color-primary-600: color.mix($color-primary-500, $color-primary-700);
 $color-secondary: #cf0529;
 
 $background-gradient: linear-gradient($color-primary-100, $color-primary-200 150%);
-
-html {
-  @include font-primary;
-}
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
