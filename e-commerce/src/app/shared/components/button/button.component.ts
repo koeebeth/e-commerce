@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -10,9 +10,13 @@ import { Component, Input } from '@angular/core';
 export default class ButtonComponent {
   @Input() content: string = '';
 
-  @Input() callbackFn: (e: Event) => void = () => {};
-
   @Input() btnClass: 'primary' | 'secondary' | 'link' | 'danger' = 'primary';
 
   @Input() isDisabled: boolean = false;
+
+  @Output() clickHandler = new EventEmitter();
+
+  handleClick() {
+    this.clickHandler.emit();
+  }
 }
