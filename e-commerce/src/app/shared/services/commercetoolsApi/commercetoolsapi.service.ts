@@ -14,6 +14,28 @@ export default class AuthService {
     private tokenStorageService: TokenStorageService,
   ) {}
 
+  //Token for a customer which might, at some point, log in or sign up
+  getAnonymousSessionToken(): void {
+    const unAuthUrl = `${unauthVisitorAPI.ctpAuthUrl}/oauth/${unauthVisitorAPI.ctpProjectKey}/anonymous/token`;
+    const body = new URLSearchParams();
+    body.set('grant_type', 'client_credentials');
+    body.set('scope', unauthVisitorAPI.ctpScopes);
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .set('Authorization', 'Basic ' + btoa(`${unauthVisitorAPI.ctpClientId}:${unauthVisitorAPI.ctpClientSecret}`));
+
+    (this.http.post(unAuthUrl, body.toString(), { headers }) as Observable<AuthData>).subscribe({
+      next: (response) => {
+        console.log('Anonymous Session Token:', response);
+        console.log('Annonymous token response.access_token should be saved to stage to a separete field!');
+      },
+      error: (error) => {
+        console.error('Error fetching Anonymous Session Token:', error);
+      },
+    });
+  }
+
   authentication(username: string, password: string): void {
     const authUrl = `${authVisitorAPI.ctpAuthUrl}/oauth/${authVisitorAPI.ctpProjectKey}/customers/token`;
 
@@ -46,7 +68,8 @@ export default class AuthService {
     const authUrl = `${authVisitorAPI.ctpAuthUrl}/oauth/token`;
 
     if (!refreshToken) {
-      console.log('Refresh token is not available. Get anonymous session token');
+      this.getAnonymousSessionToken();
+      console.log('User isnt logged in. Get anonymous session token');
       return;
     }
 
@@ -66,6 +89,7 @@ export default class AuthService {
       },
       error: (error) => {
         console.error('Authentication error:', error);
+        this.getAnonymousSessionToken();
       },
     });
   }
