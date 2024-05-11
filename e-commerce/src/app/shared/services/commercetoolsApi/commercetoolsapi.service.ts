@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { AuthData, CustomerDraft } from './apitypes';
+import { AuthData } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 
 @Injectable({
@@ -14,7 +14,7 @@ export default class AuthService {
     private tokenStorageService: TokenStorageService,
   ) {}
 
-  //Token for a customer which might, at some point, log in or sign up
+  // Token for a customer which might, at some point, log in or sign up
   getAnonymousSessionToken(): void {
     const unAuthUrl = `${unauthVisitorAPI.ctpAuthUrl}/oauth/${unauthVisitorAPI.ctpProjectKey}/anonymous/token`;
     const body = new URLSearchParams();
@@ -23,7 +23,7 @@ export default class AuthService {
 
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/x-www-form-urlencoded')
-      .set('Authorization', 'Basic ' + btoa(`${unauthVisitorAPI.ctpClientId}:${unauthVisitorAPI.ctpClientSecret}`));
+      .set('Authorization', `Basic ${btoa(`${unauthVisitorAPI.ctpClientId}:${unauthVisitorAPI.ctpClientSecret}`)}`);
 
     (this.http.post(unAuthUrl, body.toString(), { headers }) as Observable<AuthData>).subscribe({
       next: (response) => {
