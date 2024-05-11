@@ -16,6 +16,6 @@ export default class AppComponent {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.authService.isAuthorized();
+    this.authService.refreshAccessToken();
   }
 }

@@ -1,54 +1,67 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import environment from '../../../../environment';
-import { AuthData } from './apitypes';
+import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
+import { AuthData, CustomerDraft } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export default class AuthService {
-  private ctpAuthUrl = environment.ctpAuthUrl;
-
-  private projectKey = environment.ctpProjectKey;
-
-  private authUrl = `${this.ctpAuthUrl}/oauth/${this.projectKey}/customers/token`;
-
-  private clientId = environment.ctpClientId;
-
-  private clientSecret = environment.ctpClientSecret;
-
-  private scopes = environment.ctpScopes;
-
   constructor(
     private http: HttpClient,
     private tokenStorageService: TokenStorageService,
   ) {}
 
-  authentication(username: string, password: string): Observable<AuthData> {
+  authentication(username: string, password: string): void {
+    const authUrl = `${authVisitorAPI.ctpAuthUrl}/oauth/${authVisitorAPI.ctpProjectKey}/customers/token`;
+
     const body = new URLSearchParams();
     body.set('grant_type', 'password');
     body.set('username', username);
     body.set('password', password);
-    body.set('scope', this.scopes);
+    body.set('scope', authVisitorAPI.ctpScopes);
 
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/x-www-form-urlencoded')
-      .set('Authorization', `Basic ${btoa(`${this.clientId}:${this.clientSecret}`)}`);
+      .set('Authorization', `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`);
 
-    return this.http.post(this.authUrl, body.toString(), { headers }) as Observable<AuthData>;
+    (this.http.post(authUrl, body.toString(), { headers }) as Observable<AuthData>).subscribe({
+      next: (data) => {
+        if (data && data.refresh_token) {
+          this.tokenStorageService.saveToken(data.refresh_token);
+          console.log('Save accsessToken to stage');
+          console.log('Redirect to the home page');
+        }
+      },
+      error: (error) => {
+        console.error('Authentication error:', error);
+      },
+    });
   }
 
-  isAuthorized() {
-    const username = 'test@mail.com';
-    const userPassword = 'password0987654321';
+  refreshAccessToken(): void {
+    const refreshToken = this.tokenStorageService.getToken();
+    const authUrl = `${authVisitorAPI.ctpAuthUrl}/oauth/token`;
 
-    this.authentication(username, userPassword).subscribe({
+    if (!refreshToken) {
+      console.log('Refresh token is not available. Get anonymous session token');
+      return;
+    }
+
+    const body = new URLSearchParams();
+    body.set('grant_type', 'refresh_token');
+    body.set('refresh_token', refreshToken);
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .set('Authorization', `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`);
+
+    (this.http.post(authUrl, body.toString(), { headers }) as Observable<AuthData>).subscribe({
       next: (data) => {
-        console.log('Authentication data:', data);
-        if (data && data.access_token) {
-          this.tokenStorageService.saveToken(data.access_token);
+        if (data) {
+          console.log('Save accsessToken to stage');
         }
       },
       error: (error) => {
