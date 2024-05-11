@@ -8,7 +8,7 @@ import TokenStorageService from '../tokenStorage/tokenstorage.service';
 @Injectable({
   providedIn: 'root',
 })
-export default class AuthService {
+export default class CommerceApiService {
   constructor(
     private http: HttpClient,
     private tokenStorageService: TokenStorageService,

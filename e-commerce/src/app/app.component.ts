@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import AuthService from './shared/services/commercetoolsApi/commercetoolsapi.service';
+import CommerceApiService from './shared/services/commercetoolsApi/commercetoolsapi.service';
 import SharedModule from './shared/shared.module';
 
 @Component({
@@ -13,9 +13,9 @@ import SharedModule from './shared/shared.module';
 export default class AppComponent {
   title = 'e-commerce';
 
-  constructor(private authService: AuthService) {}
+  constructor(private commerceApiService: CommerceApiService) {}
 
   ngOnInit() {
-    this.authService.refreshAccessToken();
+    this.commerceApiService.refreshAccessToken();
   }
 }

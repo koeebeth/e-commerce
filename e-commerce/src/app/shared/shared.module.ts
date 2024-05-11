@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import AuthService from './services/commercetoolsApi/commercetoolsapi.service';
+import CommerceApiService from './services/commercetoolsApi/commercetoolsapi.service';
 import TokenStorageService from './services/tokenStorage/tokenstorage.service';
 
 @NgModule({
   imports: [HttpClientModule],
-  providers: [AuthService, TokenStorageService],
+  providers: [CommerceApiService, TokenStorageService],
 })
 export default class SharedModule {}
