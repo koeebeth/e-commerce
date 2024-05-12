@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { AuthData } from './apitypes';
+import { AuthData, CustomerDraft } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 
 @Injectable({
@@ -34,6 +34,32 @@ export default class CommerceApiService {
         console.error('Error fetching Anonymous Session Token:', error);
       },
     });
+  }
+
+  registration(customerDraft: CustomerDraft, anonymousToken: string): void {
+    const apiUrl  = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/customers`;
+    const body = {
+      email: customerDraft.email,
+      password: customerDraft.password,
+      firstName: customerDraft.firstName,
+      lastName: customerDraft.lastName,
+    };
+  
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${anonymousToken}`);
+  
+    (this.http.post(apiUrl, body, { headers }) as Observable<CustomerDraft>)
+      .subscribe({
+        next: (response) => {
+          console.log('Registration successful:', response);
+          this.authentication(customerDraft.email, customerDraft.password);
+          console.log('Redirect to the home page');
+        },
+        error: (error) => {
+          console.error('Registration error:', error.message);
+        },
+      })
   }
 
   authentication(username: string, password: string): void {
