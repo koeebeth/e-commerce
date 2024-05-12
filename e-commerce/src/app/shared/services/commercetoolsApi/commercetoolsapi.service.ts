@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
 import { AuthData, CustomerDraft } from './apitypes';
+import { Router } from '@angular/router';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 
 @Injectable({
@@ -12,6 +13,7 @@ export default class CommerceApiService {
   constructor(
     private http: HttpClient,
     private tokenStorageService: TokenStorageService,
+    private route: Router,
   ) {}
 
   // Token for a customer which might, at some point, log in or sign up
@@ -29,6 +31,7 @@ export default class CommerceApiService {
       next: (response) => {
         console.log('Anonymous Session Token:', response);
         console.log('Annonymous token response.access_token should be saved to state to a separete field!');
+        this.tokenStorageService.saveToken(response.access_token);
       },
       error: (error) => {
         console.error('Error fetching Anonymous Session Token:', error);
@@ -80,6 +83,7 @@ export default class CommerceApiService {
         if (data && data.refresh_token) {
           this.tokenStorageService.saveToken(data.refresh_token);
           console.log('Save accsessToken to state');
+          this.route.navigate(['/main']);
         }
       },
       error: (error) => {
