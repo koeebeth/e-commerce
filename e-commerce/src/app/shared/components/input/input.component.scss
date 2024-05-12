@@ -1,0 +1,39 @@
+@import '../../../../styles.scss';
+
+.input-group {
+  @include font-primary;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  input {
+    @include font-primary;
+    box-sizing: border-box;
+    height: 1.8rem;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid $color-primary-300;
+
+    &:focus {
+      border-width: 2px;
+      outline: none;
+    }
+
+    &.ng-invalid.ng-dirty {
+      border-color: $color-secondary;
+    }
+  }
+
+  label {
+    text-transform: capitalize;
+  }
+}
+
+.input-errors {
+  p {
+    margin: 0;
+    color: $color-secondary;
+    font-size: 0.7rem;
+  }
+}
