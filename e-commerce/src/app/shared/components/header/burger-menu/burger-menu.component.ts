@@ -1,0 +1,16 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-burger-menu',
+  standalone: true,
+  imports: [],
+  templateUrl: './burger-menu.component.html',
+  styleUrl: './burger-menu.component.scss',
+})
+export default class BurgerMenuComponent {
+  isOpen: boolean = false;
+
+  onClick() {
+    this.isOpen = !this.isOpen;
+  }
+}

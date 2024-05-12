@@ -1,0 +1,13 @@
+<div class="burger">
+  <button class="burger-icon" [class]="isOpen ? 'burger-icon active' : 'burger-icon'" (click)="onClick()">
+    <span class="burger-line"></span>
+  </button>
+  <nav [class]="isOpen ? 'burger-menu active' : 'burger-menu'">
+    <section>
+      <a>Cart</a>
+      <a>Catalog</a>
+      <a>Category</a>
+      <a>About us</a>
+    </section>
+  </nav>
+</div>

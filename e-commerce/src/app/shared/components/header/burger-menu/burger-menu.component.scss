@@ -1,0 +1,95 @@
+@import '../../../../../styles.scss';
+
+.burger-line {
+  display: block;
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.burger-icon {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+
+  &::before {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 3px;
+    position: relative;
+    top: -2px;
+    background-color: white;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 3px;
+    position: relative;
+    top: 2px;
+    background-color: white;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &.active {
+    .burger-line {
+      opacity: 0;
+    }
+
+    &::before {
+      top: 3px;
+      transform: rotate(45deg);
+      background-color: white;
+    }
+
+    &::after {
+      top: -3px;
+      opacity: 1;
+      transform: rotate(-45deg);
+      background-color: white;
+    }
+  }
+}
+
+.burger-menu {
+  position: absolute;
+  box-sizing: border-box;
+  height: 100vh;
+  width: 250px;
+  top: 3rem;
+  left: -100%;
+  background-color: $color-primary-200;
+  transition: all 0.5s ease-out;
+  padding: 20px;
+
+  section {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 15px;
+  }
+  @media screen and (max-width: 425px) {
+    width: 100%;
+
+    section {
+      align-items: center;
+    }
+  }
+
+  &.active {
+    left: 0;
+  }
+
+  a {
+    @include font-primary;
+    @include link-element;
+  }
+}
