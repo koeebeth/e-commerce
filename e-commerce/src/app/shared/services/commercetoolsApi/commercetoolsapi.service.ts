@@ -28,7 +28,7 @@ export default class CommerceApiService {
     (this.http.post(unAuthUrl, body.toString(), { headers }) as Observable<AuthData>).subscribe({
       next: (response) => {
         console.log('Anonymous Session Token:', response);
-        console.log('Annonymous token response.access_token should be saved to stage to a separete field!');
+        console.log('Annonymous token response.access_token should be saved to state to a separete field!');
       },
       error: (error) => {
         console.error('Error fetching Anonymous Session Token:', error);
@@ -37,29 +37,29 @@ export default class CommerceApiService {
   }
 
   registration(customerDraft: CustomerDraft, anonymousToken: string): void {
-    const apiUrl  = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/customers`;
+    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/customers`;
     const body = {
       email: customerDraft.email,
       password: customerDraft.password,
       firstName: customerDraft.firstName,
       lastName: customerDraft.lastName,
+      dateOfBirth: customerDraft.dateOfBirth,
+      addresses: customerDraft.addresses,
     };
-  
+
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${anonymousToken}`);
-  
-    (this.http.post(apiUrl, body, { headers }) as Observable<CustomerDraft>)
-      .subscribe({
-        next: (response) => {
-          console.log('Registration successful:', response);
-          this.authentication(customerDraft.email, customerDraft.password);
-          console.log('Redirect to the home page');
-        },
-        error: (error) => {
-          console.error('Registration error:', error.message);
-        },
-      })
+
+    (this.http.post(apiUrl, body, { headers }) as Observable<CustomerDraft>).subscribe({
+      next: (response) => {
+        console.log('Registration successful:', response);
+        this.authentication(customerDraft.email, customerDraft.password);
+      },
+      error: (error) => {
+        console.error('Registration error:', error.message);
+      },
+    });
   }
 
   authentication(username: string, password: string): void {
@@ -79,8 +79,7 @@ export default class CommerceApiService {
       next: (data) => {
         if (data && data.refresh_token) {
           this.tokenStorageService.saveToken(data.refresh_token);
-          console.log('Save accsessToken to stage');
-          console.log('Redirect to the home page');
+          console.log('Save accsessToken to state');
         }
       },
       error: (error) => {
@@ -110,7 +109,7 @@ export default class CommerceApiService {
     (this.http.post(authUrl, body.toString(), { headers }) as Observable<AuthData>).subscribe({
       next: (data) => {
         if (data) {
-          console.log('Save accsessToken to stage');
+          console.log('Save accsessToken to state');
         }
       },
       error: (error) => {

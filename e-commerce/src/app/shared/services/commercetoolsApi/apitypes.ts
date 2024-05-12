@@ -13,11 +13,20 @@ export interface CustomerDraft {
   lastName?: string;
   middleName?: string;
   title?: string;
+  anonymousCart?: string;
+  anonymousId?: string;
   dateOfBirth?: string;
   companyName?: string;
   addresses?: Address[];
-  defaultBillingAddressId?: string;
-  defaultShippingAddressId?: string;
+  defaultShippingAddressId?: number;
+  defaultBillingAddressId?: number;
+}
+
+export interface CustomerSignin {
+  email: string;
+  password: string;
+  anonymousCart?: CartResourceIdentifier;
+  anonymousId: string;
 }
 
 export interface Address {
@@ -45,4 +54,62 @@ export interface Address {
   fax?: string;
   additionalAddressInfo?: string;
   externalId?: string;
+}
+
+// Either id or key is required, If both are set, an InvalidJsonInput error is returned.
+export interface CartResourceIdentifier {
+  id?: string;
+  key?: string;
+  typeId?: CartBase;
+}
+
+// Documentation: https://docs.commercetools.com/api/projects/carts#cart
+export interface CartBase {
+  id: string;
+  version: number;
+  customerId?: string;
+  customerEmail?: string;
+  anonymousId?: string;
+  lineItems: LineItem[];
+  totalPrice: Money;
+  billingAddress?: Address;
+  shippingAddress?: Address;
+  discountCodes: DiscountCodeInfo[];
+  directDiscounts: DirectDiscount[];
+  country?: string;
+  locale?: string;
+  createdAt: Date;
+  lastModifiedAt: Date;
+}
+
+export interface LineItem {
+  id: string;
+  productId: string;
+  quantity: number;
+  price: Money;
+  totalPrice: Money;
+}
+
+export interface Money {
+  currencyCode: string;
+  centAmount: number;
+}
+
+export interface DiscountCodeInfo {
+  discountCode: DiscountCode;
+  discountedAmount: Money;
+}
+
+export interface DiscountCode {
+  id: string;
+  code: string;
+  isActive: boolean;
+  validFrom?: Date;
+  validUntil?: Date;
+}
+
+export interface DirectDiscount {
+  discountType: string;
+  discountedAmount: Money;
+  description?: string;
 }
