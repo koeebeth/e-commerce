@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
 import { AuthData, CartBase, CustomerDraft } from './apitypes';
-import { Router } from '@angular/router';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 
 @Injectable({
