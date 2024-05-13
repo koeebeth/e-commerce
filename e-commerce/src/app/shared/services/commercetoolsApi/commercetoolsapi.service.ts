@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { AuthData, CustomerDraft } from './apitypes';
+import { AuthData, CartBase, CustomerDraft } from './apitypes';
 import { Router } from '@angular/router';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 
@@ -32,6 +32,7 @@ export default class CommerceApiService {
         console.log('Anonymous Session Token:', response);
         console.log('Annonymous token response.access_token should be saved to state to a separete field!');
         this.tokenStorageService.saveToken(response.access_token);
+        this.createAnonymousCart(response.access_token);
       },
       error: (error) => {
         console.error('Error fetching Anonymous Session Token:', error);
@@ -39,7 +40,29 @@ export default class CommerceApiService {
     });
   }
 
-  registration(customerDraft: CustomerDraft, anonymousToken: string): void {
+  createAnonymousCart(accessToken: string): void {
+    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/carts`;
+
+    const body = {
+      currency: 'USD',
+    };
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    (this.http.post(apiUrl, body, { headers }) as Observable<CartBase>).subscribe({
+      next: (response) => {
+        console.log('Anonymous Cart:', response);
+        console.log('save anonymousId in state service', response.anonymousId);
+      },
+      error: (error) => {
+        console.error('Error creating Anonymous Cart:', error);
+      },
+    });
+  }
+
+  registration(customerDraft: CustomerDraft, anonymousToken: string, anonymousId: string): void {
     const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/customers`;
     const body = {
       email: customerDraft.email,
@@ -48,6 +71,7 @@ export default class CommerceApiService {
       lastName: customerDraft.lastName,
       dateOfBirth: customerDraft.dateOfBirth,
       addresses: customerDraft.addresses,
+      anonymousCartId: anonymousId,
     };
 
     const headers = new HttpHeaders()
