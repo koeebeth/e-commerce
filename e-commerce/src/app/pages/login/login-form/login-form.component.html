@@ -6,18 +6,20 @@
     (keyup)="onKeyup()"
     [form]="loginForm"
   ></app-input>
-  <app-input
-    [validation]="passwordValidation"
-    name="password"
-    label="Password"
-    [type]="showPassword ? 'text' : 'password'"
-    (keyup)="onKeyup()"
-    [form]="loginForm"
-  ></app-input>
-  <app-button
-    btnClass="link"
-    [content]="showPassword ? 'Hide password' : 'Show Password'"
-    (clickHandler)="togglePasswordShow()"
-  ></app-button>
+  <section class="login-form-password">
+    <app-input
+      [validation]="passwordValidation"
+      name="password"
+      label="Password"
+      [type]="showPassword ? 'text' : 'password'"
+      (keyup)="onKeyup()"
+      [form]="loginForm"
+    ></app-input>
+    <app-button
+      btnType="link"
+      [content]="showPassword ? 'Hide password' : 'Show Password'"
+      (clickHandler)="togglePasswordShow()"
+    ></app-button>
+  </section>
   <app-button [isDisabled]="!isValid" content="Login" (clickHandler)="onSubmit()"></app-button>
 </form>

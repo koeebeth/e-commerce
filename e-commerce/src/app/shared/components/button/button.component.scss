@@ -4,7 +4,6 @@
 .btn {
   @include font-primary;
   box-sizing: border-box;
-  margin: 5px;
   padding: 4px 10px;
   border: none;
   border-radius: 3px;
@@ -43,6 +42,7 @@
     background: none;
     color: $color-primary-300;
     border: none;
+    padding: 0;
 
     &:hover {
       box-shadow: none;

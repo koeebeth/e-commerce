@@ -1,3 +1,12 @@
 .login-form {
-  width: 50%;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-form-password {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
