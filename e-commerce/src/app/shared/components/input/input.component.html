@@ -1,6 +1,6 @@
-<div class="input-group">
+<div class="input-group" [formGroup]="form" class="input-{{ name }}">
   <label [for]="name">{{ label }}</label>
-  <input [type]="type" [formControl]="control" [formControlName]="name" />
+  <input [type]="type" [name]="name" [formControl]="control" />
   <div class="input-errors" *ngIf="control.invalid && control.dirty">
     <p *ngIf="control.errors?.['minlength']">Field should be at least {{ validation.minlength }} characters long.</p>
     <p *ngIf="control.errors?.['email']">Field should in format abc&#64;example.com</p>

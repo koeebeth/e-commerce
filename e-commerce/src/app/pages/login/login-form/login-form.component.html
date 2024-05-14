@@ -1,4 +1,18 @@
-<form [formGroup]="inputForm" class="login-form">
-  <app-input [validation]="emailValidation" name="email" label="E-mail"></app-input>
-  <app-input [validation]="passwordValidation" name="password" label="Password" type="password"></app-input>
+<form [formGroup]="loginForm" class="login-form">
+  <app-input
+    [validation]="emailValidation"
+    name="email"
+    label="E-mail"
+    (keyup)="onKeyup()"
+    [form]="loginForm"
+  ></app-input>
+  <app-input
+    [validation]="passwordValidation"
+    name="password"
+    label="Password"
+    type="password"
+    (keyup)="onKeyup()"
+    [form]="loginForm"
+  ></app-input>
+  <app-button [isDisabled]="!isValid" content="Login"></app-button>
 </form>
