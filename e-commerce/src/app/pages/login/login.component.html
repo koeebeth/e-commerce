@@ -1,10 +1,12 @@
 <div class="login">
-    <div class="navigation-buttons">
-        <a class="router router__login" routerLink="/login">Login</a>
-        <a class="router router__registration" routerLink="/registration">Registration</a>
-    </div>
-    <div class="login-form">
-        <app-button [isDisabled]="true" content="Login" btnClass="primary"></app-button>
-        <p class="login-text">Don't have an account? <a class="registration-link" routerLink="/registration">Register</a></p>
-    </div>
+  <div class="navigation-buttons">
+    <a class="router router__login" routerLink="/login">Login</a>
+    <a class="router router__registration" routerLink="/registration">Registration</a>
+  </div>
+  <div class="login-form">
+    <app-button [isDisabled]="true" content="Login" btnClass="primary"></app-button>
+    <p class="login-text">
+      Don't have an account? <a class="registration-link" routerLink="/registration">Register</a>
+    </p>
+  </div>
 </div>
