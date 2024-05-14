@@ -14,5 +14,10 @@
     (keyup)="onKeyup()"
     [form]="loginForm"
   ></app-input>
+  <app-button
+    btnClass="link"
+    [content]="showPassword ? 'Hide password' : 'Show Password'"
+    (clickHandler)="togglePasswordShow()"
+  ></app-button>
   <app-button [isDisabled]="!isValid" content="Login" (clickHandler)="onSubmit()"></app-button>
 </form>

@@ -44,4 +44,8 @@ export class LoginFormComponent {
     if (this.loginForm.valid) this.isValid = true;
     else this.isValid = false;
   }
+
+  togglePasswordShow() {
+    this.showPassword = !this.showPassword;
+  }
 }
