@@ -1,3 +1,4 @@
-<form [formGroup]="inputForm">
+<form [formGroup]="inputForm" class="login-form">
   <app-input [validation]="emailValidation" name="email" label="E-mail"></app-input>
+  <app-input [validation]="passwordValidation" name="password" label="Password" type="password"></app-input>
 </form>

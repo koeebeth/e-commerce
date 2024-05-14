@@ -20,4 +20,11 @@ export class LoginFormComponent {
       errorMsg: 'Email should be in format abc.123@example.com',
     },
   };
+  passwordValidation = {
+    minlength: 8,
+    pattern: {
+      regex: /((?=[^ ]*\d)(?=[^ ]*[a-z])(?=[^ ]*[A-Z])(?=[^ ]*[\W])[^ ]+)/g,
+      errorMsg: 'Password must contain at least one uppercase letter, lowercase letter, number and a special character',
+    },
+  };
 }
