@@ -28,6 +28,7 @@ export class LoginFormComponent {
     required: true,
   };
   isValid = false;
+  showPassword = false;
 
   constructor(private fb: FormBuilder) {}
 
@@ -35,9 +36,12 @@ export class LoginFormComponent {
     this.loginForm = this.fb.group({});
   }
 
+  onSubmit() {
+    console.log(this.loginForm.value);
+  }
+
   onKeyup() {
     if (this.loginForm.valid) this.isValid = true;
     else this.isValid = false;
-    console.log(this.loginForm);
   }
 }

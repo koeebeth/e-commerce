@@ -10,9 +10,9 @@
     [validation]="passwordValidation"
     name="password"
     label="Password"
-    type="password"
+    [type]="showPassword ? 'text' : 'password'"
     (keyup)="onKeyup()"
     [form]="loginForm"
   ></app-input>
-  <app-button [isDisabled]="!isValid" content="Login"></app-button>
+  <app-button [isDisabled]="!isValid" content="Login" (clickHandler)="onSubmit()"></app-button>
 </form>
