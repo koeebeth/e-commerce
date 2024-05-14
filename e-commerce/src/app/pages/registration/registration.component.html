@@ -1,1 +1,10 @@
-<p>registration works!</p>
+<div class="login">
+    <div class="navigation-buttons">
+        <a class="router" routerLink="/login">Login</a>
+        <a class="router" routerLink="/registration">Registration</a>
+    </div>
+    <div class="login-form">
+    <router-outlet />
+    <app-button [isDisabled]="true" content="Login" btnClass="primary"></app-button>
+</div>
+</div>
