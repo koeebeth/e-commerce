@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import InputComponent from '../../../shared/components/input/input.component';
 import ButtonComponent from '../../../shared/components/button/button.component';
 
@@ -10,15 +10,17 @@ import ButtonComponent from '../../../shared/components/button/button.component'
   templateUrl: './login-form.component.html',
   styleUrl: './login-form.component.scss',
 })
-export class LoginFormComponent {
+export default class LoginFormComponent {
   loginForm!: FormGroup;
+
   emailValidation = {
     pattern: {
-      regex: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g,
+      regex: /^[\w.]+@([\w]+\.)+[\w]+$/g,
       errorMsg: 'Email should be in format abc.123@example.com',
     },
     required: true,
   };
+
   passwordValidation = {
     minlength: 8,
     pattern: {
@@ -28,7 +30,9 @@ export class LoginFormComponent {
     },
     required: true,
   };
+
   isValid = false;
+
   showPassword = false;
 
   constructor(private fb: FormBuilder) {}
