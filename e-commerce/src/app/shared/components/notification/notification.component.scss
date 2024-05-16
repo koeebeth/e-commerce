@@ -10,8 +10,8 @@
 }
 
 .notification-container {
-  margin: auto;
   @include font-primary;
+  margin: auto;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,6 +37,21 @@
   }
 
   &.error {
+    color: $color-secondary;
+  }
+
+  &.warning::before {
+    content: '⚠️';
+    color: rgb(224, 192, 34);
+  }
+
+  &.success::before {
+    content: '✅';
+    color: rgb(16, 107, 16);
+  }
+
+  &.error::before {
+    content: '❌';
     color: $color-secondary;
   }
 }

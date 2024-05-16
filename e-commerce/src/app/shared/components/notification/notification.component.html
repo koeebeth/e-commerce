@@ -1,9 +1,6 @@
 <div class="notification" *ngIf="isOpen">
   <div class="notification-container">
-    <p class="title" [ngClass]="type">
-      <span *ngIf="type === 'warning'">⚠️</span>
-      <span *ngIf="type === 'success'">✅</span>
-      <span *ngIf="type === 'error'">❌</span>
+    <p class="title" [ngClass]="type.toLowerCase()">
       {{ type | uppercase }}
     </p>
     <p class="message">{{ message }}</p>

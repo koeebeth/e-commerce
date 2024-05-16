@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import NotificationService from '../../services/notification/notification.service';
 import ButtonComponent from '../button/button.component';
 
+const NOTIFICATION_TYPES = ['error', 'warning', 'success'];
+
 @Component({
   selector: 'app-notification',
   standalone: true,
@@ -24,12 +26,14 @@ export default class NotificationComponent {
 
   constructor(private notificationService: NotificationService) {
     this.subscription = this.notificationService.currentNotification.subscribe((notification) => {
-      this.type = notification.type;
-      this.message = notification.message;
-      this.isOpen = true;
-      this.autoCloseTimer = window.setTimeout(() => {
-        this.closeNotification();
-      }, 10000);
+      if (NOTIFICATION_TYPES.includes(notification.type.toLowerCase())) {
+        this.type = notification.type;
+        this.message = notification.message;
+        this.isOpen = true;
+        this.autoCloseTimer = window.setTimeout(() => {
+          this.closeNotification();
+        }, 5000);
+      }
     });
   }
 
