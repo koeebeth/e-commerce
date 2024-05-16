@@ -32,7 +32,7 @@ export default class NotificationComponent {
         this.isOpen = true;
         this.autoCloseTimer = window.setTimeout(() => {
           this.closeNotification();
-        }, 55000);
+        }, 5000);
       }
     });
   }
