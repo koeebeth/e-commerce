@@ -1,0 +1,39 @@
+<form [formGroup]="registrationForm" class="registration-form">
+  <app-input
+    [validation]="nameValidation"
+    name="firstname"
+    label="First Name"
+    (keyup)="onKeyup()"
+    [form]="registrationForm"
+  ></app-input>
+  <app-input
+    [validation]="nameValidation"
+    name="lastname"
+    label="Last Name"
+    (keyup)="onKeyup()"
+    [form]="registrationForm"
+  ></app-input>
+  <app-input
+    [validation]="emailValidation"
+    name="email"
+    label="E-mail"
+    (keyup)="onKeyup()"
+    [form]="registrationForm"
+  ></app-input>
+  <section class="registration-form-password">
+    <app-input
+      [validation]="passwordValidation"
+      name="password"
+      label="Password"
+      [type]="showPassword ? 'text' : 'password'"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-button
+      btnType="link"
+      [content]="showPassword ? 'Hide password' : 'Show Password'"
+      (clickHandler)="togglePasswordShow()"
+    ></app-button>
+  </section>
+  <app-button [isDisabled]="!isValid" content="Login" (clickHandler)="onSubmit()"></app-button>
+</form>
