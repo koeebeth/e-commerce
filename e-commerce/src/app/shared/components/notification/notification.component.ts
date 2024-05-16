@@ -16,7 +16,7 @@ export default class NotificationComponent {
 
   @Input() message: string = '';
 
-  isOpen: boolean = true;
+  isOpen: boolean = false;
 
   autoCloseTimer: number = 0;
 
@@ -26,6 +26,7 @@ export default class NotificationComponent {
     this.subscription = this.notificationService.currentNotification.subscribe((notification) => {
       this.type = notification.type;
       this.message = notification.message;
+      this.isOpen = true;
       this.autoCloseTimer = window.setTimeout(() => {
         this.closeNotification();
       }, 10000);
