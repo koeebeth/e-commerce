@@ -1,4 +1,4 @@
-<div class="notification">
+<div class="notification" *ngIf="isOpen">
   <p class="message">{{ message }}</p>
-  <button class="close-btn" (click)="closeNotification()">Close</button>
+  <button class="close-btn" (click)="closeNotification()">Okay</button>
 </div>

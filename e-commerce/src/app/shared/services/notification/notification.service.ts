@@ -12,8 +12,4 @@ export default class NotificationService {
   showNotification(type: string, message: string) {
     this.notificationSource.next({ type, message });
   }
-
-  hideNotification() {
-    this.notificationSource.next({ type: '', message: '' });
-  }
 }
