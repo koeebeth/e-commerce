@@ -1,0 +1,54 @@
+@import '../../../styles.scss';
+
+.login {
+  @include font-primary;
+  margin: 0 auto;
+  margin-top: 20px;
+  max-width: 500px;
+  width: 100%;
+  background-color: $color-primary-200;
+  border: 0.5px solid rgba($color-primary-100, 0.5);
+  border-radius: 10px;
+}
+
+.navigation-buttons {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.router {
+  width: 100%;
+  text-decoration: none;
+  color: $color-primary-400;
+  text-align: center;
+  border-radius: 0 10px;
+  padding: 5px;
+}
+
+.router__registration {
+  background-color: rgba($color-primary-100, 0.7);
+  border-radius: 0 10px;
+}
+
+.login-form {
+  @include font-primary;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.login-text {
+  color: $color-primary-700;
+  font-size: 0.5rem;
+}
+
+.registration-link {
+  color: $color-primary-600;
+  @include font-heading;
+  text-decoration: none;
+}

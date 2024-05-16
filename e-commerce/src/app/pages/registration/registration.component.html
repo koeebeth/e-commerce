@@ -1,1 +1,10 @@
-<p>registration works!</p>
+<div class="registration">
+  <div class="navigation-buttons">
+    <a class="router router__login" routerLink="/login">Login</a>
+    <a class="router router__registration" routerLink="/registration">Registration</a>
+  </div>
+  <div class="registration-form">
+    <app-button [isDisabled]="true" content="Registration" btnClass="primary"></app-button>
+    <p class="registration-text">Already have an account? <a class="login-link" routerLink="/login">Login</a></p>
+  </div>
+</div>
