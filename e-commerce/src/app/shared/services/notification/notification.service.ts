@@ -35,6 +35,10 @@ export default class NotificationService {
 
   closeNotification() {
     this.isShowNextNotification = false;
-    this.showNextNotification();
+    if (this.notificationsQueue.length > 0) {
+      setTimeout(() => {
+        this.showNextNotification();
+      }, 200);
+    }
   }
 }
