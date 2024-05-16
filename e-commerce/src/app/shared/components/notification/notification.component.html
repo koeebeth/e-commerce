@@ -1,4 +1,12 @@
 <div class="notification" *ngIf="isOpen">
-  <p class="message">{{ message }}</p>
-  <button class="close-btn" (click)="closeNotification()">Okay</button>
+  <div class="notification-container">
+    <p class="title" [ngClass]="type">
+      <span *ngIf="type === 'warning'">⚠️</span>
+      <span *ngIf="type === 'success'">✅</span>
+      <span *ngIf="type === 'error'">❌</span>
+      {{ type | uppercase }}
+    </p>
+    <p class="message">{{ message }}</p>
+    <app-button content="Okay" btnClass="primary" (click)="closeNotification()"></app-button>
+  </div>
 </div>

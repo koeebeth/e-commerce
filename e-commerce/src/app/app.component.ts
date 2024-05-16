@@ -22,6 +22,6 @@ export default class AppComponent {
 
   ngOnInit() {
     this.commerceApiService.refreshAccessToken();
-    this.notificationService.showNotification('success', 'notification message');
+    this.notificationService.showNotification('error', 'Error text');
   }
 }

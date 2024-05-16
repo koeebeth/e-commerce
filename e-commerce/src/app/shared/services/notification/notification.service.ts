@@ -10,6 +10,10 @@ export default class NotificationService {
   currentNotification = this.notificationSource.asObservable();
 
   showNotification(type: string, message: string) {
-    this.notificationSource.next({ type, message });
+    if (type === 'error' || type === 'warning' || type === 'success') {
+      this.notificationSource.next({ type, message });
+    } else {
+      console.error('Invalid notification type. Allowed types are: error, warning, success');
+    }
   }
 }

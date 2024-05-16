@@ -2,11 +2,12 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import NotificationService from '../../services/notification/notification.service';
+import ButtonComponent from '../button/button.component';
 
 @Component({
   selector: 'app-notification',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonComponent],
   templateUrl: './notification.component.html',
   styleUrl: './notification.component.scss',
 })

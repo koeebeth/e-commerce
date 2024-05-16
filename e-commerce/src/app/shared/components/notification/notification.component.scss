@@ -1,0 +1,42 @@
+@import '../../../../styles.scss';
+
+.notification {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  background-color: rgba(83, 82, 79, 0.453);
+  overflow-y: auto;
+  display: flex;
+}
+
+.notification-container {
+  margin: auto;
+  @include font-primary;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  max-width: 300px;
+  width: 40%;
+  border: 2px solid $color-primary-600;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: $color-primary-700;
+}
+
+.title {
+  @include font-heading;
+
+  &.warning {
+    color: rgb(224, 192, 34);
+  }
+
+  &.success {
+    color: rgb(16, 107, 16);
+  }
+
+  &.error {
+    color: $color-secondary;
+  }
+}
