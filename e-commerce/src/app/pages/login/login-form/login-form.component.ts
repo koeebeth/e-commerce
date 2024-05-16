@@ -15,7 +15,7 @@ export default class LoginFormComponent {
 
   emailValidation = {
     pattern: {
-      regex: /^[\w.]+@([\w]+\.)+[\w]+$/g,
+      regex: /^[\w.]+@([\w]+.)+[\w]+$/g,
       errorMsg: 'Email should be in format abc.123@example.com',
     },
     required: true,
