@@ -1,47 +1,37 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import InputComponent from '../../../shared/components/input/input.component';
 import ButtonComponent from '../../../shared/components/button/button.component';
+import RegistrationValidators from './registration-validators';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-registration-form',
   standalone: true,
-  imports: [InputComponent, ButtonComponent, ReactiveFormsModule],
+  imports: [InputComponent, ButtonComponent, ReactiveFormsModule, CommonModule],
   templateUrl: './registration-form.component.html',
   styleUrl: './registration-form.component.scss',
 })
 export class RegistrationFormComponent {
   registrationForm!: FormGroup;
 
-  emailValidation = {
-    pattern: {
-      regex: /^[\w.]+@([\w]+.)+[\w]+$/,
-      errorMsg: 'Email should be in format abc.123@example.com',
-    },
-    required: true,
-  };
+  emailValidation = RegistrationValidators.emailValidation;
 
-  passwordValidation = {
-    minlength: 8,
-    pattern: {
-      regex: /(?=[^\s]*\d)(?=[^\s]*[a-z])(?=[^ ]*[A-Z])(?=[^ ]*[\W])(?<!\s)/g,
-      errorMsg:
-        'Password must contain at least one uppercase letter, lowercase letter, number, a special character and no spaces',
-    },
-    required: true,
-  };
+  passwordValidation = RegistrationValidators.passwordValidation;
 
-  nameValidation = {
-    required: true,
-    pattern: {
-      regex: /^[a-zA-Z\-]+[^\-]$/,
-      errorMsg: 'Name should contain only letters and hyphens and end with a letter',
-    },
-  };
+  nameValidation = RegistrationValidators.nameValidation;
+
+  streetValidation = RegistrationValidators.streetValidation;
+
+  cityValidation = RegistrationValidators.cityValidation;
+
+  postalCodeValidation = RegistrationValidators.postalCodeValidation;
+
+  ageValidation = RegistrationValidators.ageValidation;
+
+  countryList = ['United States', 'United Kingdom', 'Germany'];
 
   isValid = false;
-
-  showPassword = false;
 
   constructor(private fb: FormBuilder) {}
 
@@ -58,7 +48,7 @@ export class RegistrationFormComponent {
     else this.isValid = false;
   }
 
-  togglePasswordShow() {
-    this.showPassword = !this.showPassword;
+  debug() {
+    console.log(this.registrationForm);
   }
 }

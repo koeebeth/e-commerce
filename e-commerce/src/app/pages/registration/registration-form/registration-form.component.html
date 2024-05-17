@@ -1,39 +1,72 @@
 <form [formGroup]="registrationForm" class="registration-form">
-  <app-input
-    [validation]="nameValidation"
-    name="firstname"
-    label="First Name"
-    (keyup)="onKeyup()"
-    [form]="registrationForm"
-  ></app-input>
-  <app-input
-    [validation]="nameValidation"
-    name="lastname"
-    label="Last Name"
-    (keyup)="onKeyup()"
-    [form]="registrationForm"
-  ></app-input>
-  <app-input
-    [validation]="emailValidation"
-    name="email"
-    label="E-mail"
-    (keyup)="onKeyup()"
-    [form]="registrationForm"
-  ></app-input>
-  <section class="registration-form-password">
+  <fieldset>
+    <legend>Personal Info</legend>
+    <app-input
+      [validation]="nameValidation"
+      name="firstname"
+      label="First Name"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      [validation]="nameValidation"
+      name="lastname"
+      label="Last Name"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      [validation]="emailValidation"
+      name="email"
+      label="E-mail"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
     <app-input
       [validation]="passwordValidation"
       name="password"
       label="Password"
-      [type]="showPassword ? 'text' : 'password'"
+      type="password"
       (keyup)="onKeyup()"
       [form]="registrationForm"
     ></app-input>
-    <app-button
-      btnType="link"
-      [content]="showPassword ? 'Hide password' : 'Show Password'"
-      (clickHandler)="togglePasswordShow()"
-    ></app-button>
-  </section>
+    <app-input
+      (change)="debug()"
+      type="date"
+      name="birthdate"
+      label="Date of Birth"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+      [validation]="ageValidation"
+    ></app-input>
+  </fieldset>
+  <fieldset>
+    <legend>Shipping Adress</legend>
+    <app-input
+      name="city"
+      label="City"
+      [validation]="cityValidation"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      name="street"
+      label="Street"
+      [validation]="streetValidation"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      name="postalcode"
+      label="Postal Code"
+      [validation]="postalCodeValidation"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <label for="country">Country</label>
+    <select name="country" id="country">
+      <option *ngFor="let country of countryList" [value]="country">{{ country }}</option>
+    </select>
+  </fieldset>
   <app-button [isDisabled]="!isValid" content="Login" (clickHandler)="onSubmit()"></app-button>
 </form>

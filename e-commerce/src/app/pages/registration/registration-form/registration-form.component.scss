@@ -1,12 +1,33 @@
-.registration-form {
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
+@import '../../../../styles.scss';
 
-.registration-form-password {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.registration-form {
+  width: 50%;
+  fieldset {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    border: lightgray 1px solid;
+    border-radius: 5px;
+  }
+
+  select {
+    @include font-primary;
+    box-sizing: border-box;
+    height: 2rem;
+    padding: 5px;
+    border-radius: 3px;
+    border: 1px solid $color-primary-300;
+
+    &:focus {
+      border-width: 2px;
+      outline: none;
+    }
+  }
+
+  legend {
+    @include font-primary;
+    font-size: 0.7rem;
+    color: lightgray;
+  }
 }
