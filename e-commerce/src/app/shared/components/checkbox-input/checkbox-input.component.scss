@@ -7,4 +7,8 @@
   gap: 3px;
   align-items: center;
   font-size: 0.8rem;
+
+  input {
+    accent-color: $color-primary-400;
+  }
 }

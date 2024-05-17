@@ -8,7 +8,7 @@
     <p *ngIf="control.errors?.['pattern']">
       {{ validation.pattern?.errorMsg }}
     </p>
-    <p *ngIf="control.errors?.[validation.custom!.name] === false">
+    <p *ngIf="validation.custom?.name && control.errors?.[validation.custom!.name] === false">
       {{ validation.custom!.errorMsg }}
     </p>
   </div>
