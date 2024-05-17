@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+export const NOTIFICATION_TYPES = ['error', 'warning', 'success'];
+
 @Injectable({
   providedIn: 'root',
 })
-export default class NotificationService {
+export class NotificationService {
   private notificationsQueue: { type: string; message: string }[] = [];
 
   private isShowNextNotification = false;
@@ -14,10 +16,12 @@ export default class NotificationService {
   currentNotification = this.notificationSource.asObservable();
 
   showNotification(type: string, message: string) {
-    const notification: { type: string; message: string } = { type, message };
-    this.notificationsQueue.push(notification);
-    if (!this.isShowNextNotification) {
-      this.showNextNotification();
+    if (NOTIFICATION_TYPES.includes(type.toLowerCase())) {
+      const notification: { type: string; message: string } = { type, message };
+      this.notificationsQueue.push(notification);
+      if (!this.isShowNextNotification) {
+        this.showNextNotification();
+      }
     }
   }
 

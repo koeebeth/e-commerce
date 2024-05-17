@@ -3,7 +3,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import CommerceApiService from './shared/services/commercetoolsApi/commercetoolsapi.service';
 import SharedModule from './shared/shared.module';
 import NotificationComponent from './shared/components/notification/notification.component';
-import NotificationService from './shared/services/notification/notification.service';
+import { NotificationService } from './shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-root',

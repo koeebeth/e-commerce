@@ -1,10 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import NotificationService from '../../services/notification/notification.service';
+import { NotificationService, NOTIFICATION_TYPES } from '../../services/notification/notification.service';
 import ButtonComponent from '../button/button.component';
-
-const NOTIFICATION_TYPES = ['error', 'warning', 'success'];
 
 @Component({
   selector: 'app-notification',
