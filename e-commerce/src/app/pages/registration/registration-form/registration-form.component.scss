@@ -14,8 +14,8 @@
   select {
     @include font-primary;
     box-sizing: border-box;
-    height: 2rem;
-    padding: 5px;
+    height: 1.8rem;
+    padding: 2px;
     border-radius: 3px;
     border: 1px solid $color-primary-300;
 
@@ -27,7 +27,15 @@
 
   legend {
     @include font-primary;
-    font-size: 0.7rem;
-    color: lightgray;
+    font-size: 0.8rem;
+    color: gray;
   }
+}
+
+.country-input-group {
+  @include font-primary;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }

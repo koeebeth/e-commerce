@@ -31,7 +31,6 @@
       [form]="registrationForm"
     ></app-input>
     <app-input
-      (change)="debug()"
       type="date"
       name="birthdate"
       label="Date of Birth"
@@ -43,30 +42,69 @@
   <fieldset>
     <legend>Shipping Adress</legend>
     <app-input
-      name="city"
+      name="shipping-city"
       label="City"
       [validation]="cityValidation"
       (keyup)="onKeyup()"
       [form]="registrationForm"
     ></app-input>
     <app-input
-      name="street"
+      name="shipping-street"
       label="Street"
       [validation]="streetValidation"
       (keyup)="onKeyup()"
       [form]="registrationForm"
     ></app-input>
     <app-input
-      name="postalcode"
+      name="shipping-postalcode"
       label="Postal Code"
       [validation]="postalCodeValidation"
       (keyup)="onKeyup()"
       [form]="registrationForm"
     ></app-input>
-    <label for="country">Country</label>
-    <select name="country" id="country">
-      <option *ngFor="let country of countryList" [value]="country">{{ country }}</option>
-    </select>
+    <div class="country-input-group">
+      <label for="shipping-country">Country</label>
+      <select name="shipping-country" id="shipping-country">
+        <option *ngFor="let country of countryList" [value]="country">{{ country }}</option>
+      </select>
+    </div>
+    <app-checkbox-input
+      name="single-adress"
+      label="Use as billing adress"
+      [form]="registrationForm"
+      [checked]="singleAdress"
+      (checkHandler)="onCheckSingleAdress()"
+    ></app-checkbox-input>
   </fieldset>
-  <app-button [isDisabled]="!isValid" content="Login" (clickHandler)="onSubmit()"></app-button>
+  <fieldset *ngIf="!singleAdress">
+    <legend>Billing Adress</legend>
+    <app-input
+      name="billing-city"
+      label="City"
+      [validation]="cityValidation"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      name="billing-street"
+      label="Street"
+      [validation]="streetValidation"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      name="billing-postalcode"
+      label="Postal Code"
+      [validation]="postalCodeValidation"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <div class="country-input-group">
+      <label for="billing-country">Country</label>
+      <select name="billing-country" id="billing-country">
+        <option *ngFor="let country of countryList" [value]="country">{{ country }}</option>
+      </select>
+    </div>
+  </fieldset>
+  <app-button [isDisabled]="!isValid" content="Register" (clickHandler)="onSubmit()"></app-button>
 </form>

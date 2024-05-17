@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import InputComponent from '../../../shared/components/input/input.component';
 import ButtonComponent from '../../../shared/components/button/button.component';
 import RegistrationValidators from './registration-validators';
 import { CommonModule } from '@angular/common';
+import { CheckboxInputComponent } from '../../../shared/components/checkbox-input/checkbox-input.component';
 
 @Component({
   selector: 'app-registration-form',
   standalone: true,
-  imports: [InputComponent, ButtonComponent, ReactiveFormsModule, CommonModule],
+  imports: [InputComponent, ButtonComponent, ReactiveFormsModule, CommonModule, CheckboxInputComponent],
   templateUrl: './registration-form.component.html',
   styleUrl: './registration-form.component.scss',
 })
@@ -31,6 +32,8 @@ export class RegistrationFormComponent {
 
   countryList = ['United States', 'United Kingdom', 'Germany'];
 
+  singleAdress = false;
+
   isValid = false;
 
   constructor(private fb: FormBuilder) {}
@@ -48,7 +51,7 @@ export class RegistrationFormComponent {
     else this.isValid = false;
   }
 
-  debug() {
-    console.log(this.registrationForm);
+  onCheckSingleAdress() {
+    this.singleAdress = !this.singleAdress;
   }
 }
