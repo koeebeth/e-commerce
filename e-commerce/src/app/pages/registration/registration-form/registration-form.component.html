@@ -75,8 +75,9 @@
       [checked]="singleAdress"
       (checkHandler)="onCheckSingleAdress()"
     ></app-checkbox-input>
+    <app-checkbox-input name="default-adress" label="Default adress" [form]="registrationForm"></app-checkbox-input>
   </fieldset>
-  <fieldset *ngIf="!singleAdress">
+  <fieldset [disabled]="singleAdress">
     <legend>Billing Adress</legend>
     <app-input
       name="billing-city"

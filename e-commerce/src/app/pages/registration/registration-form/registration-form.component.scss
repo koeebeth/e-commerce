@@ -9,6 +9,11 @@
     gap: 20px;
     border: lightgray 1px solid;
     border-radius: 5px;
+
+    &:disabled * {
+      color: lightgrey;
+      border-color: lightgray;
+    }
   }
 
   select {
