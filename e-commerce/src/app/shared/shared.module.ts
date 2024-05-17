@@ -4,7 +4,7 @@ import CommerceApiService from './services/commercetoolsApi/commercetoolsapi.ser
 import TokenStorageService from './services/tokenStorage/tokenstorage.service';
 
 @NgModule({
-  imports: [HttpClientModule],
+  imports: [],
   providers: [CommerceApiService, TokenStorageService],
 })
 export default class SharedModule {}

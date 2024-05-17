@@ -22,13 +22,6 @@ export interface CustomerDraft {
   defaultBillingAddressId?: number;
 }
 
-export interface CustomerSignin {
-  email: string;
-  password: string;
-  anonymousCart?: CartResourceIdentifier;
-  anonymousId: string;
-}
-
 export interface Address {
   id?: string;
   title?: string;
@@ -54,6 +47,14 @@ export interface Address {
   fax?: string;
   additionalAddressInfo?: string;
   externalId?: string;
+}
+
+// If both anonymousCart and anonymousId are provided, the anonymousId on the CustomerSignin must match that of the anonymous Cart
+export interface CustomerSignin {
+  email: string;
+  password: string;
+  anonymousCart?: CartResourceIdentifier;
+  anonymousId: string;
 }
 
 // Either id or key is required, If both are set, an InvalidJsonInput error is returned.
