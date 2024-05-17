@@ -39,13 +39,6 @@ const RegistrationValidators = {
     },
   },
 
-  postalCodeValidation: {
-    pattern: {
-      regex: /^[0-9]{5}$/,
-      errorMsg: 'Postal code should follow the pattern 12345',
-    },
-  },
-
   ageValidation: {
     custom: {
       validator: (control: AbstractControl) => {

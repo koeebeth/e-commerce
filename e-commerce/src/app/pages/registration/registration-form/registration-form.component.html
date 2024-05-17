@@ -1,40 +1,20 @@
 <form [formGroup]="registrationForm" class="registration-form">
   <fieldset>
     <legend>Personal Info</legend>
-    <app-input
-      [validation]="nameValidation"
-      name="firstname"
-      label="First Name"
-      (keyup)="onKeyup()"
-      [form]="registrationForm"
-    ></app-input>
-    <app-input
-      [validation]="nameValidation"
-      name="lastname"
-      label="Last Name"
-      (keyup)="onKeyup()"
-      [form]="registrationForm"
-    ></app-input>
-    <app-input
-      [validation]="emailValidation"
-      name="email"
-      label="E-mail"
-      (keyup)="onKeyup()"
-      [form]="registrationForm"
-    ></app-input>
+    <app-input [validation]="nameValidation" name="firstname" label="First Name" [form]="registrationForm"></app-input>
+    <app-input [validation]="nameValidation" name="lastname" label="Last Name" [form]="registrationForm"></app-input>
+    <app-input [validation]="emailValidation" name="email" label="E-mail" [form]="registrationForm"></app-input>
     <app-input
       [validation]="passwordValidation"
       name="password"
       label="Password"
       type="password"
-      (keyup)="onKeyup()"
       [form]="registrationForm"
     ></app-input>
     <app-input
       type="date"
       name="birthdate"
       label="Date of Birth"
-      (keyup)="onKeyup()"
       [form]="registrationForm"
       [validation]="ageValidation"
     ></app-input>
@@ -55,19 +35,19 @@
       (keyup)="onKeyup()"
       [form]="registrationForm"
     ></app-input>
+    <app-select-input
+      name="shipping-country"
+      label="Country"
+      [form]="registrationForm"
+      [optList]="countryList"
+    ></app-select-input>
     <app-input
       name="shipping-postalcode"
       label="Postal Code"
-      [validation]="postalCodeValidation"
+      [validation]="postcodeValidation.shipping"
       (keyup)="onKeyup()"
       [form]="registrationForm"
     ></app-input>
-    <div class="country-input-group">
-      <label for="shipping-country">Country</label>
-      <select name="shipping-country" id="shipping-country">
-        <option *ngFor="let country of countryList" [value]="country">{{ country }}</option>
-      </select>
-    </div>
     <app-checkbox-input
       name="single-adress"
       label="Use as billing adress"
@@ -93,19 +73,19 @@
       (keyup)="onKeyup()"
       [form]="registrationForm"
     ></app-input>
+    <app-select-input
+      name="billing-country"
+      label="Country"
+      [form]="registrationForm"
+      [optList]="countryList"
+    ></app-select-input>
     <app-input
       name="billing-postalcode"
       label="Postal Code"
-      [validation]="postalCodeValidation"
       (keyup)="onKeyup()"
+      [validation]="postcodeValidation.billing"
       [form]="registrationForm"
     ></app-input>
-    <div class="country-input-group">
-      <label for="billing-country">Country</label>
-      <select name="billing-country" id="billing-country">
-        <option *ngFor="let country of countryList" [value]="country">{{ country }}</option>
-      </select>
-    </div>
   </fieldset>
-  <app-button [isDisabled]="!isValid" content="Register" (clickHandler)="onSubmit()"></app-button>
+  <app-button [isDisabled]="!registrationForm.valid" content="Register" (clickHandler)="onSubmit()"></app-button>
 </form>
