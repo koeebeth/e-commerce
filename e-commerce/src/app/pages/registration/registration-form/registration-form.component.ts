@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import InputComponent from '../../../shared/components/input/input.component';
 import ButtonComponent from '../../../shared/components/button/button.component';
 import RegistrationValidators from './registration-validators';
-import { CommonModule } from '@angular/common';
-import { CheckboxInputComponent } from '../../../shared/components/checkbox-input/checkbox-input.component';
-import { SelectInputComponent } from '../../../shared/components/select-input/select-input.component';
+import CheckboxInputComponent from '../../../shared/components/checkbox-input/checkbox-input.component';
+import SelectInputComponent from '../../../shared/components/select-input/select-input.component';
 
 @Component({
   selector: 'app-registration-form',
@@ -21,7 +21,7 @@ import { SelectInputComponent } from '../../../shared/components/select-input/se
   templateUrl: './registration-form.component.html',
   styleUrl: './registration-form.component.scss',
 })
-export class RegistrationFormComponent {
+export default class RegistrationFormComponent {
   registrationForm!: FormGroup;
 
   emailValidation = RegistrationValidators.emailValidation;
@@ -72,10 +72,10 @@ export class RegistrationFormComponent {
       const form = this.registrationForm;
       form.setValue({
         ...form.value,
-        ['billing-country']: form.value['shipping-country'],
-        ['billing-street']: form.value['shipping-street'],
-        ['billing-postalcode']: form.value['shipping-postalcode'],
-        ['billing-city']: form.value['shipping-city'],
+        'billing-country': form.value['shipping-country'],
+        'billing-street': form.value['shipping-street'],
+        'billing-postalcode': form.value['shipping-postalcode'],
+        'billing-city': form.value['shipping-city'],
       });
     }
   }
@@ -86,10 +86,10 @@ export class RegistrationFormComponent {
       const form = this.registrationForm;
       form.setValue({
         ...form.value,
-        ['billing-country']: form.value['shipping-country'],
-        ['billing-street']: form.value['shipping-street'],
-        ['billing-postalcode']: form.value['shipping-postalcode'],
-        ['billing-city']: form.value['shipping-city'],
+        'billing-country': form.value['shipping-country'],
+        'billing-street': form.value['shipping-street'],
+        'billing-postalcode': form.value['shipping-postalcode'],
+        'billing-city': form.value['shipping-city'],
       });
     }
   }
@@ -106,7 +106,7 @@ export class RegistrationFormComponent {
     if (regex.test(control.value)) return null;
 
     return {
-      ['shipping-postcode']: false,
+      'shipping-postcode': false,
     };
   }
 
@@ -122,7 +122,7 @@ export class RegistrationFormComponent {
     if (regex.test(control.value)) return null;
 
     return {
-      ['billing-postcode']: false,
+      'billing-postcode': false,
     };
   }
 }

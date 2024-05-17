@@ -22,7 +22,7 @@ const RegistrationValidators = {
   nameValidation: {
     required: true,
     pattern: {
-      regex: /^[a-zA-Z\-]*[a-zA-Z]+$/,
+      regex: /^[a-zA-Z-]*[a-zA-Z]+$/,
       errorMsg: 'Name should contain only letters and hyphens and end with a letter',
     },
   },
@@ -34,7 +34,7 @@ const RegistrationValidators = {
   cityValidation: {
     required: true,
     pattern: {
-      regex: /^[a-zA-Z\-]*[^\-]$/,
+      regex: /^[a-zA-Z-]*[^-]$/,
       errorMsg: 'City should contain only letters and hyphens and end with a letter',
     },
   },
