@@ -1,4 +1,11 @@
 <div class="checkbox-input-group">
-  <input type="checkbox" [name]="name" [value]="name" [checked]="checked" (click)="handleCheck()" />
+  <input
+    type="checkbox"
+    [name]="name"
+    [value]="name"
+    [checked]="checked"
+    (click)="handleCheck()"
+    [formControl]="control"
+  />
   <label [for]="name">{{ label }}</label>
 </div>

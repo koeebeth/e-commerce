@@ -1,0 +1,6 @@
+<div class="select-input-group">
+  <label [for]="name">Country</label>
+  <select [name]="name" [id]="name" [formControl]="control">
+    <option *ngFor="let opt of optList" [value]="opt" [selected]="true">{{ opt }}</option>
+  </select>
+</div>
