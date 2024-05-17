@@ -55,6 +55,10 @@ export default class RegistrationFormComponent {
     },
   };
 
+  defaultShipping = false;
+
+  defaultBilling = false;
+
   singleAdress = false;
 
   constructor(private fb: FormBuilder) {}
@@ -92,6 +96,11 @@ export default class RegistrationFormComponent {
         'billing-city': form.value['shipping-city'],
       });
     }
+  }
+
+  onCheckDefault(address: string) {
+    if (address === 'shipping') this.defaultShipping = !this.defaultShipping;
+    if (address === 'billing') this.defaultShipping = !this.defaultBilling;
   }
 
   shippingPostcodeValidator(control: AbstractControl) {

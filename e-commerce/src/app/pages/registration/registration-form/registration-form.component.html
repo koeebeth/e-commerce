@@ -55,7 +55,13 @@
       [checked]="singleAdress"
       (checkHandler)="onCheckSingleAdress()"
     ></app-checkbox-input>
-    <app-checkbox-input name="default-adress" label="Default adress" [form]="registrationForm"></app-checkbox-input>
+    <app-checkbox-input
+      name="default-adress"
+      label="Default address"
+      [form]="registrationForm"
+      (checkHandler)="onCheckDefault('shipping')"
+      [checked]="defaultShipping"
+    ></app-checkbox-input>
   </fieldset>
   <fieldset [disabled]="singleAdress">
     <legend>Billing Adress</legend>
@@ -86,6 +92,13 @@
       [validation]="postcodeValidation.billing"
       [form]="registrationForm"
     ></app-input>
+    <app-checkbox-input
+      name="default-adress"
+      label="Default address"
+      [form]="registrationForm"
+      (checkHandler)="onCheckDefault('billing')"
+      [checked]="defaultBilling"
+    ></app-checkbox-input>
   </fieldset>
   <app-button [isDisabled]="!registrationForm.valid" content="Register" (clickHandler)="onSubmit()"></app-button>
 </form>
