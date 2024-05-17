@@ -9,7 +9,7 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './select-input.component.html',
   styleUrl: './select-input.component.scss',
 })
-export class SelectInputComponent {
+export default class SelectInputComponent {
   @Input() optList: string[] = [];
 
   @Input() form!: FormGroup;

@@ -1,7 +1,7 @@
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { Component } from '@angular/core';
 import CommerceApiService from './shared/services/commercetoolsApi/commercetoolsapi.service';
 import SharedModule from './shared/shared.module';
-import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',

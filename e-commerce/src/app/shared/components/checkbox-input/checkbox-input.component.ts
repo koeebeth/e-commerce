@@ -8,7 +8,7 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './checkbox-input.component.html',
   styleUrl: './checkbox-input.component.scss',
 })
-export class CheckboxInputComponent {
+export default class CheckboxInputComponent {
   @Input() form!: FormGroup;
 
   @Input() name: string = '';
