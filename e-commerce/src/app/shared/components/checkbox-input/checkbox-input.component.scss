@@ -1,0 +1,10 @@
+@import '../../../../styles.scss';
+
+.checkbox-input-group {
+  @include font-primary;
+
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  font-size: 0.8rem;
+}
