@@ -7,4 +7,4 @@ import { Component } from '@angular/core';
   templateUrl: './slider.component.html',
   styleUrl: './slider.component.scss',
 })
-export class SliderComponent {}
+export default class SliderComponent {}
