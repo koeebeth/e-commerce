@@ -24,7 +24,7 @@ export default class LoginFormComponent {
   passwordValidation = {
     minlength: 8,
     pattern: {
-      regex: /(?=[^\s]*\d)(?=[^\s]*[a-z])(?=[^ ]*[A-Z])(?=[^ ]*[\W])(?<!\s)/g,
+      regex: /^(?! )((?=\S*\d)(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\W])\S*)(?<! )$/g,
       errorMsg:
         'Password must contain at least one uppercase letter, lowercase letter, number, a special character and no spaces',
     },
