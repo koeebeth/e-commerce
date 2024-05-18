@@ -20,20 +20,16 @@ export const initialState: EcommerceState = {
 
 export const ecommerceReducer = createReducer(
   initialState,
-
+  ///
   on(actions.loadAccsessToken, (state) => ({ ...state, loading: true })),
-
   on(actions.loadAccsessTokenSuccess, (state, { accessToken }) => ({ ...state, accessToken, loading: false })),
-
   on(actions.loadAccsessTokenFailure, (state, { error }) => ({ ...state, error, loading: false })),
-
+  ///
   on(actions.loadAnonymousToken, (state) => ({ ...state, loading: true })),
-
   on(actions.loadAnonymousTokenSuccess, (state, { anonymousToken }) => ({ ...state, anonymousToken, loading: false })),
-
   on(actions.loadAnonymousTokenFailure, (state, { error }) => ({ ...state, error, loading: false })),
-
-  on(actions.loadAnonymousIdSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),
-
-  on(actions.loadAnonymousIdFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.loadAnonymousCartSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),
+  on(actions.loadAnonymousCartFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
 );

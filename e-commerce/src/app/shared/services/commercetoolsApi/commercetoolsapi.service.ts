@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Router } from '@angular/router';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { AuthData, CartBase, CustomerDraft, CustomerSignin } from './apitypes';
+import { AuthData, CartBase, CustomerDraft } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
+import * as actions from '../../../store/actions';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../store/store';
 
 @Injectable({
   providedIn: 'root',
@@ -13,10 +15,9 @@ export default class CommerceApiService {
   constructor(
     private http: HttpClient,
     private tokenStorageService: TokenStorageService,
-    private route: Router,
+    private store: Store<AppState>,
   ) {}
 
-  // Token for a customer which might, at some point, log in or sign up
   getAnonymousSessionToken(): Observable<AuthData> {
     const unAuthUrl = `${unauthVisitorAPI.ctpAuthUrl}/oauth/${unauthVisitorAPI.ctpProjectKey}/anonymous/token`;
     const body = new URLSearchParams();
@@ -28,17 +29,7 @@ export default class CommerceApiService {
       .set('Authorization', `Basic ${btoa(`${unauthVisitorAPI.ctpClientId}:${unauthVisitorAPI.ctpClientSecret}`)}`);
 
     return this.http.post<AuthData>(unAuthUrl, body.toString(), { headers });
-    // .subscribe({
-    //   next: (response) => {
-    //     console.log('Anonymous Session Token:', response);
-    //     console.log('Annonymous token response.access_token should be saved to state to a separete field!');
-    //     this.tokenStorageService.saveToken(response.access_token);
-    //     this.createAnonymousCart(response.access_token);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error fetching Anonymous Session Token:', error);
-    //   },
-    // });
+    // Annonymous access_token saved in store
   }
 
   createAnonymousCart(accessToken: string): Observable<CartBase> {
@@ -52,16 +43,8 @@ export default class CommerceApiService {
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`);
 
-    return this.http.post<CartBase>(apiUrl, body, { headers })
-    // .subscribe({
-    //   next: (response) => {
-    //     console.log('Anonymous Cart:', response);
-    //     console.log('save anonymousId in state service', response.anonymousId);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error creating Anonymous Cart:', error);
-    //   },
-    // });
+    return this.http.post<CartBase>(apiUrl, body, { headers });
+    // anonymousId saved in store service
   }
 
   registration(customerDraft: CustomerDraft, anonymousToken: string, anonymousId: string): void {
@@ -106,48 +89,37 @@ export default class CommerceApiService {
 
     return this.http.post<AuthData>(authUrl, body.toString(), { headers });
 
-    // .subscribe({
-    //   next: (data) => {
-    //     if (data && data.refresh_token) {
-    //       this.tokenStorageService.saveToken(data.refresh_token);
-    //       console.log('Save accsessToken to stage');
-    //       console.log('Redirect to the home page');
-    //     }
-    //   },
-    //   error: (error) => {
-    //     console.error('Authentication error:', error);
-    //   },
-    // });
+    // console.log('Save accsessToken to stage');
+    // console.log('Redirect to the home page');
   }
 
-  refreshAccessToken(): void {
-    const refreshToken = this.tokenStorageService.getToken();
-    const authUrl = `${authVisitorAPI.ctpAuthUrl}/oauth/token`;
+  checkTokens(): void {
+    const refreshToken = this.tokenStorageService.getAuthToken();
+    const refreshAnonymousToken = this.tokenStorageService.getAnonymousToken();
 
-    if (!refreshToken) {
-      this.getAnonymousSessionToken();
-      console.log('User isnt logged in. Get anonymous session token');
-      return;
+    if (!refreshToken && !refreshAnonymousToken) {
+      this.store.dispatch(actions.loadAnonymousToken());
     }
 
+    if (refreshToken) {
+      const basic = `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`;
+      this.store.dispatch(actions.updateAccsessToken({ refreshToken, basic }));
+    } else if (refreshAnonymousToken) {
+      const basic = `Basic ${btoa(`${unauthVisitorAPI.ctpClientId}:${unauthVisitorAPI.ctpClientSecret}`)}`;
+      this.store.dispatch(actions.updateAnonymousToken({ refreshToken: refreshAnonymousToken, basic }));
+    }
+  }
+
+  refreshAccessToken(refreshToken: string, basic: string): Observable<AuthData> {
+    const authUrl = `${authVisitorAPI.ctpAuthUrl}/oauth/token`;
     const body = new URLSearchParams();
     body.set('grant_type', 'refresh_token');
     body.set('refresh_token', refreshToken);
 
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/x-www-form-urlencoded')
-      .set('Authorization', `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`);
+      .set('Authorization', basic);
 
-    (this.http.post(authUrl, body.toString(), { headers }) as Observable<AuthData>).subscribe({
-      next: (data) => {
-        if (data) {
-          console.log('Save accsessToken to state');
-        }
-      },
-      error: (error) => {
-        console.error('Authentication error:', error);
-        this.getAnonymousSessionToken();
-      },
-    });
+    return this.http.post<AuthData>(authUrl, body.toString(), { headers });
   }
 }

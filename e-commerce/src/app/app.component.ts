@@ -26,8 +26,10 @@ export default class AppComponent {
   ) {}
 
   ngOnInit() {
-    this.commerceApiService.refreshAccessToken();
-    // this.token$ = this.store.select((state) => state.app.accessToken);
-    // this.isLoading$ = this.store.select((state) => state.app.loading);
+    this.commerceApiService.checkTokens();
+
+    // usage example the store in components :
+    this.token$ = this.store.select((state) => state.app.anonymousToken);
+    this.isLoading$ = this.store.select((state) => state.app.loading);
   }
 }
