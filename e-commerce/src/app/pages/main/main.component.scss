@@ -1,6 +1,7 @@
 @import '../../../styles.scss';
 
 .category-container {
+  margin-top: 20px;
   @include font-heading;
   display: flex;
   flex-direction: column;
@@ -31,6 +32,7 @@
   gap: 12px;
   background: $color-primary-200;
   overflow: hidden;
+  cursor: pointer;
 
   @media screen and (max-width: 650px) {
     width: 150px;
@@ -48,7 +50,7 @@
 
 .category-img {
   border-radius: 10px;
-  transition: all 1s linear;
+  transition: all 0.5s linear;
   max-width: 370px;
   width: 100%;
 }

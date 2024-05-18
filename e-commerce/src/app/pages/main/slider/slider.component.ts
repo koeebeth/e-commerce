@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgxFlickingModule, Plugin } from '@egjs/ngx-flicking';
 import { AutoPlay, Fade, Pagination } from '@egjs/flicking-plugins';
+import '@egjs/flicking-plugins/dist/pagination.css';
 
 @Component({
   selector: 'app-slider',
