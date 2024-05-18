@@ -13,8 +13,9 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 600px;
-  overflow: hidden;
+  justify-content: space-between;
+  width: 100%;
+  gap: 5px;
 }
 
 .category {
@@ -22,7 +23,11 @@
   display: flex;
   flex-direction: column;
   border-radius: 10px;
-  background-color: rgba($color-primary-200, 0.4);
+  padding: 10px 10px 5px 10px;
+  gap: 12px;
+  background: linear-gradient($color-primary-200, $color-primary-100, $color-primary-200);
+  border-radius: 30px;
+  overflow: hidden;
 }
 
 .category-title {
@@ -31,8 +36,10 @@
 }
 
 .category-img {
-  border-radius: 10px;
+  border-radius: 20px;
   transition: all 1s linear;
+  max-width: 300px;
+  width: 100%;
 }
 
 @media (hover: hover) and (pointer: fine) {
