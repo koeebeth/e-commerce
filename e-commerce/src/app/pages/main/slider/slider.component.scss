@@ -1,5 +1,12 @@
 @import '../../../../../node_modules/@egjs/flicking-plugins/dist/flicking-plugins.css';
+@import '../../../../../node_modules/@egjs/flicking-plugins/dist/pagination.css';
 
-img {
+.panel {
   width: 100%;
+  height: auto;
+}
+
+.panel img {
+  width: 100%;
+  height: auto;
 }

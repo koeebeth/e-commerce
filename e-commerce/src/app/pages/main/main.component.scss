@@ -29,8 +29,7 @@
   border-radius: 10px;
   padding: 10px 10px 5px 10px;
   gap: 12px;
-  background: linear-gradient($color-primary-200, $color-primary-100, $color-primary-200);
-  border-radius: 30px;
+  background: $color-primary-200;
   overflow: hidden;
 
   @media screen and (max-width: 650px) {
@@ -48,7 +47,7 @@
 }
 
 .category-img {
-  border-radius: 20px;
+  border-radius: 10px;
   transition: all 1s linear;
   max-width: 370px;
   width: 100%;

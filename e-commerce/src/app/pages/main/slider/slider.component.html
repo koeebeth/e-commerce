@@ -1,1 +1,12 @@
-<img src="../../../../assets/Enshrouded.jpg" alt="Enshrouded" />
+<ngx-flicking [plugins]="plugins" [options]="{ circular: true, resizeOnContentsReady: true, autoResize: true }">
+  <div flicking-panel class="panel">
+    <img src="../../../../assets/Enshrouded.jpg" alt="Enshrouded" />
+  </div>
+  <div flicking-panel class="panel">
+    <img src="../../../../assets/banishers.jpeg" alt="banishers" />
+  </div>
+  <div flicking-panel class="panel">
+    <img src="../../../../assets/BALDURS_GATE.jpeg" alt="baldurs gate" />
+  </div>
+  <div in-viewport class="flicking-pagination"></div>
+</ngx-flicking>
