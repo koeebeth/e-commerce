@@ -11,10 +11,10 @@ export const authVisitorAPI = {
 export const unauthVisitorAPI = {
   production: false,
   ctpProjectKey: 'tt-e-commerce',
-  ctpClientSecret: '4J5iKtFO8W5Eng7_ze5ptTEgi9eh43gn',
-  ctpClientId: '353yw-hpb3zPV9XvPmzFLfbh',
+  ctpClientSecret: 'eZDFwRX3JV4rrrkC1PC9UVoBEB4ahZFv',
+  ctpClientId: 'wY68I907pLB9gPy07bh6nEES',
   ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
   ctpApiUrl: 'https://api.europe-west1.gcp.commercetools.com',
   ctpScopes:
-    'view_tax_categories:tt-e-commerce view_types:tt-e-commerce create_anonymous_token:tt-e-commerce manage_my_shopping_lists:tt-e-commerce view_product_selections:tt-e-commerce manage_customers:tt-e-commerce view_categories:tt-e-commerce view_published_products:tt-e-commerce view_shipping_methods:tt-e-commerce view_cart_discounts:tt-e-commerce view_messages:tt-e-commerce view_shopping_lists:tt-e-commerce',
+    'view_tax_categories:tt-e-commerce view_stores:tt-e-commerce view_types:tt-e-commerce create_anonymous_token:tt-e-commerce manage_my_shopping_lists:tt-e-commerce view_cart_discounts:tt-e-commerce manage_orders:tt-e-commerce manage_customers:tt-e-commerce view_categories:tt-e-commerce view_published_products:tt-e-commerce manage_my_orders:tt-e-commerce view_standalone_prices:tt-e-commerce view_messages:tt-e-commerce view_shopping_lists:tt-e-commerce',
 };
