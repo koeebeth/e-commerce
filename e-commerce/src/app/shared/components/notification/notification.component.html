@@ -1,0 +1,12 @@
+<div class="notification" *ngIf="isOpen">
+  <div class="notification-container">
+    <div class="title-container">
+      <img [src]="'../../../../assets/' + type.toLowerCase() + '.svg'" alt="{{ type | lowercase }}" class="icon" />
+      <p class="title" [ngClass]="type.toLowerCase()">
+        {{ type | uppercase }}
+      </p>
+    </div>
+    <p class="message">{{ message }}</p>
+    <app-button content="OK" btnClass="primary" (click)="closeNotification()"></app-button>
+  </div>
+</div>
