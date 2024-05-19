@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import InputComponent from '../../../shared/components/input/input.component';
 import ButtonComponent from '../../../shared/components/button/button.component';
@@ -36,24 +36,11 @@ export default class RegistrationFormComponent {
 
   ageValidation = RegistrationValidators.ageValidation;
 
-  countryList = ['United States', 'United Kingdom', 'Germany'];
+  usPostalcodeValidation = RegistrationValidators.usPostalcodeValidation;
 
-  postcodeValidation = {
-    billing: {
-      custom: {
-        validator: this.billingPostcodeValidator.bind(this),
-        name: 'billing-postcode',
-        errorMsg: 'Invalid postcode format for selected country',
-      },
-    },
-    shipping: {
-      custom: {
-        validator: this.shippingPostcodeValidator.bind(this),
-        name: 'shipping-postcode',
-        errorMsg: 'Invalid postcode format for selected country',
-      },
-    },
-  };
+  ukPostalcodeValidation = RegistrationValidators.ukPostalcodeValidation;
+
+  countryList = ['United States', 'United Kingdom', 'Germany'];
 
   defaultShipping = false;
 
@@ -82,6 +69,8 @@ export default class RegistrationFormComponent {
         'billing-city': form.value['shipping-city'],
       });
     }
+
+    console.log(this.registrationForm.value);
   }
 
   onCheckSingleAdress() {
@@ -100,38 +89,10 @@ export default class RegistrationFormComponent {
 
   onCheckDefault(address: string) {
     if (address === 'shipping') this.defaultShipping = !this.defaultShipping;
-    if (address === 'billing') this.defaultShipping = !this.defaultBilling;
+    if (address === 'billing') this.defaultBilling = !this.defaultBilling;
   }
 
-  shippingPostcodeValidator(control: AbstractControl) {
-    const selectedCountry = this.registrationForm.value['shipping-country'];
-    let regex;
-    if (selectedCountry === 'United States' || selectedCountry === 'Germany') {
-      regex = /^[0-9]{5}$/g;
-    } else {
-      regex = /^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/g;
-    }
-
-    if (regex.test(control.value)) return null;
-
-    return {
-      'shipping-postcode': false,
-    };
-  }
-
-  billingPostcodeValidator(control: AbstractControl) {
-    const selectedCountry = this.registrationForm.value['billing-country'];
-    let regex;
-    if (selectedCountry === 'United States' || selectedCountry === 'Germany') {
-      regex = /^[0-9]{5}$/g;
-    } else {
-      regex = /^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/g;
-    }
-
-    if (regex.test(control.value)) return null;
-
-    return {
-      'billing-postcode': false,
-    };
+  onCountryChange(address: 'shipping' | 'billing') {
+    this.registrationForm.removeControl(`${address}-country`);
   }
 }

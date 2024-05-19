@@ -46,6 +46,7 @@ export default class InputComponent {
     if (custom) this.validators.push(custom.validator);
 
     this.control = new FormControl('', this.validators);
+    this.form.removeControl(this.name);
     this.form.addControl(this.name, this.control);
   }
 }

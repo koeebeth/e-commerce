@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
@@ -21,7 +21,7 @@ export default class SelectInputComponent {
   control!: FormControl;
 
   ngOnInit() {
-    this.control = new FormControl('');
+    this.control = new FormControl(this.optList[0] || '');
     this.form.addControl(this.name, this.control);
   }
 }

@@ -42,9 +42,21 @@
       [optList]="countryList"
     ></app-select-input>
     <app-input
+      *ngIf="
+        registrationForm.value['shipping-country'] === 'Germany' ||
+        registrationForm.value['shipping-country'] === 'United States'
+      "
+      [validation]="usPostalcodeValidation"
       name="shipping-postalcode"
       label="Postal Code"
-      [validation]="postcodeValidation.shipping"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      *ngIf="registrationForm.value['shipping-country'] === 'United Kingdom'"
+      name="shipping-postalcode"
+      [validation]="ukPostalcodeValidation"
+      label="Postal Code"
       (keyup)="onKeyup()"
       [form]="registrationForm"
     ></app-input>
@@ -80,16 +92,29 @@
       [form]="registrationForm"
     ></app-input>
     <app-select-input
+      (changeHandler)="onCountryChange('billing')"
       name="billing-country"
       label="Country"
       [form]="registrationForm"
       [optList]="countryList"
     ></app-select-input>
     <app-input
+      *ngIf="
+        registrationForm.value['billing-country'] === 'Germany' ||
+        registrationForm.value['billing-country'] === 'United States'
+      "
+      [validation]="usPostalcodeValidation"
       name="billing-postalcode"
       label="Postal Code"
       (keyup)="onKeyup()"
-      [validation]="postcodeValidation.billing"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      *ngIf="registrationForm.value['billing-country'] === 'United Kingdom'"
+      name="billing-postalcode"
+      [validation]="ukPostalcodeValidation"
+      label="Postal Code"
+      (keyup)="onKeyup()"
       [form]="registrationForm"
     ></app-input>
     <app-checkbox-input

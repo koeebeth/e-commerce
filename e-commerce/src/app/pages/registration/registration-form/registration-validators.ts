@@ -55,6 +55,22 @@ const RegistrationValidators = {
       errorMsg: 'You should be at least 13 years old to register',
     },
   },
+
+  ukPostalcodeValidation: {
+    required: true,
+    pattern: {
+      regex: /^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/g,
+      errorMsg: 'Postal code should be in format A1A 1AA',
+    },
+  },
+
+  usPostalcodeValidation: {
+    required: true,
+    pattern: {
+      regex: /^[0-9]{5}$/g,
+      errorMsg: 'Postal code should be in format 12345',
+    },
+  },
 };
 
 export default RegistrationValidators;

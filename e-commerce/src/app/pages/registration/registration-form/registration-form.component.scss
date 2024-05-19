@@ -19,6 +19,10 @@
       color: lightgrey;
       border-color: lightgray;
     }
+
+    app-checkbox-input {
+      grid-row: 3 / 4;
+    }
   }
 
   legend {
