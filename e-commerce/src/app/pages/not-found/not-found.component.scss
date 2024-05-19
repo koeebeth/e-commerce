@@ -34,7 +34,7 @@
 
 @media screen and (max-width: 950px) {
   .error-title {
-    font-size: 25rem;
+    font-size: 20rem;
   }
   .error-message {
     font-size: 1rem;
@@ -45,6 +45,12 @@
 }
 
 @media screen and (max-width: 600px) {
+  .error-title {
+    font-size: 15rem;
+  }
+}
+
+@media screen and (max-width: 470px) {
   .error-title {
     font-size: 10rem;
   }
