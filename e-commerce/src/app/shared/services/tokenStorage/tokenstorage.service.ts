@@ -4,17 +4,27 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export default class TokenStorageService {
-  private namespace = 'user';
-
-  getToken(): string | null {
-    return localStorage.getItem(`${this.namespace}_token`);
+  getAuthToken(): string | null {
+    return localStorage.getItem(`AuthRefresh`);
   }
 
-  saveToken(token: string): void {
-    localStorage.setItem(`${this.namespace}_token`, token);
+  saveAuthToken(authToken: string): void {
+    localStorage.setItem(`AuthRefresh`, authToken);
   }
 
-  removeToken(): void {
-    localStorage.removeItem(`${this.namespace}_token`);
+  removeAuthToken(): void {
+    localStorage.removeItem(`AuthRefresh`);
+  }
+
+  getAnonymousToken(): string | null {
+    return localStorage.getItem(`AnonymousRefresh`);
+  }
+
+  saveAnonymousToken(anonToken: string): void {
+    localStorage.setItem(`AnonymousRefresh`, anonToken);
+  }
+
+  removeAnonymousToken(): void {
+    localStorage.removeItem(`AnonymousRefresh`);
   }
 }
