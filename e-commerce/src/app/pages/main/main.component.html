@@ -2,21 +2,9 @@
 <div class="category-container">
   <h1 class="category-title">Category</h1>
   <div class="category-list">
-    <div class="category">
-      <p class="category-name">ACTION</p>
-      <img src="../../../assets/eldenring.jpeg" alt="action" class="category-img" />
-    </div>
-    <div class="category">
-      <p class="category-name">RPG</p>
-      <img src="../../../assets/conan.jpeg" alt="rpg" class="category-img" />
-    </div>
-    <div class="category">
-      <p class="category-name">STRATEGY</p>
-      <img src="../../../assets/stellaris.jpeg" alt="strategy" class="category-img" />
-    </div>
-    <div class="category">
-      <p class="category-name">SIMULATION</p>
-      <img src="../../../assets/FC24.jpeg" alt="simulation" class="category-img" />
+    <div class="category" *ngFor="let category of categories">
+      <p class="category-name">{{ category.categoryName }}</p>
+      <img [src]="category.image" [alt]="category.alt" class="category-img" />
     </div>
   </div>
 </div>
