@@ -69,6 +69,7 @@
   background-color: $color-primary-200;
   transition: all 0.5s ease-out;
   padding: 20px;
+  z-index: 111;
 
   section {
     display: flex;
