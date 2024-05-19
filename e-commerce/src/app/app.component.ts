@@ -3,7 +3,6 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import CommerceApiService from './shared/services/commercetoolsApi/commercetoolsapi.service';
 import SharedModule from './shared/shared.module';
 import NotificationComponent from './shared/components/notification/notification.component';
-import { NotificationService } from './shared/services/notification/notification.service';
 
 @Component({
   selector: 'app-root',
@@ -15,16 +14,9 @@ import { NotificationService } from './shared/services/notification/notification
 export default class AppComponent {
   title = 'e-commerce';
 
-  constructor(
-    private commerceApiService: CommerceApiService,
-    private notificationService: NotificationService,
-  ) {}
+  constructor(private commerceApiService: CommerceApiService) {}
 
   ngOnInit() {
     this.commerceApiService.refreshAccessToken();
-    // usage example:
-    this.notificationService.showNotification('warning', 'Warning text');
-    this.notificationService.showNotification('error', 'Error text');
-    this.notificationService.showNotification('success', 'Success text');
   }
 }

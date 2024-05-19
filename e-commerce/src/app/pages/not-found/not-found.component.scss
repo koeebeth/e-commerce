@@ -1,0 +1,51 @@
+@import '../../../styles.scss';
+
+.error-container {
+  @include font-primary;
+  color: rgba($color-primary-700, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  gap: 15px;
+  overflow: hidden;
+}
+
+.error-title {
+  @include font-heading;
+  font-size: 30rem;
+  text-align: center;
+  width: 100%;
+  background: url('../../../assets/errorbackground.jpg') no-repeat;
+  background-size: cover;
+}
+
+.error-message {
+  @include font-heading;
+  font-size: 1.5rem;
+  color: $color-primary-700;
+}
+
+.error-text {
+  color: $color-primary-700;
+  font-size: 1.1rem;
+}
+
+@media screen and (max-width: 950px) {
+  .error-title {
+    font-size: 25rem;
+  }
+  .error-message {
+    font-size: 1rem;
+  }
+  .error-text {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .error-title {
+    font-size: 10rem;
+  }
+}
