@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
-import ButtonComponent from '../../shared/components/button/button.component';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import ButtonComponent from '../../shared/components/button/button.component';
 import { AppState } from '../../store/store';
 
 @Component({

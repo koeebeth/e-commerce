@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 import CommerceApiService from '../shared/services/commercetoolsApi/commercetoolsapi.service';
 import { AuthData, CartBase } from '../shared/services/commercetoolsApi/apitypes';
 import * as actions from './actions';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
 import { AppState } from './store';
 import { selectAnonymousToken, selectCartAnonId } from './selectors';
-import { Router } from '@angular/router';
 
 @Injectable()
 export default class EcommerceEffects {
