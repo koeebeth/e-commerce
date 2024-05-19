@@ -25,13 +25,21 @@
       grid-row: 3 / 4;
     }
 
-    @media screen and (max-width: 450px) {
-      gap: 10px;
-      padding: 5px;
+    app-input {
+      width: 200px;
+    }
 
-      app-input,
-      app-select-input {
-        width: 90%;
+    @media screen and (max-width: 550px) {
+      app-input {
+        width: 180px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      padding: 15px;
+
+      app-input {
+        width: 140px;
       }
     }
   }
