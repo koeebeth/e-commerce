@@ -1,0 +1,23 @@
+@import '../../../../styles.scss';
+
+.select-input-group {
+  @include font-primary;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  select {
+    @include font-primary;
+    box-sizing: border-box;
+    height: 1.8rem;
+    padding: 2px;
+    border-radius: 3px;
+    border: 1px solid $color-primary-300;
+
+    &:focus {
+      border-width: 2px;
+      outline: none;
+    }
+  }
+}
