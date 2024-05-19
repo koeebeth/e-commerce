@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import ButtonComponent from '../../shared/components/button/button.component';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { AppState } from '../../store/store';
 
 @Component({
   selector: 'app-login',
@@ -9,4 +12,21 @@ import ButtonComponent from '../../shared/components/button/button.component';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export default class LoginComponent {}
+export default class LoginComponent {
+  authToken$!: Observable<string>;
+
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+  ) {}
+
+  ngOnInit() {
+    this.store
+      .select((state) => state.app.accessToken)
+      .subscribe((accessToken) => {
+        if (accessToken) {
+          this.router.navigate(['/main']);
+        }
+      });
+  }
+}

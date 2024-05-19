@@ -8,6 +8,7 @@ import * as actions from './actions';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
 import { AppState } from './store';
 import { selectAnonymousToken, selectCartAnonId } from './selectors';
+import { Router } from '@angular/router';
 
 @Injectable()
 export default class EcommerceEffects {
@@ -16,6 +17,7 @@ export default class EcommerceEffects {
     private ecommerceApiService: CommerceApiService,
     private tokenStorageService: TokenStorageService,
     private store: Store<AppState>,
+    private router: Router,
   ) {}
 
   loadAccsessToken$ = createEffect(() =>
@@ -29,7 +31,9 @@ export default class EcommerceEffects {
           map((accessData: AuthData) => {
             this.tokenStorageService.saveAuthToken(accessData.refresh_token);
             this.tokenStorageService.removeAnonymousToken();
-            console.log('success login', accessData);
+            if (this.router.url === '/registration' || this.router.url === '/login') {
+              this.router.navigate(['/main']);
+            }
             return actions.loadAccsessTokenSuccess({
               accessToken: accessData.access_token,
             });

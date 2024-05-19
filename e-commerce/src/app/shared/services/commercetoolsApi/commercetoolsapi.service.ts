@@ -85,7 +85,6 @@ export default class CommerceApiService {
       .set('Authorization', `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`);
 
     return this.http.post<AuthData>(authUrl, body.toString(), { headers });
-    // Redirect to the home page
   }
 
   checkTokens(): void {
