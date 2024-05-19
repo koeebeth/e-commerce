@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import CommerceApiService from './shared/services/commercetoolsApi/commercetoolsapi.service';
 import SharedModule from './shared/shared.module';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { AppState } from './store/store';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -17,19 +14,9 @@ import { CommonModule } from '@angular/common';
 export default class AppComponent {
   title = 'e-commerce';
 
-  token$!: Observable<string>;
-  isLoading$!: Observable<boolean>;
-
-  constructor(
-    private commerceApiService: CommerceApiService,
-    private store: Store<AppState>,
-  ) {}
+  constructor(private commerceApiService: CommerceApiService) {}
 
   ngOnInit() {
     this.commerceApiService.checkTokens();
-
-    // usage example the store in components :
-    this.token$ = this.store.select((state) => state.app.anonymousToken);
-    this.isLoading$ = this.store.select((state) => state.app.loading);
   }
 }

@@ -54,7 +54,8 @@ export interface CustomerSignin {
   email: string;
   password: string;
   anonymousCart?: CartResourceIdentifier;
-  anonymousId: string;
+  anonymousId?: string;
+  updateProductData?: boolean;
 }
 
 // Either id or key is required, If both are set, an InvalidJsonInput error is returned.

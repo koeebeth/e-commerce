@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, filter } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { AuthData, CartBase, CustomerDraft } from './apitypes';
+import { AuthData, CartBase, CustomerDraft, CustomerSignin } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 import * as actions from '../../../store/actions';
-import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/store';
 
 @Injectable({
   providedIn: 'root',
 })
 export default class CommerceApiService {
+  anonToken$!: Observable<string>;
+
+  anonymousId$!: Observable<string | undefined>;
+
   constructor(
     private http: HttpClient,
     private tokenStorageService: TokenStorageService,
@@ -44,10 +48,10 @@ export default class CommerceApiService {
       .set('Authorization', `Bearer ${accessToken}`);
 
     return this.http.post<CartBase>(apiUrl, body, { headers });
-    // anonymousId saved in store service
+    // anonymousId saved in store
   }
 
-  registration(customerDraft: CustomerDraft, anonymousToken: string, anonymousId: string): void {
+  registration(customerDraft: CustomerDraft, anonToken: string, anonymousId: string = ''): Observable<CustomerDraft> {
     const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/customers`;
     const body = {
       email: customerDraft.email,
@@ -56,22 +60,15 @@ export default class CommerceApiService {
       lastName: customerDraft.lastName,
       dateOfBirth: customerDraft.dateOfBirth,
       addresses: customerDraft.addresses,
-      anonymousCartId: anonymousId,
+      anonymousId,
+      defaultShippingAddressId: customerDraft.defaultShippingAddressId,
+      defaultBillingAddressId: customerDraft.defaultBillingAddressId,
     };
-
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${anonymousToken}`);
+      .set('Authorization', `Bearer ${anonToken}`);
 
-    (this.http.post(apiUrl, body, { headers }) as Observable<CustomerDraft>).subscribe({
-      next: (response) => {
-        console.log('Registration successful:', response);
-        this.authentication(customerDraft.email, customerDraft.password);
-      },
-      error: (error) => {
-        console.error('Registration error:', error.message);
-      },
-    });
+    return this.http.post<CustomerDraft>(apiUrl, body, { headers });
   }
 
   authentication(username: string, password: string): Observable<AuthData> {
@@ -88,9 +85,7 @@ export default class CommerceApiService {
       .set('Authorization', `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`);
 
     return this.http.post<AuthData>(authUrl, body.toString(), { headers });
-
-    // console.log('Save accsessToken to stage');
-    // console.log('Redirect to the home page');
+    // Redirect to the home page
   }
 
   checkTokens(): void {
@@ -103,7 +98,7 @@ export default class CommerceApiService {
 
     if (refreshToken) {
       const basic = `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`;
-      this.store.dispatch(actions.updateAccsessToken({ refreshToken, basic }));
+      this.store.dispatch(actions.refreshAccsessToken({ refreshToken, basic }));
     } else if (refreshAnonymousToken) {
       const basic = `Basic ${btoa(`${unauthVisitorAPI.ctpClientId}:${unauthVisitorAPI.ctpClientSecret}`)}`;
       this.store.dispatch(actions.updateAnonymousToken({ refreshToken: refreshAnonymousToken, basic }));

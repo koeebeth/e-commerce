@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { mergeMap, map, catchError, of, take } from 'rxjs';
+import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter } from 'rxjs';
+import { Store } from '@ngrx/store';
 import CommerceApiService from '../shared/services/commercetoolsApi/commercetoolsapi.service';
-import { AuthData, CartBase } from '../shared/services/commercetoolsApi/apitypes';
+import { AuthData, CartBase, CustomerDraft, CustomerSignin } from '../shared/services/commercetoolsApi/apitypes';
 import * as actions from './actions';
-import { Router } from '@angular/router';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
+import { AppState } from './store';
+import { selectAnonymousToken, selectCartAnonId } from './selectors';
 
 @Injectable()
 export class EcommerceEffects {
@@ -13,12 +15,13 @@ export class EcommerceEffects {
     private actions$: Actions,
     private ecommerceApiService: CommerceApiService,
     private tokenStorageService: TokenStorageService,
-    private route: Router,
+    private store: Store<AppState>,
   ) {}
 
   loadAccsessToken$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(actions.loadAccsessToken),
+      ofType(actions.loadAccsessToken, actions.loadRegistrationSuccess),
+      filter((action) => !!action.accessData.email && !!action.accessData.password),
       take(1),
       mergeMap((action) => {
         const { email, password } = action.accessData;
@@ -26,7 +29,7 @@ export class EcommerceEffects {
           map((accessData: AuthData) => {
             this.tokenStorageService.saveAuthToken(accessData.refresh_token);
             this.tokenStorageService.removeAnonymousToken();
-
+            console.log('success login', accessData);
             return actions.loadAccsessTokenSuccess({
               accessToken: accessData.access_token,
             });
@@ -42,7 +45,7 @@ export class EcommerceEffects {
       }),
     ),
   );
-  // works
+
   loadAnonymousToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadAnonymousToken),
@@ -67,7 +70,7 @@ export class EcommerceEffects {
       }),
     ),
   );
-  // works
+
   loadAnonymousCart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadAnonymousTokenSuccess),
@@ -77,7 +80,7 @@ export class EcommerceEffects {
         return this.ecommerceApiService.createAnonymousCart(action.anonymousToken).pipe(
           map((cartBase: CartBase) =>
             actions.loadAnonymousCartSuccess({
-              cartBase: cartBase,
+              cartBase,
             }),
           ),
           catchError((error) =>
@@ -91,10 +94,10 @@ export class EcommerceEffects {
       }),
     ),
   );
-  // works
-  updateAccsessToken$ = createEffect(() =>
+
+  refreshAccsessToken$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(actions.updateAccsessToken),
+      ofType(actions.refreshAccsessToken),
       take(1),
       mergeMap((action) => {
         return this.ecommerceApiService.refreshAccessToken(action.refreshToken, action.basic).pipe(
@@ -115,7 +118,7 @@ export class EcommerceEffects {
     ),
   );
 
-  refresAnonToken$ = createEffect(() =>
+  refreshAnonRefreshToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.updateAnonymousToken),
       take(1),
@@ -135,6 +138,37 @@ export class EcommerceEffects {
           ),
         );
       }),
+    ),
+  );
+
+  loadRegistration$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadRegistration),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectCartAnonId)]).pipe(
+          filter(([anonToken]) => !!anonToken),
+          take(1),
+          switchMap(([anonToken, anonymousId]) =>
+            this.ecommerceApiService.registration(action.customerDraft, anonToken, anonymousId).pipe(
+              map(() =>
+                actions.loadRegistrationSuccess({
+                  accessData: {
+                    email: action.customerDraft.email,
+                    password: action.customerDraft.password,
+                  },
+                }),
+              ),
+              catchError((error) =>
+                of(
+                  actions.loadRegistrationFailure({
+                    error: error.message,
+                  }),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
     ),
   );
 }
