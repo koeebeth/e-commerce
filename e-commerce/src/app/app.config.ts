@@ -3,15 +3,16 @@ import { provideRouter } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { HttpClientModule } from '@angular/common/http';
-import { appStore, appEffects } from './store/store';
+import { appStore } from './store/store';
 import routes from './app.routes';
+import EcommerceEffects from './store/effects';
 
 const appConfig: ApplicationConfig = {
   providers: [
     importProvidersFrom(HttpClientModule),
     provideRouter(routes),
     provideStore(appStore),
-    provideEffects(appEffects),
+    provideEffects(EcommerceEffects),
   ],
 };
 export default appConfig;

@@ -1,6 +1,5 @@
 import { Action, ActionReducer } from '@ngrx/store';
 import { EcommerceState, ecommerceReducer } from './reducers';
-import { EcommerceEffects } from './effects';
 
 export interface AppState {
   app: EcommerceState;
@@ -13,5 +12,3 @@ export interface AppStore {
 export const appStore: AppStore = {
   app: ecommerceReducer,
 };
-
-export const appEffects = [EcommerceEffects];

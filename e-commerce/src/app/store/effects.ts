@@ -3,14 +3,14 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter } from 'rxjs';
 import { Store } from '@ngrx/store';
 import CommerceApiService from '../shared/services/commercetoolsApi/commercetoolsapi.service';
-import { AuthData, CartBase, CustomerDraft, CustomerSignin } from '../shared/services/commercetoolsApi/apitypes';
+import { AuthData, CartBase } from '../shared/services/commercetoolsApi/apitypes';
 import * as actions from './actions';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
 import { AppState } from './store';
 import { selectAnonymousToken, selectCartAnonId } from './selectors';
 
 @Injectable()
-export class EcommerceEffects {
+export default class EcommerceEffects {
   constructor(
     private actions$: Actions,
     private ecommerceApiService: CommerceApiService,
