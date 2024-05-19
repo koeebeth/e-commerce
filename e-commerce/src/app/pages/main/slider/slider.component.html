@@ -1,0 +1,6 @@
+<ngx-flicking [plugins]="plugins" [options]="{ circular: true, resizeOnContentsReady: true, autoResize: true }">
+  <div *ngFor="let image of images" flicking-panel class="panel">
+    <img [src]="image.src" [alt]="image.alt" />
+  </div>
+  <div in-viewport class="flicking-pagination"></div>
+</ngx-flicking>

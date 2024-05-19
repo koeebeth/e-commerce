@@ -1,0 +1,22 @@
+@import '../../../../../node_modules/@egjs/flicking-plugins/dist/flicking-plugins.css';
+
+.panel {
+  width: 100%;
+  height: auto;
+  position: relative;
+}
+
+.panel img {
+  width: 100%;
+  height: auto;
+  user-select: none;
+  pointer-events: none;
+}
+
+.flicking-viewport {
+  overflow: visible;
+}
+
+.flicking-pagination {
+  bottom: -20px;
+}

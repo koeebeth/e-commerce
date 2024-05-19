@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import RegistrationFormComponent from './registration-form/registration-form.component';
+import { RouterLink, RouterOutlet } from '@angular/router';
+import ButtonComponent from '../../shared/components/button/button.component';
+
 
 @Component({
   selector: 'app-registration',
   standalone: true,
-  imports: [RegistrationFormComponent],
+  imports: [RouterLink, RouterOutlet, ButtonComponent],
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss',
 })
