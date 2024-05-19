@@ -12,7 +12,7 @@ const RegistrationValidators = {
   passwordValidation: {
     minlength: 8,
     pattern: {
-      regex: /^(?! )((?=\S*\d)(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\W])\S*)(?<! )$/g,
+      regex: /^(?! )((?=\S*\d)(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\W])\S*)(?<! )$/,
       errorMsg:
         'Password must contain at least one uppercase letter, lowercase letter, number, a special character and no spaces',
     },
@@ -59,7 +59,7 @@ const RegistrationValidators = {
   ukPostalcodeValidation: {
     required: true,
     pattern: {
-      regex: /^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/g,
+      regex: /^[A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2}$/,
       errorMsg: 'Postal code should be in format A1A 1AA',
     },
   },
@@ -67,7 +67,7 @@ const RegistrationValidators = {
   usPostalcodeValidation: {
     required: true,
     pattern: {
-      regex: /^[0-9]{5}$/g,
+      regex: /^[0-9]{5}$/,
       errorMsg: 'Postal code should be in format 12345',
     },
   },
