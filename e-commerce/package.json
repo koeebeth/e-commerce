@@ -29,6 +29,8 @@
     "@egjs/flicking": "^4.11.2",
     "@egjs/flicking-plugins": "^4.7.1",
     "@egjs/ngx-flicking": "^4.11.2",
+    "@ngrx/effects": "^17.2.0",
+    "@ngrx/store": "^17.2.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
