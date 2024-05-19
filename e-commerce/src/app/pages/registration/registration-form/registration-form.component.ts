@@ -55,36 +55,29 @@ export default class RegistrationFormComponent {
   }
 
   onSubmit() {
+    // Send data to server
     console.log(this.registrationForm.value);
   }
 
   onKeyup() {
     if (this.singleAdress) {
-      const form = this.registrationForm;
-      form.setValue({
-        ...form.value,
-        'billing-country': form.value['shipping-country'],
-        'billing-street': form.value['shipping-street'],
-        'billing-postalcode': form.value['shipping-postalcode'],
-        'billing-city': form.value['shipping-city'],
-      });
+      this.copyShippingToBilling();
     }
-
-    console.log(this.registrationForm.value);
   }
 
   onCheckSingleAdress() {
     this.singleAdress = !this.singleAdress;
     if (this.singleAdress) {
-      const form = this.registrationForm;
-      form.setValue({
-        ...form.value,
-        'billing-country': form.value['shipping-country'],
-        'billing-street': form.value['shipping-street'],
-        'billing-postalcode': form.value['shipping-postalcode'],
-        'billing-city': form.value['shipping-city'],
-      });
+      this.copyShippingToBilling();
     }
+  }
+
+  copyShippingToBilling() {
+    const form = this.registrationForm;
+    form.controls['billing-country'].setValue(form.controls['shipping-country'].value);
+    form.controls['billing-street'].setValue(form.controls['shipping-street'].value);
+    form.controls['billing-postalcode'].setValue(form.controls['shipping-postalcode'].value);
+    form.controls['billing-city'].setValue(form.controls['shipping-city'].value);
   }
 
   onCheckDefault(address: string) {

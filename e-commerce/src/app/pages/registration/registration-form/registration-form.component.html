@@ -20,7 +20,7 @@
     ></app-input>
   </fieldset>
   <fieldset>
-    <legend>Shipping Adress</legend>
+    <legend>Shipping Address</legend>
     <app-input
       name="shipping-city"
       label="City"
@@ -62,7 +62,7 @@
     ></app-input>
     <app-checkbox-input
       name="single-adress"
-      label="Use as billing adress"
+      label="Use as billing address"
       [form]="registrationForm"
       [checked]="singleAdress"
       (checkHandler)="onCheckSingleAdress()"
@@ -76,7 +76,7 @@
     ></app-checkbox-input>
   </fieldset>
   <fieldset [disabled]="singleAdress">
-    <legend>Billing Adress</legend>
+    <legend>Billing Address</legend>
     <app-input
       name="billing-city"
       label="City"
