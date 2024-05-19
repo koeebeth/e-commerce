@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { FormControl, ValidatorFn, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, ValidatorFn, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-input',
@@ -10,6 +10,8 @@ import { FormControl, ValidatorFn, ReactiveFormsModule, Validators } from '@angu
   styleUrl: './input.component.scss',
 })
 export default class InputComponent {
+  @Input() form!: FormGroup;
+
   @Input() name: string = '';
 
   @Input() type: string = 'text';
@@ -38,5 +40,6 @@ export default class InputComponent {
     if (pattern) this.validators.push(Validators.pattern(pattern.regex));
 
     this.control = new FormControl('', this.validators);
+    this.form.addControl(this.name, this.control);
   }
 }

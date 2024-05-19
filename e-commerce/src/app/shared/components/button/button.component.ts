@@ -10,9 +10,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export default class ButtonComponent {
   @Input() content: string = '';
 
-  @Input() btnClass: 'primary' | 'secondary' | 'link' | 'danger' = 'primary';
+  @Input() btnType: 'primary' | 'secondary' | 'link' | 'danger' = 'primary';
 
   @Input() isDisabled: boolean = false;
+
+  @Input() btnClass = '';
 
   @Output() clickHandler = new EventEmitter();
 
