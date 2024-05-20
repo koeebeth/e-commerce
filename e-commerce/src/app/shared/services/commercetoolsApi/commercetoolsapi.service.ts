@@ -33,7 +33,6 @@ export default class CommerceApiService {
       .set('Authorization', `Basic ${btoa(`${unauthVisitorAPI.ctpClientId}:${unauthVisitorAPI.ctpClientSecret}`)}`);
 
     return this.http.post<AuthData>(unAuthUrl, body.toString(), { headers });
-    // Annonymous access_token saved in store
   }
 
   createAnonymousCart(accessToken: string): Observable<CartBase> {
@@ -48,7 +47,6 @@ export default class CommerceApiService {
       .set('Authorization', `Bearer ${accessToken}`);
 
     return this.http.post<CartBase>(apiUrl, body, { headers });
-    // anonymousId saved in store
   }
 
   registration(customerDraft: CustomerDraft, anonToken: string, anonymousId: string = ''): Observable<CustomerDraft> {
@@ -61,8 +59,8 @@ export default class CommerceApiService {
       dateOfBirth: customerDraft.dateOfBirth,
       addresses: customerDraft.addresses,
       anonymousId,
-      defaultShippingAddressId: customerDraft.defaultShippingAddressId,
-      defaultBillingAddressId: customerDraft.defaultBillingAddressId,
+      defaultShippingAddress: customerDraft.defaultShippingAddress,
+      defaultBillingAddress: customerDraft.defaultBillingAddress,
     };
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
@@ -85,7 +83,6 @@ export default class CommerceApiService {
       .set('Authorization', `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`);
 
     return this.http.post<AuthData>(authUrl, body.toString(), { headers });
-    // Redirect to the home page
   }
 
   checkTokens(): void {

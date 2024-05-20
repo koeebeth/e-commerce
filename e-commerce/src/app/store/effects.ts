@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter } from 'rxjs';
+import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 import CommerceApiService from '../shared/services/commercetoolsApi/commercetoolsapi.service';
 import { AuthData, CartBase } from '../shared/services/commercetoolsApi/apitypes';
 import * as actions from './actions';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
 import { AppState } from './store';
 import { selectAnonymousToken, selectCartAnonId } from './selectors';
+import { NotificationService } from '../shared/services/notification/notification.service';
 
 @Injectable()
 export default class EcommerceEffects {
@@ -15,7 +17,9 @@ export default class EcommerceEffects {
     private actions$: Actions,
     private ecommerceApiService: CommerceApiService,
     private tokenStorageService: TokenStorageService,
+    private notificationService: NotificationService,
     private store: Store<AppState>,
+    private router: Router,
   ) {}
 
   loadAccsessToken$ = createEffect(() =>
@@ -29,18 +33,24 @@ export default class EcommerceEffects {
           map((accessData: AuthData) => {
             this.tokenStorageService.saveAuthToken(accessData.refresh_token);
             this.tokenStorageService.removeAnonymousToken();
-            console.log('success login', accessData);
+            if (this.router.url === '/registration' || this.router.url === '/login') {
+              this.router.navigate(['/main']);
+            }
+            this.notificationService.showNotification('success', 'You have successfully logged in');
             return actions.loadAccsessTokenSuccess({
               accessToken: accessData.access_token,
             });
           }),
-          catchError((error) =>
-            of(
+          catchError((error) => {
+            if (error.error.error === 'invalid_customer_account_credentials') {
+              this.notificationService.showNotification('error', 'Incorrect email or password');
+            }
+            return of(
               actions.loadAccsessTokenFailure({
                 error: error.message,
               }),
-            ),
-          ),
+            );
+          }),
         );
       }),
     ),
@@ -150,25 +160,57 @@ export default class EcommerceEffects {
           take(1),
           switchMap(([anonToken, anonymousId]) =>
             this.ecommerceApiService.registration(action.customerDraft, anonToken, anonymousId).pipe(
-              map(() =>
-                actions.loadRegistrationSuccess({
+              map(() => {
+                this.notificationService.showNotification('success', 'Registration was successful!');
+                return actions.loadRegistrationSuccess({
                   accessData: {
                     email: action.customerDraft.email,
                     password: action.customerDraft.password,
                   },
-                }),
-              ),
-              catchError((error) =>
-                of(
+                });
+              }),
+              catchError((error) => {
+                switch (error.error.errors[0].code) {
+                  case 'DuplicateField':
+                    this.notificationService.showNotification(
+                      'error',
+                      'Account with this email already exists. Please log in or try again with different email.',
+                    );
+                    break;
+                  case 'OverCapacity':
+                    this.notificationService.showNotification(
+                      'warning',
+                      'Service is currently unavailable due to high load. Please try again later.',
+                    );
+                    break;
+                  case 'ExtensionBadResponse':
+                    this.notificationService.showNotification('warning', 'Server-side problem, please try again later');
+                    break;
+                  default:
+                    this.notificationService.showNotification('error', `An error occurred: ${error.error.message}`);
+                    break;
+                }
+                return of(
                   actions.loadRegistrationFailure({
                     error: error.message,
                   }),
-                ),
-              ),
+                );
+              }),
             ),
           ),
         ),
       ),
+    ),
+  );
+
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.logout),
+      tap(() => {
+        this.tokenStorageService.removeAuthToken();
+        this.tokenStorageService.removeAnonymousToken();
+      }),
+      mergeMap(() => of(actions.logoutSuccess())),
     ),
   );
 }

@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import InputComponent from '../../../shared/components/input/input.component';
 import ButtonComponent from '../../../shared/components/button/button.component';
+import { AppState } from '../../../store/store';
+import * as actions from '../../../store/actions';
 
 @Component({
   selector: 'app-login-form',
@@ -35,14 +38,17 @@ export default class LoginFormComponent {
 
   showPassword = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+  ) {}
 
   ngOnInit() {
     this.loginForm = this.fb.group({});
   }
 
   onSubmit() {
-    console.log(this.loginForm.value);
+    this.store.dispatch(actions.loadAccsessToken({ accessData: this.loginForm.value }));
   }
 
   onKeyup() {
