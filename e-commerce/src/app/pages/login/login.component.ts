@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import ButtonComponent from '../../shared/components/button/button.component';
 import { AppState } from '../../store/store';
 import LoginFormComponent from './login-form/login-form.component';
@@ -14,8 +13,6 @@ import LoginFormComponent from './login-form/login-form.component';
   styleUrl: './login.component.scss',
 })
 export default class LoginComponent {
-  authToken$!: Observable<string>;
-
   constructor(
     private store: Store<AppState>,
     private router: Router,

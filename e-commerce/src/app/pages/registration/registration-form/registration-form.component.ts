@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
 import InputComponent from '../../../shared/components/input/input.component';
 import ButtonComponent from '../../../shared/components/button/button.component';
 import RegistrationValidators from './registration-validators';
 import CheckboxInputComponent from '../../../shared/components/checkbox-input/checkbox-input.component';
 import SelectInputComponent from '../../../shared/components/select-input/select-input.component';
+import { AppState } from '../../../store/store';
+import * as actions from '../../../store/actions';
+import { Address } from '../../../shared/services/commercetoolsApi/apitypes';
 
 @Component({
   selector: 'app-registration-form',
@@ -42,21 +46,55 @@ export default class RegistrationFormComponent {
 
   countryList = ['United States', 'United Kingdom', 'Germany'];
 
+  countryIsoFormat = [
+    { contry: 'United States', iso: 'US' },
+    { contry: 'United Kingdom', iso: 'GB' },
+    { contry: 'Germany', iso: 'DE' },
+  ];
+
   defaultShipping = false;
 
   defaultBilling = false;
 
   singleAdress = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private store: Store<AppState>,
+  ) {}
 
   ngOnInit() {
     this.registrationForm = this.fb.group({});
   }
 
   onSubmit() {
-    // Send data to server
-    console.log(this.registrationForm.value);
+    const billingAddress: Address = {
+      city: this.registrationForm.value['billing-city'],
+      country:
+        this.countryIsoFormat.find((x) => x.contry === this.registrationForm.value['billing-country'])?.iso || '',
+      streetNumber: this.registrationForm.value['billing-street'],
+      postalCode: this.registrationForm.value['billing-postalcode'],
+    };
+
+    const shippingAddress: Address = {
+      city: this.registrationForm.value['shipping-city'],
+      country:
+        this.countryIsoFormat.find((x) => x.contry === this.registrationForm.value['shipping-country'])?.iso || '',
+      streetNumber: this.registrationForm.value['shipping-street'],
+      postalCode: this.registrationForm.value['shipping-postalcode'],
+    };
+
+    const customerDraft = {
+      ...this.registrationForm.value,
+      addresses: [billingAddress, shippingAddress],
+      firstName: this.registrationForm.value.firstname,
+      lastName: this.registrationForm.value.lastname,
+      dateOfBirth: this.registrationForm.value.birthdate,
+      defaultBillingAddress: this.registrationForm.value['default-adress'] ? 1 : 0,
+      defaultShippingAddress: this.registrationForm.value['default-adress'] ? 1 : 0,
+    };
+
+    this.store.dispatch(actions.loadRegistration({ customerDraft }));
   }
 
   onKeyup() {

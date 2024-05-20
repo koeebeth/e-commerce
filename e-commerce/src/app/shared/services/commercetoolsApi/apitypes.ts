@@ -11,42 +11,24 @@ export interface CustomerDraft {
   password: string;
   firstName?: string;
   lastName?: string;
-  middleName?: string;
   title?: string;
   anonymousCart?: string;
   anonymousId?: string;
   dateOfBirth?: string;
-  companyName?: string;
   addresses?: Address[];
-  defaultShippingAddressId?: number;
-  defaultBillingAddressId?: number;
+  defaultShippingAddress?: number;
+  shippingAddresses?: number[];
+  defaultBillingAddress?: number;
+  billingAddresses?: number[];
 }
 
 export interface Address {
   id?: string;
-  title?: string;
-  salutation?: string;
-  firstName?: string;
-  lastName?: string;
-  streetName?: string;
-  streetNumber?: string;
-  additionalStreetInfo?: string;
-  postalCode?: string;
   city?: string;
-  region?: string;
-  state?: string;
-  country?: string;
-  company?: string;
-  department?: string;
-  building?: string;
-  apartment?: string;
-  pOBox?: string;
-  phone?: string;
-  mobile?: string;
-  email?: string;
-  fax?: string;
+  country: string;
+  streetNumber?: string;
+  postalCode?: string;
   additionalAddressInfo?: string;
-  externalId?: string;
 }
 
 // If both anonymousCart and anonymousId are provided, the anonymousId on the CustomerSignin must match that of the anonymous Cart
