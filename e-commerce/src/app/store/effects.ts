@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 import CommerceApiService from '../shared/services/commercetoolsApi/commercetoolsapi.service';
 import { AuthData, CartBase } from '../shared/services/commercetoolsApi/apitypes';
 import * as actions from './actions';
@@ -18,6 +19,7 @@ export default class EcommerceEffects {
     private tokenStorageService: TokenStorageService,
     private notificationService: NotificationService,
     private store: Store<AppState>,
+    private router: Router,
   ) {}
 
   loadAccsessToken$ = createEffect(() =>
@@ -31,6 +33,9 @@ export default class EcommerceEffects {
           map((accessData: AuthData) => {
             this.tokenStorageService.saveAuthToken(accessData.refresh_token);
             this.tokenStorageService.removeAnonymousToken();
+            if (this.router.url === '/registration' || this.router.url === '/login') {
+              this.router.navigate(['/main']);
+            }
             this.notificationService.showNotification('success', 'You have successfully logged in');
             return actions.loadAccsessTokenSuccess({
               accessToken: accessData.access_token,
