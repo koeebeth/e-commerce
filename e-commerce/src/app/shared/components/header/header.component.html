@@ -5,5 +5,6 @@
       <a routerLink="/main">CyberVault</a>
     </h1>
   </div>
-  <app-profile-authorized></app-profile-authorized>
+  <app-profile-authorized *ngIf="authToken$ | async"></app-profile-authorized>
+  <app-profile-unauthorized *ngIf="(authToken$ | async) === ''"></app-profile-unauthorized>
 </header>
