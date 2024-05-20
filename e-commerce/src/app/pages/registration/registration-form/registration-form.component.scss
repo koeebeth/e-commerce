@@ -23,6 +23,24 @@
     app-checkbox-input {
       grid-row: 3 / 4;
     }
+
+    app-input {
+      width: 200px;
+    }
+
+    @media screen and (max-width: 550px) {
+      app-input {
+        width: 180px;
+      }
+    }
+
+    @media screen and (max-width: 480px) {
+      padding: 15px;
+
+      app-input {
+        width: 140px;
+      }
+    }
   }
 
   legend {
