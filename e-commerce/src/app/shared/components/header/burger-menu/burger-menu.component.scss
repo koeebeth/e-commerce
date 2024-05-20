@@ -91,5 +91,7 @@
   a {
     @include font-primary;
     @include link-element;
+    text-decoration: none;
+    color: white;
   }
 }
