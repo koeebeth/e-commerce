@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProfileAuthorizedComponent } from './profile-authorized.component';
+import ProfileAuthorizedComponent from './profile-authorized.component';
 
 describe('ProfileAuthorizedComponent', () => {
   let component: ProfileAuthorizedComponent;
