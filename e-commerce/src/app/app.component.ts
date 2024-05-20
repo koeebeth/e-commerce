@@ -14,7 +14,7 @@ import HeaderComponent from './shared/components/header/header.component';
   styleUrl: './app.component.scss',
 })
 export default class AppComponent {
-  title = 'e-commerce';
+  title = 'CyberVault';
 
   constructor(private commerceApiService: CommerceApiService) {}
 

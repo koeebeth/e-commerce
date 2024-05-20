@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter } from 'rxjs';
+import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import CommerceApiService from '../shared/services/commercetoolsApi/commercetoolsapi.service';
@@ -200,6 +200,17 @@ export default class EcommerceEffects {
           ),
         ),
       ),
+    ),
+  );
+
+  logout$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.logout),
+      tap(() => {
+        this.tokenStorageService.removeAuthToken();
+        this.tokenStorageService.removeAnonymousToken();
+      }),
+      mergeMap(() => of(actions.logoutSuccess())),
     ),
   );
 }
