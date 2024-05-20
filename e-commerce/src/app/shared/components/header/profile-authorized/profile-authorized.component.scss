@@ -15,8 +15,18 @@
   align-items: start;
   z-index: 111;
 
-  a {
+  button {
     @include link-element;
+    background: none;
+    border: none;
+    padding: 0;
+    color: white;
+    font-size: 100%;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
   }
 }
 
