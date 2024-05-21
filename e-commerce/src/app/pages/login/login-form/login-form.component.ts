@@ -18,7 +18,7 @@ export default class LoginFormComponent {
 
   emailValidation = {
     pattern: {
-      regex: /^[\w.]+@([\w]+.)+[\w]+$/g,
+      regex: /^[a-z\d]+@[a-z\.]+\.[a-z]+$/,
       errorMsg: 'Email should be in format abc.123@example.com',
     },
     required: true,
@@ -27,7 +27,7 @@ export default class LoginFormComponent {
   passwordValidation = {
     minlength: 8,
     pattern: {
-      regex: /^(?! )((?=\S*\d)(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\W])\S*)(?<! )$/g,
+      regex: /^(?! )((?=\S*\d)(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\W])\S*)(?<! )$/,
       errorMsg:
         'Password must contain at least one uppercase letter, lowercase letter, number, a special character and no spaces',
     },
