@@ -26,7 +26,6 @@ export default class EcommerceEffects {
     this.actions$.pipe(
       ofType(actions.loadAccsessToken, actions.loadRegistrationSuccess),
       filter((action) => !!action.accessData.email && !!action.accessData.password),
-      take(1),
       mergeMap((action) => {
         const { email, password } = action.accessData;
         return this.ecommerceApiService.authentication(email, password).pipe(
@@ -58,8 +57,7 @@ export default class EcommerceEffects {
 
   loadAnonymousToken$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(actions.loadAnonymousToken),
-      take(1),
+      ofType(actions.loadAnonymousToken, actions.logoutSuccess),
       mergeMap(() => {
         return this.ecommerceApiService.getAnonymousSessionToken().pipe(
           map((data: AuthData) => {
@@ -84,9 +82,7 @@ export default class EcommerceEffects {
   loadAnonymousCart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadAnonymousTokenSuccess),
-      take(1),
       mergeMap((action) => {
-        console.log('action', action);
         return this.ecommerceApiService.createAnonymousCart(action.anonymousToken).pipe(
           map((cartBase: CartBase) =>
             actions.loadAnonymousCartSuccess({
@@ -131,7 +127,6 @@ export default class EcommerceEffects {
   refreshAnonRefreshToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.updateAnonymousToken),
-      take(1),
       mergeMap((action) => {
         return this.ecommerceApiService.refreshAccessToken(action.refreshToken, action.basic).pipe(
           map((accessData: AuthData) =>
@@ -156,7 +151,7 @@ export default class EcommerceEffects {
       ofType(actions.loadRegistration),
       switchMap((action) =>
         combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectCartAnonId)]).pipe(
-          filter(([anonToken]) => !!anonToken),
+          filter(([anonToken, anonymousId]) => !!anonToken && !!anonymousId),
           take(1),
           switchMap(([anonToken, anonymousId]) =>
             this.ecommerceApiService.registration(action.customerDraft, anonToken, anonymousId).pipe(
