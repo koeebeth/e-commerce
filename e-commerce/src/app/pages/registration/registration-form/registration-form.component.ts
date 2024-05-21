@@ -90,8 +90,8 @@ export default class RegistrationFormComponent {
       firstName: this.registrationForm.value.firstname,
       lastName: this.registrationForm.value.lastname,
       dateOfBirth: this.registrationForm.value.birthdate,
-      defaultBillingAddress: this.registrationForm.value['default-adress'] ? 1 : 0,
-      defaultShippingAddress: this.registrationForm.value['default-adress'] ? 1 : 0,
+      defaultBillingAddress: this.registrationForm.value['default-billing-address'] ? 1 : 0,
+      defaultShippingAddress: this.registrationForm.value['default-shipping-address'] ? 1 : 0,
     };
 
     this.store.dispatch(actions.loadRegistration({ customerDraft }));
@@ -116,10 +116,14 @@ export default class RegistrationFormComponent {
     form.controls['billing-street'].setValue(form.controls['shipping-street'].value);
     form.controls['billing-postalcode'].setValue(form.controls['shipping-postalcode'].value);
     form.controls['billing-city'].setValue(form.controls['shipping-city'].value);
+    form.controls['default-billing-address'].setValue(form.controls['default-shipping-address'].value);
   }
 
   onCheckDefault(address: string) {
-    if (address === 'shipping') this.defaultShipping = !this.defaultShipping;
+    if (address === 'shipping') {
+      this.defaultShipping = !this.defaultShipping;
+      if (this.singleAdress) this.defaultBilling = this.defaultShipping;
+    }
     if (address === 'billing') this.defaultBilling = !this.defaultBilling;
   }
 

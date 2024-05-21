@@ -3,7 +3,7 @@ import { AbstractControl } from '@angular/forms';
 const RegistrationValidators = {
   emailValidation: {
     pattern: {
-      regex: /^[\w\d]+@[\w\.]+\.[\w]+$/,
+      regex: /^([a-z\d]+\.)*[a-z\d]+@([a-z]+\.)+[a-z]+$/,
       errorMsg: 'Email should be in format abc.123@example.com',
     },
     required: true,

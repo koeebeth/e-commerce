@@ -36,6 +36,7 @@
       [form]="registrationForm"
     ></app-input>
     <app-select-input
+      (change)="onKeyup()"
       name="shipping-country"
       label="Country"
       [form]="registrationForm"
@@ -68,7 +69,7 @@
       (checkHandler)="onCheckSingleAdress()"
     ></app-checkbox-input>
     <app-checkbox-input
-      name="default-adress"
+      name="default-shipping-address"
       label="Default address"
       [form]="registrationForm"
       (checkHandler)="onCheckDefault('shipping')"
@@ -92,7 +93,7 @@
       [form]="registrationForm"
     ></app-input>
     <app-select-input
-      (changeHandler)="onCountryChange('billing')"
+      (change)="onKeyup()"
       name="billing-country"
       label="Country"
       [form]="registrationForm"
@@ -118,7 +119,7 @@
       [form]="registrationForm"
     ></app-input>
     <app-checkbox-input
-      name="default-adress"
+      name="default-billing-address"
       label="Default address"
       [form]="registrationForm"
       (checkHandler)="onCheckDefault('billing')"
