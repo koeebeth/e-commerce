@@ -61,6 +61,8 @@ export default class CommerceApiService {
       anonymousId,
       defaultShippingAddress: customerDraft.defaultShippingAddress,
       defaultBillingAddress: customerDraft.defaultBillingAddress,
+      shippingAddresses: customerDraft.shippingAddresses,
+      billingAddresses: customerDraft.billingAddresses,
     };
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')

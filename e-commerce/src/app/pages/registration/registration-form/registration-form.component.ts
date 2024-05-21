@@ -90,10 +90,16 @@ export default class RegistrationFormComponent {
       firstName: this.registrationForm.value.firstname,
       lastName: this.registrationForm.value.lastname,
       dateOfBirth: this.registrationForm.value.birthdate,
-      defaultBillingAddress: this.registrationForm.value['default-billing-address'] ? 1 : 0,
-      defaultShippingAddress: this.registrationForm.value['default-shipping-address'] ? 1 : 0,
+      billingAddresses: [0],
+      shippingAddresses: [1],
     };
 
+    if (this.registrationForm.value['default-billing-address']) {
+      customerDraft.defaultBillingAddress = 0;
+    }
+    if (this.registrationForm.value['default-shipping-address']) {
+      customerDraft.defaultShippingAddress = 1;
+    }
     this.store.dispatch(actions.loadRegistration({ customerDraft }));
   }
 
