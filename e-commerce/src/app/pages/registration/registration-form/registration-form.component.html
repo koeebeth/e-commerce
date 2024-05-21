@@ -36,6 +36,7 @@
       [form]="registrationForm"
     ></app-input>
     <app-select-input
+      (change)="onKeyup()"
       name="shipping-country"
       label="Country"
       [form]="registrationForm"
@@ -92,7 +93,7 @@
       [form]="registrationForm"
     ></app-input>
     <app-select-input
-      (changeHandler)="onCountryChange('billing')"
+      (change)="onKeyup()"
       name="billing-country"
       label="Country"
       [form]="registrationForm"
