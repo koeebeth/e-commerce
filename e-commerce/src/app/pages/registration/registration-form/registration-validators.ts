@@ -42,9 +42,18 @@ const RegistrationValidators = {
   ageValidation: {
     custom: {
       validator: (control: AbstractControl) => {
-        const controlValue = +new Date(control.value);
-        if (Date.now() - controlValue > 13 * 365 * 24 * 60 * 60 * 1000) {
+        const birthdate = new Date(control.value);
+        const now = new Date(Date.now());
+        if (now.getFullYear() - birthdate.getFullYear() > 13) {
           return null;
+        }
+        if (now.getFullYear() - birthdate.getFullYear() === 13) {
+          if (now.getMonth() - birthdate.getMonth() > 0) {
+            return null;
+          }
+          if (now.getMonth() - birthdate.getMonth() === 0 && now.getDate() - birthdate.getDate() >= 0) {
+            return null;
+          }
         }
 
         return {
