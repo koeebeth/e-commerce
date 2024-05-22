@@ -3,21 +3,32 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Store } from '@ngrx/store';
 import CommerceApiService from './commercetoolsapi.service';
 import { AuthData, CartBase, CustomerDraft } from './apitypes';
-import { authVisitorAPI } from '../../../../environment';
+import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
 import { HttpHeaders } from '@angular/common/http';
+import TokenStorageService from '../tokenStorage/tokenstorage.service';
+import * as actions from '../../../store/actions';
 
 describe('CommerceApiService', () => {
   let service: CommerceApiService;
   let httpMock: HttpTestingController;
+  let storeMock: any;
+  let tokenStorageServiceMock: any;
 
   beforeEach(() => {
+    tokenStorageServiceMock = jasmine.createSpyObj('TokenStorageService', ['getAuthToken', 'getAnonymousToken']);
+    storeMock = jasmine.createSpyObj('Store', ['dispatch']);
+
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
         CommerceApiService,
         {
           provide: Store,
-          useValue: {},
+          useValue: storeMock,
+        },
+        {
+          provide: TokenStorageService,
+          useValue: tokenStorageServiceMock,
         },
       ],
     });
@@ -131,10 +142,20 @@ describe('CommerceApiService', () => {
       req.flush(mockResponse);
     });
   });
-  
+
   it('should authenticate a customer', () => {
     const username = 'testuser';
     const password = 'testpassword';
+
+    const authVisitorAPI = {
+      ctpAuthUrl: '...',
+      ctpProjectKey: '...',
+      ctpScopes:
+        'view_tax_categories:tt-e-commerce view_payments:tt-e-commerce view_stores:tt-e-commerce view_types:tt-e-commerce manage_my_orders:tt-e-commerce manage_my_profile:tt-e-commerce manage_my_shopping_lists:tt-e-commerce view_cart_discounts:tt-e-commerce view_attribute_groups:tt-e-commerce manage_shipping_methods:tt-e-commerce view_categories:tt-e-commerce view_published_products:tt-e-commerce manage_my_payments:tt-e-commerce view_orders:tt-e-commerce view_discount_codes:tt-e-commerce',
+      ctpClientId: '...',
+      ctpClientSecret: '...',
+    };
+
     const authUrl = `${authVisitorAPI.ctpAuthUrl}/oauth/${authVisitorAPI.ctpProjectKey}/customers/token`;
     const expectedBody = `grant_type=password&username=${username}&password=${password}&scope=${authVisitorAPI.ctpScopes}`;
     const expectedHeaders = new HttpHeaders()
@@ -145,7 +166,7 @@ describe('CommerceApiService', () => {
       expires_in: 3600,
       token_type: 'Bearer',
       scope: '',
-      refresh_token: ''
+      refresh_token: '',
     };
 
     service.authentication(username, password).subscribe((data) => {
@@ -158,5 +179,44 @@ describe('CommerceApiService', () => {
     expect(req.request.headers.get('Content-Type')).toBe(expectedHeaders.get('Content-Type'));
     expect(req.request.headers.get('Authorization')).toBe(expectedHeaders.get('Authorization'));
     req.flush(dummyAuthData);
+  });
+
+  it('should dispatch actions to load anonymous token if neither refresh nor anonymous tokens are present', () => {
+    tokenStorageServiceMock.getAuthToken.and.returnValue(null);
+    tokenStorageServiceMock.getAnonymousToken.and.returnValue(null);
+
+    service.checkTokens();
+
+    expect(storeMock.dispatch).toHaveBeenCalledWith(actions.loadAnonymousToken());
+  });
+
+  it('should dispatch action to refresh access token if refresh token is present', () => {
+    tokenStorageServiceMock.getAuthToken.and.returnValue('dummy-refresh-token');
+    tokenStorageServiceMock.getAnonymousToken.and.returnValue(null);
+
+    service.checkTokens();
+
+    const expectedBasic = `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`;
+    expect(storeMock.dispatch).toHaveBeenCalledWith(
+      actions.refreshAccsessToken({
+        refreshToken: 'dummy-refresh-token',
+        basic: expectedBasic,
+      }),
+    );
+  });
+
+  it('should dispatch action to update anonymous token if anonymous token is present', () => {
+    tokenStorageServiceMock.getAuthToken.and.returnValue(null);
+    tokenStorageServiceMock.getAnonymousToken.and.returnValue('dummy-anonymous-token');
+
+    service.checkTokens();
+
+    const expectedBasic = `Basic ${btoa(`${unauthVisitorAPI.ctpClientId}:${unauthVisitorAPI.ctpClientSecret}`)}`;
+    expect(storeMock.dispatch).toHaveBeenCalledWith(
+      actions.updateAnonymousToken({
+        refreshToken: 'dummy-anonymous-token',
+        basic: expectedBasic,
+      }),
+    );
   });
 });
