@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import RegistrationComponent from './registration.component';
+import { provideStore } from '@ngrx/store';
+import { ActivatedRoute } from '@angular/router';
 
 describe('RegistrationComponent', () => {
   let component: RegistrationComponent;
@@ -9,6 +11,13 @@ describe('RegistrationComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [RegistrationComponent],
+      providers: [
+        provideStore(),
+        {
+          provide: ActivatedRoute,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(RegistrationComponent);

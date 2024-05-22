@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import CheckboxInputComponent from './checkbox-input.component';
+import { FormGroup } from '@angular/forms';
 
 describe('CheckboxInputComponent', () => {
   let component: CheckboxInputComponent;
@@ -13,6 +14,7 @@ describe('CheckboxInputComponent', () => {
 
     fixture = TestBed.createComponent(CheckboxInputComponent);
     component = fixture.componentInstance;
+    component.form = new FormGroup({});
     fixture.detectChanges();
   });
 
