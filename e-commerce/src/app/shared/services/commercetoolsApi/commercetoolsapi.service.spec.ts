@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
 import CommerceApiService from './commercetoolsapi.service';
-import { AuthData, CartBase } from './apitypes';
+import { AuthData, CartBase, CustomerDraft } from './apitypes';
 
 describe('CommerceApiService', () => {
   let service: CommerceApiService;
@@ -73,6 +73,60 @@ describe('CommerceApiService', () => {
       expect(req.request.method).toBe('POST');
       expect(req.request.headers.get('Authorization')).toBe(`Bearer ${mockAccessToken}`);
       req.flush(mockCartBase);
+    });
+  });
+
+  describe('registration()', () => {
+    it('should register a new customer', () => {
+      const mockCustomerDraft = {
+        email: 'test@example.com',
+        password: 'password123',
+        firstName: 'John',
+        lastName: 'Doe',
+        dateOfBirth: '1990-01-01',
+        addresses: [],
+        defaultShippingAddress: 0,
+        defaultBillingAddress: 0,
+        shippingAddresses: [],
+        billingAddresses: [],
+      };
+      const mockAnonToken = 'mock-anon-token';
+      const mockAnonymousId = 'mock-anonymous-id';
+      const mockResponse: CustomerDraft = {
+        email: 'test@example.com',
+        password: 'password',
+        firstName: 'Name',
+        lastName: 'Surname',
+        dateOfBirth: '1990-01-01',
+        addresses: [],
+        anonymousId: '',
+        defaultShippingAddress: 0,
+        defaultBillingAddress: 0,
+        shippingAddresses: [],
+        billingAddresses: [],
+      };
+
+      service.registration(mockCustomerDraft, mockAnonToken, mockAnonymousId).subscribe((response) => {
+        expect(response).toEqual(mockResponse);
+      });
+
+      const req = httpMock.expectOne((request) => request.method === 'POST' && request.url.includes('/customers'));
+      expect(req.request.method).toBe('POST');
+      expect(req.request.headers.get('Authorization')).toBe(`Bearer ${mockAnonToken}`);
+      expect(req.request.body).toEqual({
+        email: mockCustomerDraft.email,
+        password: mockCustomerDraft.password,
+        firstName: mockCustomerDraft.firstName,
+        lastName: mockCustomerDraft.lastName,
+        dateOfBirth: mockCustomerDraft.dateOfBirth,
+        addresses: mockCustomerDraft.addresses,
+        anonymousId: mockAnonymousId,
+        defaultShippingAddress: mockCustomerDraft.defaultShippingAddress,
+        defaultBillingAddress: mockCustomerDraft.defaultBillingAddress,
+        shippingAddresses: mockCustomerDraft.shippingAddresses,
+        billingAddresses: mockCustomerDraft.billingAddresses,
+      });
+      req.flush(mockResponse);
     });
   });
 });
