@@ -39,6 +39,8 @@ describe('LoginFormComponent', () => {
     const form = component.loginForm;
     const passwordInput = form.controls['password'];
     expect(passwordInput.valid).withContext('with empty password').toBe(false);
+    passwordInput.setValue('Abcdef12345#');
+    expect(passwordInput.valid).withContext('with valid password').toBe(true);
   });
 
   it('should toggle password', () => {
@@ -51,5 +53,16 @@ describe('LoginFormComponent', () => {
     showBtn.click();
     fixture.detectChanges();
     expect(passwordInput.type).withContext('should hide on click').toBe('password');
+  });
+
+  it('should check form', () => {
+    component.onKeyup();
+    expect(component.isValid).withContext('with invalid form').toBe(false);
+    component.loginForm.setValue({
+      email: 'abc@def.com',
+      password: 'abcdEFG123#',
+    });
+    component.onKeyup();
+    expect(component.isValid).withContext('with valid form').toBe(true);
   });
 });
