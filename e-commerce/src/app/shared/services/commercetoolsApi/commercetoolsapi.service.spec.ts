@@ -3,6 +3,8 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import { Store } from '@ngrx/store';
 import CommerceApiService from './commercetoolsapi.service';
 import { AuthData, CartBase, CustomerDraft } from './apitypes';
+import { authVisitorAPI } from '../../../../environment';
+import { HttpHeaders } from '@angular/common/http';
 
 describe('CommerceApiService', () => {
   let service: CommerceApiService;
@@ -128,5 +130,33 @@ describe('CommerceApiService', () => {
       });
       req.flush(mockResponse);
     });
+  });
+  
+  it('should authenticate a customer', () => {
+    const username = 'testuser';
+    const password = 'testpassword';
+    const authUrl = `${authVisitorAPI.ctpAuthUrl}/oauth/${authVisitorAPI.ctpProjectKey}/customers/token`;
+    const expectedBody = `grant_type=password&username=${username}&password=${password}&scope=${authVisitorAPI.ctpScopes}`;
+    const expectedHeaders = new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .set('Authorization', `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`);
+    const dummyAuthData: AuthData = {
+      access_token: 'dummy-token',
+      expires_in: 3600,
+      token_type: 'Bearer',
+      scope: '',
+      refresh_token: ''
+    };
+
+    service.authentication(username, password).subscribe((data) => {
+      expect(data).toEqual(dummyAuthData);
+    });
+
+    const req = httpMock.expectOne(authUrl);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(expectedBody);
+    expect(req.request.headers.get('Content-Type')).toBe(expectedHeaders.get('Content-Type'));
+    expect(req.request.headers.get('Authorization')).toBe(expectedHeaders.get('Authorization'));
+    req.flush(dummyAuthData);
   });
 });
