@@ -1,18 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { Store } from '@ngrx/store';
+import { HttpHeaders } from '@angular/common/http';
 import CommerceApiService from './commercetoolsapi.service';
 import { AuthData, CartBase, CustomerDraft } from './apitypes';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { HttpHeaders } from '@angular/common/http';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 import * as actions from '../../../store/actions';
 
 describe('CommerceApiService', () => {
   let service: CommerceApiService;
   let httpMock: HttpTestingController;
-  let storeMock: any;
-  let tokenStorageServiceMock: any;
+  let storeMock: jasmine.SpyObj<Store>;
+  let tokenStorageServiceMock: jasmine.SpyObj<TokenStorageService>;
 
   beforeEach(() => {
     tokenStorageServiceMock = jasmine.createSpyObj('TokenStorageService', ['getAuthToken', 'getAnonymousToken']);
@@ -147,17 +147,8 @@ describe('CommerceApiService', () => {
     const username = 'testuser';
     const password = 'testpassword';
 
-    const authVisitorAPI = {
-      ctpAuthUrl: '...',
-      ctpProjectKey: '...',
-      ctpScopes:
-        'view_tax_categories:tt-e-commerce view_payments:tt-e-commerce view_stores:tt-e-commerce view_types:tt-e-commerce manage_my_orders:tt-e-commerce manage_my_profile:tt-e-commerce manage_my_shopping_lists:tt-e-commerce view_cart_discounts:tt-e-commerce view_attribute_groups:tt-e-commerce manage_shipping_methods:tt-e-commerce view_categories:tt-e-commerce view_published_products:tt-e-commerce manage_my_payments:tt-e-commerce view_orders:tt-e-commerce view_discount_codes:tt-e-commerce',
-      ctpClientId: '...',
-      ctpClientSecret: '...',
-    };
-
     const authUrl = `${authVisitorAPI.ctpAuthUrl}/oauth/${authVisitorAPI.ctpProjectKey}/customers/token`;
-    const expectedBody = `grant_type=password&username=${username}&password=${password}&scope=${authVisitorAPI.ctpScopes}`;
+    const expectedBody = `grant_type=password&username=${username}&password=${password}&scope=${authVisitorAPI.ctpScopes.replace(/:/g, '+')}`;
     const expectedHeaders = new HttpHeaders()
       .set('Content-Type', 'application/x-www-form-urlencoded')
       .set('Authorization', `Basic ${btoa(`${authVisitorAPI.ctpClientId}:${authVisitorAPI.ctpClientSecret}`)}`);
@@ -168,7 +159,7 @@ describe('CommerceApiService', () => {
       scope: '',
       refresh_token: '',
     };
-
+    console.log('authUrl', authUrl);
     service.authentication(username, password).subscribe((data) => {
       expect(data).toEqual(dummyAuthData);
     });
@@ -218,5 +209,33 @@ describe('CommerceApiService', () => {
         basic: expectedBasic,
       }),
     );
+  });
+
+  it('should refresh access token', () => {
+    const refreshToken = 'dummy-refresh-token';
+    const basic = 'Basic dummy-basic';
+    const authUrl = `${authVisitorAPI.ctpAuthUrl}/oauth/token`;
+    const expectedBody = `grant_type=refresh_token&refresh_token=${refreshToken}`;
+    const expectedHeaders = new HttpHeaders()
+      .set('Content-Type', 'application/x-www-form-urlencoded')
+      .set('Authorization', basic);
+    const dummyAuthData: AuthData = {
+      access_token: 'dummy-token',
+      expires_in: 3600,
+      token_type: 'Bearer',
+      scope: '',
+      refresh_token: '',
+    };
+
+    service.refreshAccessToken(refreshToken, basic).subscribe((data) => {
+      expect(data).toEqual(dummyAuthData);
+    });
+
+    const req = httpMock.expectOne(authUrl);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(expectedBody);
+    expect(req.request.headers.get('Content-Type')).toBe(expectedHeaders.get('Content-Type'));
+    expect(req.request.headers.get('Authorization')).toBe(expectedHeaders.get('Authorization'));
+    req.flush(dummyAuthData);
   });
 });
