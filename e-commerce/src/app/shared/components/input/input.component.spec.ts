@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import InputComponent from './input.component';
 import { provideStore } from '@ngrx/store';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
+import InputComponent from './input.component';
 
 describe('InputComponent', () => {
   let component: InputComponent;

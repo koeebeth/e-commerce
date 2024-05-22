@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import ProfileAuthorizedComponent from './profile-authorized.component';
 import { provideStore } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
+import ProfileAuthorizedComponent from './profile-authorized.component';
 
 describe('ProfileAuthorizedComponent', () => {
   let component: ProfileAuthorizedComponent;

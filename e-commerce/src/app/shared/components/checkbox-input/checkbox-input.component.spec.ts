@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import CheckboxInputComponent from './checkbox-input.component';
 import { FormGroup } from '@angular/forms';
+import CheckboxInputComponent from './checkbox-input.component';
 
 describe('CheckboxInputComponent', () => {
   let component: CheckboxInputComponent;

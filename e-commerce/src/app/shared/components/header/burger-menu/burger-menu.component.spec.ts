@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import BurgerMenuComponent from './burger-menu.component';
 import { ActivatedRoute } from '@angular/router';
+import BurgerMenuComponent from './burger-menu.component';
 
 describe('BurgerMenuComponent', () => {
   let component: BurgerMenuComponent;

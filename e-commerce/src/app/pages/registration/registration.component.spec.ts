@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import RegistrationComponent from './registration.component';
 import { provideStore } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
+import RegistrationComponent from './registration.component';
 
 describe('RegistrationComponent', () => {
   let component: RegistrationComponent;

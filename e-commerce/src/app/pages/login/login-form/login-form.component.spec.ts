@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import LoginFormComponent from './login-form.component';
 import { provideStore } from '@ngrx/store';
+import LoginFormComponent from './login-form.component';
 
 describe('LoginFormComponent', () => {
   let component: LoginFormComponent;
