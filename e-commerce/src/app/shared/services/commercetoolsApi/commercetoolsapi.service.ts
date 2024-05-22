@@ -39,7 +39,7 @@ export default class CommerceApiService {
     const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/carts`;
 
     const body = {
-      currency: 'USD',
+      currencyCode: 'USD',
     };
 
     const headers = new HttpHeaders()
