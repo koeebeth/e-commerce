@@ -1,6 +1,8 @@
 @import '../../../../../styles.scss';
 
 .user-profile {
+  display: flex;
+  gap: 15px;
   a {
     @include link-element;
     text-decoration: none;
