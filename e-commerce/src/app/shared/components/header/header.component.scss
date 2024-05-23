@@ -1,0 +1,24 @@
+@import '../../../../styles.scss';
+
+header {
+  color: white;
+  box-sizing: border-box;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: $color-primary-200;
+  height: 4rem;
+
+  .logo {
+    @include font-heading;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+}

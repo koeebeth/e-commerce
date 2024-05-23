@@ -1,0 +1,10 @@
+<header>
+  <app-burger-menu></app-burger-menu>
+  <div class="logo">
+    <h1>
+      <a routerLink="/main">CyberVault</a>
+    </h1>
+  </div>
+  <app-profile-authorized *ngIf="authToken$ | async"></app-profile-authorized>
+  <app-profile-unauthorized *ngIf="(authToken$ | async) === ''"></app-profile-unauthorized>
+</header>

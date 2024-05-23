@@ -1,0 +1,46 @@
+@import '../../../../../styles.scss';
+
+.profile-options {
+  display: none;
+  box-sizing: border-box;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  width: max-content;
+  padding: 15px;
+  background-color: $color-primary-300;
+  box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.3);
+  flex-direction: column;
+  gap: 10px;
+  align-items: start;
+  z-index: 111;
+
+  button {
+    @include link-element;
+    background: none;
+    border: none;
+    padding: 0;
+    color: white;
+    font-size: 100%;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.user-profile {
+  position: relative;
+  height: 30px;
+
+  &:hover .profile-options {
+    display: flex;
+  }
+}
+
+.user-icon {
+  cursor: pointer;
+  display: block;
+  height: 100%;
+}

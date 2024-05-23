@@ -1,0 +1,15 @@
+<div class="input-group" [formGroup]="form" class="input-{{ name }}">
+  <label [for]="name">{{ label }}</label>
+  <input [type]="type" [name]="name" [formControl]="control" />
+  <div class="input-errors" *ngIf="control.invalid && control.dirty">
+    <p *ngIf="control.errors?.['minlength']">Field should be at least {{ validation.minlength }} characters long.</p>
+    <p *ngIf="control.errors?.['email']">Field should in format abc&#64;example.com</p>
+    <p *ngIf="control.errors?.['required']">Field is required</p>
+    <p *ngIf="control.errors?.['pattern']">
+      {{ validation.pattern?.errorMsg }}
+    </p>
+    <p *ngIf="validation.custom?.name && control.errors?.[validation.custom!.name] === false">
+      {{ validation.custom!.errorMsg }}
+    </p>
+  </div>
+</div>

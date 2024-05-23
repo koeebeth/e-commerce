@@ -1,0 +1,9 @@
+@import '../../../../../styles.scss';
+
+.user-profile {
+  a {
+    @include link-element;
+    text-decoration: none;
+    color: white;
+  }
+}

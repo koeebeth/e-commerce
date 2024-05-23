@@ -1,0 +1,130 @@
+<form [formGroup]="registrationForm" class="registration-form">
+  <fieldset>
+    <legend>Personal Info</legend>
+    <app-input [validation]="nameValidation" name="firstname" label="First Name" [form]="registrationForm"></app-input>
+    <app-input [validation]="nameValidation" name="lastname" label="Last Name" [form]="registrationForm"></app-input>
+    <app-input [validation]="emailValidation" name="email" label="E-mail" [form]="registrationForm"></app-input>
+    <app-input
+      [validation]="passwordValidation"
+      name="password"
+      label="Password"
+      type="password"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      type="date"
+      name="birthdate"
+      label="Date of Birth"
+      [form]="registrationForm"
+      [validation]="ageValidation"
+    ></app-input>
+  </fieldset>
+  <fieldset>
+    <legend>Shipping Address</legend>
+    <app-input
+      name="shipping-city"
+      label="City"
+      [validation]="cityValidation"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      name="shipping-street"
+      label="Street"
+      [validation]="streetValidation"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-select-input
+      (change)="onKeyup()"
+      name="shipping-country"
+      label="Country"
+      [form]="registrationForm"
+      [optList]="countryList"
+    ></app-select-input>
+    <app-input
+      *ngIf="
+        registrationForm.value['shipping-country'] === 'Germany' ||
+        registrationForm.value['shipping-country'] === 'United States'
+      "
+      [validation]="usPostalcodeValidation"
+      name="shipping-postalcode"
+      label="Postal Code"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      *ngIf="registrationForm.value['shipping-country'] === 'United Kingdom'"
+      name="shipping-postalcode"
+      [validation]="ukPostalcodeValidation"
+      label="Postal Code"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-checkbox-input
+      name="single-adress"
+      label="Use as billing address"
+      [form]="registrationForm"
+      [checked]="singleAdress"
+      (checkHandler)="onCheckSingleAdress()"
+    ></app-checkbox-input>
+    <app-checkbox-input
+      name="default-shipping-address"
+      label="Default address"
+      [form]="registrationForm"
+      (checkHandler)="onCheckDefault('shipping')"
+      [checked]="defaultShipping"
+    ></app-checkbox-input>
+  </fieldset>
+  <fieldset [disabled]="singleAdress">
+    <legend>Billing Address</legend>
+    <app-input
+      name="billing-city"
+      label="City"
+      [validation]="cityValidation"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      name="billing-street"
+      label="Street"
+      [validation]="streetValidation"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-select-input
+      (change)="onKeyup()"
+      name="billing-country"
+      label="Country"
+      [form]="registrationForm"
+      [optList]="countryList"
+    ></app-select-input>
+    <app-input
+      *ngIf="
+        registrationForm.value['billing-country'] === 'Germany' ||
+        registrationForm.value['billing-country'] === 'United States'
+      "
+      [validation]="usPostalcodeValidation"
+      name="billing-postalcode"
+      label="Postal Code"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-input
+      *ngIf="registrationForm.value['billing-country'] === 'United Kingdom'"
+      name="billing-postalcode"
+      [validation]="ukPostalcodeValidation"
+      label="Postal Code"
+      (keyup)="onKeyup()"
+      [form]="registrationForm"
+    ></app-input>
+    <app-checkbox-input
+      name="default-billing-address"
+      label="Default address"
+      [form]="registrationForm"
+      (checkHandler)="onCheckDefault('billing')"
+      [checked]="defaultBilling"
+    ></app-checkbox-input>
+  </fieldset>
+  <app-button [isDisabled]="!registrationForm.valid" content="Register" (clickHandler)="onSubmit()"></app-button>
+</form>

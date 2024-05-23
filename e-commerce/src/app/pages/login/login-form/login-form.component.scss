@@ -1,0 +1,20 @@
+.login-form {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login-form-password {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+app-input {
+  width: 300px;
+}
+
+.login-btn {
+  margin: auto;
+}

@@ -1,0 +1,63 @@
+@import '../../../styles.scss';
+
+.category-container {
+  margin-top: 20px;
+  @include font-heading;
+  display: flex;
+  flex-direction: column;
+  color: $color-primary-700;
+  gap: 15px;
+  padding: 10px 25px;
+}
+
+.category-list {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 5px;
+
+  @media screen and (max-width: 650px) {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+.category {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 10px 10px 5px 10px;
+  gap: 12px;
+  background: $color-primary-200;
+  overflow: hidden;
+  cursor: pointer;
+
+  @media screen and (max-width: 650px) {
+    width: 150px;
+  }
+}
+
+.category-title {
+  @include font-heading;
+  font-size: 1.7rem;
+
+  @media screen and (max-width: 425px) {
+    font-size: 1.3rem;
+  }
+}
+
+.category-img {
+  border-radius: 10px;
+  transition: all 0.5s linear;
+  max-width: 370px;
+  width: 100%;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .category:hover .category-img {
+    transform: scale(1.1);
+  }
+}
