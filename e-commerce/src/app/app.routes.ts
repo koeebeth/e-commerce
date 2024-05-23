@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'registration', component: RegistrationComponent },
   { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: '/main', pathMatch: 'full' },
+  { path: '**', component: NotFoundComponent },
   { path: '**', redirectTo: '/404', pathMatch: 'full' },
 ];
 export default routes;
