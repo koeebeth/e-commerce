@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ActivatedRoute } from '@angular/router';
 import BurgerMenuComponent from './burger-menu.component';
 
 describe('BurgerMenuComponent', () => {
@@ -9,6 +10,12 @@ describe('BurgerMenuComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [BurgerMenuComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(BurgerMenuComponent);

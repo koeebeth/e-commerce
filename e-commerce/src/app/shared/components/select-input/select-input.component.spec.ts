@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { FormGroup } from '@angular/forms';
 import SelectInputComponent from './select-input.component';
 
 describe('SelectInputComponent', () => {
@@ -13,6 +14,7 @@ describe('SelectInputComponent', () => {
 
     fixture = TestBed.createComponent(SelectInputComponent);
     component = fixture.componentInstance;
+    component.form = new FormGroup({});
     fixture.detectChanges();
   });
 
