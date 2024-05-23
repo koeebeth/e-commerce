@@ -7,11 +7,11 @@ export const NOTIFICATION_TYPES = ['error', 'warning', 'success'];
   providedIn: 'root',
 })
 export class NotificationService {
-  private notificationsQueue: { type: string; message: string }[] = [];
+  public notificationsQueue: { type: string; message: string }[] = [];
 
-  private isShowNextNotification = false;
+  public isShowNextNotification = false;
 
-  private notificationSource = new BehaviorSubject<{ type: string; message: string }>({ type: '', message: '' });
+  public notificationSource = new BehaviorSubject<{ type: string; message: string }>({ type: '', message: '' });
 
   currentNotification = this.notificationSource.asObservable();
 
