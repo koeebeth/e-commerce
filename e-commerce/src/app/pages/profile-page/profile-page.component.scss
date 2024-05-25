@@ -10,6 +10,7 @@
   max-width: 700px;
   background-color: #f2f2f2;
   position: relative;
+  margin-bottom: 20px;
   @include font-primary;
 
   @media screen and (max-width: 768px) {
@@ -38,13 +39,19 @@
   margin-bottom: 2rem;
 
   @media screen and (max-width: 768px) {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
   }
 }
 
 .profile-contact-info {
   display: flex;
   flex-direction: column;
+  @media screen and (max-width: 768px) {
+    align-items: center;
+  }
 }
 
 .profile-image {
@@ -59,19 +66,31 @@
   color: white;
 
   @include font-heading;
+
+  @media screen and (max-width: 768px) {
+    height: 160px;
+    width: 160px;
+  }
 }
 
 .profile-name {
   @include font-heading;
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: $color-primary-300;
   margin-top: 5px;
   margin-bottom: 15px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.8rem;
+  }
 }
 
 .profile-email {
   font-size: 1.2rem;
   color: $color-primary-500;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
 }
 
 .profile-birthday {
@@ -113,6 +132,13 @@
   grid-template-columns: 1fr 1fr;
   align-content: center;
   gap: 20px;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
 
   h4 {
     text-align: center;
