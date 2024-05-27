@@ -87,6 +87,16 @@ export default class CommerceApiService {
     return this.http.post<AuthData>(authUrl, body.toString(), { headers });
   }
 
+  getUserInfo() {
+    const requestUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me`;
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${this.tokenStorageService.getAuthToken()}`);
+
+    return this.http.get<CustomerDraft>(requestUrl, { headers });
+  }
+
   checkTokens(): void {
     const refreshToken = this.tokenStorageService.getAuthToken();
     const refreshAnonymousToken = this.tokenStorageService.getAnonymousToken();
