@@ -25,7 +25,7 @@ import CheckboxInputComponent from '../../shared/components/checkbox-input/check
   templateUrl: './edit-profile.component.html',
   styleUrl: './edit-profile.component.scss',
 })
-export class EditProfileComponent {
+export default class EditProfileComponent {
   editForm!: FormGroup;
 
   emailValidation = RegistrationValidators.emailValidation;
