@@ -10,12 +10,15 @@ import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.se
 import { AppState } from './store';
 import { selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
+import { ProductsService } from '../shared/services/products/products.service';
+import { Product } from '../shared/services/products/productTypes';
 
 @Injectable()
 export default class EcommerceEffects {
   constructor(
     private actions$: Actions,
     private ecommerceApiService: CommerceApiService,
+    private productsService: ProductsService,
     private tokenStorageService: TokenStorageService,
     private notificationService: NotificationService,
     private store: Store<AppState>,
@@ -36,6 +39,7 @@ export default class EcommerceEffects {
               this.router.navigate(['/main']);
             }
             this.notificationService.showNotification('success', 'You have successfully logged in');
+            // this.ecommerceApiService.getProducts();
             return actions.loadAccsessTokenSuccess({
               accessToken: accessData.access_token,
             });
@@ -206,6 +210,29 @@ export default class EcommerceEffects {
         this.tokenStorageService.removeAnonymousToken();
       }),
       mergeMap(() => of(actions.logoutSuccess())),
+    ),
+  );
+
+  getProductList$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadAccsessTokenSuccess),
+      mergeMap((action) => {
+        return this.productsService.getProducts(action.accessToken).pipe(
+          tap((products: Product[]) => console.log('Products received:', products)),
+          map((products: Product[]) =>
+            actions.loadProsuctsSuccess({
+              products,
+            }),
+          ),
+          catchError((error) =>
+            of(
+              actions.loadProsuctsFailure({
+                error: error.message,
+              }),
+            ),
+          ),
+        );
+      }),
     ),
   );
 }
