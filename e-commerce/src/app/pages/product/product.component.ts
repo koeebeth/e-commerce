@@ -8,8 +8,9 @@ import { Component } from '@angular/core';
   styleUrl: './product.component.scss',
 })
 export default class ProductComponent {
-  originalPrice: number = 1300; //without API
-  discountedPrice: number = 999; //without API
+  originalPrice: number = 1300; // without API
+
+  discountedPrice: number = 999; // without API
 
   getDiscountPercentage(): number {
     return Math.round(((this.originalPrice - this.discountedPrice) / this.originalPrice) * 100);
