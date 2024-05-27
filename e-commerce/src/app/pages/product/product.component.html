@@ -14,10 +14,10 @@
     </div>
     <div class="price-container">
       <div class="prices">
-        <p class="original-price">1000$</p>
-        <p class="discount">-1%</p>
+        <p class="original-price">{{ originalPrice }}$</p>
+        <p class="discount">-{{ getDiscountPercentage() }}%</p>
       </div>
-      <p class="discounted-price">999$</p>
+      <p class="discounted-price">{{ discountedPrice }}$</p>
       <div class="button-container">
         <button>
           <img src="../../../assets/cart.svg" width="18" height="18" alt="cart" />
