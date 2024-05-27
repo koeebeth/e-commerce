@@ -40,7 +40,7 @@ export const loadAnonymousTokenFailure = createAction(
 );
 
 export const loadUserInfo = createAction('[Auth] Load User Info');
-export const loadUserInfoSuccess = createAction('[Auth] Load User Success', props<{ user: CustomerDraft }>());
+export const loadUserInfoSuccess = createAction('[Auth] Load User Success', props<{ userInfo: CustomerDraft }>());
 export const loadUserInfoFailure = createAction('[Auth] Load User Failure', props<{ error: any }>());
 
 export const loadAnonymousCartSuccess = createAction(

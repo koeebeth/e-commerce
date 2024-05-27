@@ -87,12 +87,12 @@ export default class CommerceApiService {
     return this.http.post<AuthData>(authUrl, body.toString(), { headers });
   }
 
-  getUserInfo() {
+  getUserInfo(accessToken: string) {
     const requestUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me`;
 
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${this.tokenStorageService.getAuthToken()}`);
+      .set('Authorization', `Bearer ${accessToken}`);
 
     return this.http.get<CustomerDraft>(requestUrl, { headers });
   }
