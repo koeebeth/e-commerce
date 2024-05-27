@@ -1,11 +1,18 @@
+@import '../../../styles.scss';
+
 .product-container {
+  @include font-primary;
+  color: white;
   display: flex;
   flex-direction: row;
   gap: 15px;
+  padding: 3%;
 }
 
 .images-container {
-  width: 60%;
+  width: 70%;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
 .images-container img {
@@ -13,6 +20,89 @@
 }
 
 .product-information {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
   border-radius: 10px;
-  width: 40%;
+  width: 30%;
+  background: $color-primary-200;
+  border: 1px solid rgba($color-primary-300, 0.6);
+}
+
+.description-container,
+.price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+h1 {
+  @include font-heading;
+  font-size: 2rem;
+}
+
+.category {
+  background: $color-primary-300;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba($color-primary-400, 0.6);
+  cursor: pointer;
+}
+
+.description {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.prices {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: lightgrey;
+}
+
+.discount {
+  background: $color-primary-300;
+  padding: 2px 4px;
+  border-radius: 10px;
+  border: 1px solid rgba($color-primary-400, 0.6);
+}
+
+.discounted-price {
+  font-size: 1.7rem;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+button {
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  background: $color-primary-400;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba($color-primary-500, 0.6);
 }
