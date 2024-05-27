@@ -7,6 +7,7 @@
   flex-direction: row;
   gap: 15px;
   padding: 3%;
+  height: 100%;
 }
 
 .images-container {
@@ -105,4 +106,34 @@ button {
   padding: 5px 10px;
   border-radius: 10px;
   border: 1px solid rgba($color-primary-500, 0.6);
+}
+
+@media screen and (max-width: 1200px) {
+  h1,
+  .discounted-price,
+  .discounted-price {
+    font-size: 1.5rem;
+  }
+
+  .description,
+  button {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .product-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  .images-container,
+  .product-information {
+    width: 100%;
+  }
+
+  .description {
+    margin: 0;
+  }
 }
