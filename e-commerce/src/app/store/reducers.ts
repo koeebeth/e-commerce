@@ -9,6 +9,7 @@ export interface EcommerceState {
   customerDraft: CustomerDraft | null;
   loading: boolean;
   error: string;
+  userInfo?: CustomerDraft;
 }
 
 export const initialState: EcommerceState = {

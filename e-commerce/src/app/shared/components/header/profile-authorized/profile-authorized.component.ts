@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import * as actions from '../../../../store/actions';
 import { RouterLink } from '@angular/router';
+import * as actions from '../../../../store/actions';
 
 @Component({
   selector: 'app-profile-authorized',
