@@ -2,11 +2,13 @@
   <div class="profile-info">
     <a href="" class="edit">Edit</a>
     <section class="profile-general-info">
-      <div class="profile-image">JD</div>
+      <div class="profile-image">
+        {{ userInfo.firstName.charAt(0).toUpperCase() || '' }}{{ userInfo.lastName.charAt(0).toUpperCase() || '' }}
+      </div>
       <div class="profile-contact-info">
-        <p class="profile-email">johndoe&#64;test.com</p>
-        <h2 class="profile-name">John Doe</h2>
-        <p class="profile-birthday">🎂 May 10, 2002</p>
+        <p class="profile-email">{{ userInfo.email }}</p>
+        <h2 class="profile-name">{{ userInfo.firstName }}{{ userInfo.lastName }}</h2>
+        <p class="profile-birthday">🎂 {{ formatDate(userInfo.dateOfBirth || 0) }}</p>
       </div>
     </section>
     <section class="profile-address-info">
@@ -15,14 +17,17 @@
         <div class="profile-shipping-address">
           <h4>Shipping</h4>
           <ul>
-            <li>1200 St. , City, Country, 123456</li>
-            <li>Very long street name , Really long city name, Country, 123456</li>
+            <li *ngFor="let address of listShippingAddresses()">
+              {{ address.streetNumber }},{{ address.city }}, {{ address.country }}, {{ address.postalCode }}
+            </li>
           </ul>
         </div>
         <div class="profile-billing-address">
           <h4>Billing</h4>
           <ul>
-            <li>Very long street name , Really long city name, Country, 123456</li>
+            <li *ngFor="let address of listBillingAddresses()">
+              {{ address.streetNumber }},{{ address.city }}, {{ address.country }}, {{ address.postalCode }}
+            </li>
           </ul>
         </div>
       </div>

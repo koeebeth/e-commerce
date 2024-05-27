@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { AuthData, CartBase, CustomerDraft } from './apitypes';
+import { AuthData, CartBase, CustomerDraft, CustomerInfo } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 import * as actions from '../../../store/actions';
 import { AppState } from '../../../store/store';
@@ -94,7 +94,7 @@ export default class CommerceApiService {
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`);
 
-    return this.http.get<CustomerDraft>(requestUrl, { headers });
+    return this.http.get<CustomerInfo>(requestUrl, { headers });
   }
 
   checkTokens(): void {
