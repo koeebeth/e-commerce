@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import SliderComponent from './slider/slider.component';
+import { CatalogComponent } from './catalog/catalog.component';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [SliderComponent, CommonModule],
+  imports: [SliderComponent, CommonModule, CatalogComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })
