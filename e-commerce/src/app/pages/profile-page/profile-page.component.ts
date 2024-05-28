@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AppState } from '../../store/store';
 import { CustomerInfo } from '../../shared/services/commercetoolsApi/apitypes';
@@ -9,7 +9,7 @@ import formatDate from '../../shared/utils/formatDate';
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss',
 })

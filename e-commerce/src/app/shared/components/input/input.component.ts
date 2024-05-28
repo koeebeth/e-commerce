@@ -18,6 +18,8 @@ export default class InputComponent {
 
   @Input() label: string = '';
 
+  @Input() defaultValue: string = '';
+
   @Input() validation: {
     custom?: {
       name: string;
@@ -45,8 +47,10 @@ export default class InputComponent {
     if (pattern) this.validators.push(Validators.pattern(pattern.regex));
     if (custom) this.validators.push(custom.validator);
 
-    this.control = new FormControl(this.form.value?.[this.name] || '', this.validators);
-    this.form.removeControl(this.name);
+    this.control = new FormControl(this.defaultValue, this.validators);
+    if (this.form.controls[this.name]) {
+      this.form.removeControl(this.name);
+    }
     this.form.addControl(this.name, this.control);
   }
 }

@@ -2,6 +2,7 @@
 
 .edit-profile {
   width: 90%;
+  box-sizing: border-box;
   max-width: 600px;
   background-color: white;
   margin: auto;
@@ -16,6 +17,23 @@
     text-align: center;
     margin-bottom: 10px;
   }
+
+  a {
+    @include link-element;
+    display: inline-block;
+    color: $color-primary-300;
+    font-size: 0.9rem;
+
+    &:hover::after {
+      background-color: $color-primary-300;
+    }
+  }
+
+  .buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
 }
 
 .edit-form {
@@ -27,11 +45,12 @@
   fieldset {
     padding: 20px;
     display: grid;
+    align-self: stretch;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
     border: lightgray 1px solid;
     border-radius: 5px;
-    align-self: stretch;
+    justify-items: stretch;
 
     &:disabled * {
       color: lightgrey;
@@ -42,10 +61,6 @@
       grid-row: 3 / 4;
     }
 
-    app-input {
-      width: 200px;
-    }
-
     @media screen and (max-width: 550px) {
       app-input {
         width: 180px;
@@ -54,10 +69,9 @@
 
     @media screen and (max-width: 480px) {
       padding: 15px;
-
-      app-input {
-        width: 140px;
-      }
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
     }
   }
 

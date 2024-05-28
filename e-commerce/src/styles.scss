@@ -21,6 +21,7 @@
 @mixin link-element {
   @include font-primary;
   cursor: pointer;
+  text-decoration: none;
 
   &::after {
     width: 0;

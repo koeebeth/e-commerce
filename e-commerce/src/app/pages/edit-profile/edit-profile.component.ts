@@ -9,6 +9,7 @@ import InputComponent from '../../shared/components/input/input.component';
 import ButtonComponent from '../../shared/components/button/button.component';
 import SelectInputComponent from '../../shared/components/select-input/select-input.component';
 import CheckboxInputComponent from '../../shared/components/checkbox-input/checkbox-input.component';
+import { CustomerInfo } from '../../shared/services/commercetoolsApi/apitypes';
 
 @Component({
   selector: 'app-edit-profile',
@@ -26,11 +27,12 @@ import CheckboxInputComponent from '../../shared/components/checkbox-input/check
   styleUrl: './edit-profile.component.scss',
 })
 export default class EditProfileComponent {
+  userInfo: CustomerInfo | null = null;
   editForm!: FormGroup;
 
   emailValidation = RegistrationValidators.emailValidation;
 
-  passwordValidation = RegistrationValidators.passwordValidation;
+  passwordValidation = { ...RegistrationValidators.passwordValidation, required: false };
 
   nameValidation = RegistrationValidators.nameValidation;
 
@@ -59,6 +61,14 @@ export default class EditProfileComponent {
   ) {}
 
   ngOnInit() {
+    this.store
+      .select((state) => state.app.userInfo)
+      .subscribe((userInfo) => {
+        if (userInfo) {
+          this.userInfo = userInfo;
+          console.log(this.userInfo);
+        }
+      });
     this.editForm = this.fb.group({});
   }
 

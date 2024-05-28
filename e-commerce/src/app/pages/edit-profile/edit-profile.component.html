@@ -1,78 +1,58 @@
 <div class="edit-profile">
   <h2>Edit Profile</h2>
-  <form [formGroup]="editForm" class="edit-form">
+  <form [formGroup]="editForm" class="edit-form" *ngIf="userInfo">
     <fieldset>
       <legend>Personal Info</legend>
-      <app-input [validation]="nameValidation" name="firstname" label="First Name" [form]="editForm"></app-input>
-      <app-input [validation]="nameValidation" name="lastname" label="Last Name" [form]="editForm"></app-input>
-      <app-input [validation]="emailValidation" name="email" label="E-mail" [form]="editForm"></app-input>
       <app-input
-        [validation]="passwordValidation"
-        name="password"
-        label="Password"
-        type="password"
+        [validation]="nameValidation"
+        name="firstname"
+        label="First Name"
+        [defaultValue]="userInfo.firstName"
         [form]="editForm"
+      ></app-input>
+      <app-input
+        [validation]="nameValidation"
+        [defaultValue]="userInfo.lastName"
+        name="lastname"
+        label="Last Name"
+        [form]="editForm"
+      ></app-input>
+      <app-input
+        [validation]="emailValidation"
+        name="email"
+        label="E-mail"
+        [form]="editForm"
+        [defaultValue]="userInfo.email"
       ></app-input>
       <app-input
         type="date"
         name="birthdate"
         label="Date of Birth"
         [form]="editForm"
+        [defaultValue]="userInfo.dateOfBirth"
         [validation]="ageValidation"
       ></app-input>
     </fieldset>
     <fieldset>
-      <legend>Shipping Address</legend>
-      <app-input name="shipping-city" label="City" [validation]="cityValidation" [form]="editForm"></app-input>
-      <app-input name="shipping-street" label="Street" [validation]="streetValidation" [form]="editForm"></app-input>
-      <app-select-input
-        name="shipping-country"
-        label="Country"
-        [form]="editForm"
-        [optList]="countryList"
-      ></app-select-input>
+      <legend>Change password</legend>
       <app-input
-        *ngIf="
-          editForm.value['shipping-country'] === 'Germany' || editForm.value['shipping-country'] === 'United States'
-        "
-        [validation]="usPostalcodeValidation"
-        name="shipping-postalcode"
-        label="Postal Code"
+        [validation]="passwordValidation"
+        name="old-password"
+        label="Old Password"
+        type="password"
         [form]="editForm"
       ></app-input>
       <app-input
-        *ngIf="editForm.value['shipping-country'] === 'United Kingdom'"
-        name="shipping-postalcode"
-        [validation]="ukPostalcodeValidation"
-        label="Postal Code"
+        [validation]="passwordValidation"
+        name="new-password"
+        label="New Password"
+        type="password"
         [form]="editForm"
       ></app-input>
     </fieldset>
-    <fieldset>
-      <legend>Billing Address</legend>
-      <app-input name="billing-city" label="City" [validation]="cityValidation" [form]="editForm"></app-input>
-      <app-input name="billing-street" label="Street" [validation]="streetValidation" [form]="editForm"></app-input>
-      <app-select-input
-        name="billing-country"
-        label="Country"
-        [form]="editForm"
-        [optList]="countryList"
-      ></app-select-input>
-      <app-input
-        *ngIf="editForm.value['billing-country'] === 'Germany' || editForm.value['billing-country'] === 'United States'"
-        [validation]="usPostalcodeValidation"
-        name="billing-postalcode"
-        label="Postal Code"
-        [form]="editForm"
-      ></app-input>
-      <app-input
-        *ngIf="editForm.value['billing-country'] === 'United Kingdom'"
-        name="billing-postalcode"
-        [validation]="ukPostalcodeValidation"
-        label="Postal Code"
-        [form]="editForm"
-      ></app-input>
-    </fieldset>
-    <app-button [isDisabled]="!editForm.valid" content="Save Changes" (clickHandler)="onSubmit()"></app-button>
+    <div class="buttons">
+      <app-button [isDisabled]="!editForm.valid" content="Save Changes" (clickHandler)="onSubmit()"></app-button>
+      <a routerLink="/profile">Cancel</a>
+    </div>
   </form>
 </div>
