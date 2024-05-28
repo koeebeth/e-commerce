@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { RouterLink } from '@angular/router';
 import * as actions from '../../../../store/actions';
 
 @Component({
   selector: 'app-profile-authorized',
   standalone: true,
-  imports: [],
+  imports: [RouterLink],
   templateUrl: './profile-authorized.component.html',
   styleUrl: './profile-authorized.component.scss',
 })
