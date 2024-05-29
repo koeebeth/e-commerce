@@ -108,3 +108,10 @@ export interface DirectDiscount {
   discountedAmount: Money;
   description?: string;
 }
+
+export interface PersonalInfo {
+  email: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+}

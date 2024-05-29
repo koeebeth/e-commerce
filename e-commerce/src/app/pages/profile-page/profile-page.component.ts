@@ -45,7 +45,6 @@ export default class ProfilePageComponent {
       .subscribe((userInfo) => {
         if (userInfo) {
           this.userInfo = userInfo;
-          console.log(userInfo);
         }
       });
   }
