@@ -50,6 +50,8 @@
 
   .pagination-buttons {
     display: flex;
+    background-color: #001c3070;
+    border-radius: 100px;
 
     .page,
     .dots {
@@ -59,13 +61,15 @@
       transition: 0.3s;
 
       &:hover:not(.active) {
-        background-color: rgba(0, 0, 0, 0.5);
+        box-shadow: inset 0px 0px 8px 3px rgb(1 26 41 / 65%);
+        border-radius: 10px;
       }
     }
 
     .active {
-      background-color: #fff;
-      color: #000;
+      border-radius: 10px;
+      color: #a2a9aed1;
+      box-shadow: 0px 0px 8px 2px rgb(1 26 41 / 85%);
     }
   }
 }
