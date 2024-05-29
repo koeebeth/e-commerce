@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import SliderComponent from './slider/slider.component';
 import { register } from 'swiper/element/bundle';
+import SliderComponent from './slider/slider.component';
 
 @Component({
   selector: 'app-product',
