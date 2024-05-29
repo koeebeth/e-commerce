@@ -2,13 +2,14 @@ export interface Product {
   id: string;
   key?: string;
   version?: number;
-  createdAt: string;
-  lastModifiedAt: string;
-  productType: {
+  createdAt?: string;
+  lastModifiedAt?: string;
+  masterData: ProductCatalogData;
+  productType?: {
     typeId: string;
     id: string;
   };
-  name: {
+  name?: {
     [locale: string]: string;
   };
   description?: {
@@ -17,7 +18,7 @@ export interface Product {
   slug?: {
     [locale: string]: string;
   };
-  masterVariant: ProductVariant;
+  masterVariant?: ProductVariant;
   variants?: ProductVariant[];
   taxCategory?: {
     typeId: string;
@@ -36,34 +37,76 @@ export interface Product {
   };
 }
 
+export interface ProductCatalogData {
+  current?: ProductData;
+  staged?: ProductData;
+}
+
+export interface ProductData {
+  name: {
+    [locale: string]: string;
+  };
+  categories?: {
+    typeId: string;
+    id: string;
+  }[];
+  description?: {
+    [locale: string]: string;
+  };
+  slug?: {
+    [locale: string]: string;
+  };
+  metaTitle?: {
+    [locale: string]: string;
+  };
+  metaDescription?: {
+    [locale: string]: string;
+  };
+  metaKeywords?: {
+    [locale: string]: string;
+  };
+  masterVariant?: ProductVariant;
+  variants?: ProductVariant[];
+  searchKeywords?: {
+    [locale: string]: SearchKeyword[];
+  };
+  hasStagedChanges?: boolean;
+  published?: boolean;
+  taxCategory?: {
+    typeId: string;
+    id: string;
+  };
+  state?: {
+    typeId: string;
+    id: string;
+  };
+  reviewRatingStatistics?: ReviewRatingStatistics;
+  productType?: {
+    typeId: string;
+    id: string;
+  };
+}
+
 export interface ProductVariant {
   id: number;
-  sku: string;
+  sku?: string;
   key?: string;
-  prices?: ProductPrice[];
-  images?: ProductImage[];
+  prices?: Price[];
   attributes?: Attribute[];
+  images: Image[];
   assets?: Asset[];
   availability?: ProductVariantAvailability;
   isMatchingVariant?: boolean;
+  scopedPrice?: ScopedPrice;
+  scopedPriceDiscounted?: boolean;
 }
 
-export interface ProductVariantAvailability {
-  isOnStock: boolean;
-  restockableInDays?: number;
-  availableQuantity?: number;
-  channels?: {
-    [channelId: string]: number;
-  };
-  onlySufficient?: boolean;
-}
-
-export interface ProductPrice {
-  id?: string;
+export interface Price {
   value: Money;
+  id?: string;
   country?: string;
-  customerGroup?: CustomerGroupReference;
-  channel?: ChannelReference;
+  customerGroup?: Reference;
+  channel?: Reference;
   validFrom?: string;
   validUntil?: string;
   discounted?: DiscountedPrice;
@@ -73,38 +116,15 @@ export interface ProductPrice {
 export interface Money {
   currencyCode: string;
   centAmount: number;
-  fractionDigits?: number;
-  type: 'centPrecision' | 'highPrecision';
+  fractionDigits: number;
 }
 
-export interface CustomerGroupReference {
-  typeId: string;
-  id: string;
+export interface Attribute {
+  name: string;
+  value: any; // можно уточнить в зависимости от типа значения
 }
 
-export interface ChannelReference {
-  typeId: string;
-  id: string;
-}
-
-export interface DiscountedPrice {
-  value: Money;
-  discount: Reference;
-}
-
-export interface Reference {
-  typeId: string;
-  id: string;
-}
-
-export interface CustomFields {
-  type: {
-    typeId: string;
-    id: string;
-  };
-}
-
-export interface ProductImage {
+export interface Image {
   url: string;
   dimensions: {
     w: number;
@@ -113,18 +133,18 @@ export interface ProductImage {
   label?: string;
 }
 
-export interface Attribute {
-  name: string;
-  value: any; // Здесь может быть любой тип, в зависимости от атрибута
-}
-
 export interface Asset {
   id: string;
   sources: AssetSource[];
-  name?: string;
-  description?: string;
+  name: {
+    [locale: string]: string;
+  };
+  description?: {
+    [locale: string]: string;
+  };
   tags?: string[];
-  custom?: any;
+  custom?: CustomFields;
+  key?: string;
 }
 
 export interface AssetSource {
@@ -135,4 +155,68 @@ export interface AssetSource {
     h: number;
   };
   contentType?: string;
+}
+
+export interface CustomFields {
+  type: Reference;
+  fields: {
+    [key: string]: any; // можно уточнить в зависимости от типа значения
+  };
+}
+
+export interface Reference {
+  typeId: string;
+  id: string;
+}
+
+export interface DiscountedPrice {
+  value: Money;
+  discount: Reference;
+}
+
+export interface ProductVariantAvailability {
+  isOnStock?: boolean;
+  restockableInDays?: number;
+  availableQuantity?: number;
+  channels?: {
+    [key: string]: ProductVariantChannelAvailability;
+  };
+}
+
+export interface ProductVariantChannelAvailability {
+  isOnStock?: boolean;
+  restockableInDays?: number;
+  availableQuantity?: number;
+}
+
+export interface ScopedPrice {
+  value: Money;
+  currentValue: Money;
+  country?: string;
+  customerGroup?: Reference;
+  channel?: Reference;
+  validFrom?: string;
+  validUntil?: string;
+  discounted?: DiscountedPrice;
+  custom?: CustomFields;
+}
+
+export interface SearchKeyword {
+  text: string;
+  suggestTokenizer?: SuggestTokenizer;
+}
+
+export interface SuggestTokenizer {
+  type: string;
+  inputs?: string[];
+}
+
+export interface ReviewRatingStatistics {
+  averageRating: number;
+  count: number;
+  highestRating: number;
+  lowestRating: number;
+  ratingsDistribution: {
+    [key: number]: number;
+  };
 }

@@ -33,4 +33,15 @@ export class ProductsService {
 
     return this.http.get<Product[]>(url, { headers, params });
   }
+
+  // getProductById(productId: string): Observable<any> {
+  //   const url = `${authVisitorAPI.ctpApiUrl}/products/${productId}`;
+  //   this.accessToken$ = this.store.select(selectAccessToken);
+
+  //   const headers = new HttpHeaders()
+  //     .set('Content-Type', 'application/json')
+  //     .set('Authorization', `Bearer ${this.accessToken$}`);
+
+  //   return this.http.get(url, { headers });
+  // }
 }

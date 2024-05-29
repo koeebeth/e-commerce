@@ -11,6 +11,9 @@
     display: flex;
     flex-direction: column;
     gap: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 9px 3px rgb(4 34 52 / 85%);
+    padding: 0 0 13px 0;
 
     .card-image__wrapper {
       width: 100%;
@@ -57,28 +60,25 @@
     }
 
     &:hover {
-      .card-image-wrapper {
-        transform: scale(1.05);
+      .card-image__hover {
+        opacity: 1;
+      }
 
-        .card-image__hover {
-          opacity: 1;
-        }
-
-        .card-image {
-          opacity: 0;
-        }
+      .card-image {
+        opacity: 0;
       }
     }
 
     .card-info {
       display: flex;
       flex-direction: column;
-      row-gap: 10px;
+      row-gap: 15px;
       font-weight: 200;
+      padding: 0 10px;
 
       .game-name {
-        font-weight: 500;
-        font-size: 1.2rem;
+        font-weight: 700;
+        font-size: 1rem;
       }
 
       .price-container {
@@ -90,7 +90,7 @@
 
         .discount {
           background: $color-primary-300;
-          padding: 3px 10px;
+          padding: 2px 10px;
           border-radius: 5px;
           border: 1px solid rgba($color-primary-400, 0.6);
         }
@@ -109,8 +109,9 @@
 
           .original-price {
             text-decoration: line-through;
-            color: lightgrey;
-            font-size: 1rem;
+            color: rgb(190, 190, 190);
+            font-weight: 500;
+            font-size: 1.1rem;
           }
 
           .discounted-price {
@@ -120,11 +121,5 @@
         }
       }
     }
-  }
-}
-
-@media (hover: hover) and (max-width: 715px) {
-  .card:hover .card-image-wrapper {
-    transform: none;
   }
 }

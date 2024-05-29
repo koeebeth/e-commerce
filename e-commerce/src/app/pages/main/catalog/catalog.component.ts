@@ -1,18 +1,28 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { CatalogCardComponent } from './catalog-card/catalog-card.component';
+import { CardComponent } from './card/card.component';
+import { AppState } from '../../../store/store';
+import { Product } from '../../../shared/services/products/productTypes';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, CatalogCardComponent,],
+  imports: [CommonModule, CardComponent],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.scss',
 })
 export class CatalogComponent {
   @Input() totalPages: number = 10;
+  @Input() card: Product[] = [];
+
   currentPage: number = 1;
   maxVisiblePages: number = 5;
+  productObjects$!: Observable<any>;
+  // productObjects$!: Product[]
+
+  constructor(private store: Store<AppState>) {}
 
   get visiblePages(): number[] {
     const pages: number[] = [];
@@ -44,5 +54,14 @@ export class CatalogComponent {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
     }
+  }
+
+  ngOnInit(): void {
+    this.productObjects$ = this.store.select((state) => state.app.products);
+    this.productObjects$.subscribe((products) => {
+      // products.map((product) => {
+      console.log(products);
+      // })
+    });
   }
 }
