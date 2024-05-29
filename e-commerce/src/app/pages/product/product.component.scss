@@ -8,16 +8,13 @@
   gap: 15px;
   padding: 3%;
   height: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
 }
 
 .images-container {
   width: 70%;
-  border-radius: 10px;
   overflow: hidden;
-}
-
-.images-container img {
-  width: 100%;
 }
 
 .product-information {

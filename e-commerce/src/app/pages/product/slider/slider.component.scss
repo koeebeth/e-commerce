@@ -1,0 +1,52 @@
+@import '../../../../styles.scss';
+
+swiper-container {
+  width: 100%;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+swiper-slide {
+  background-size: cover;
+  background-position: center;
+}
+
+swiper-slide img {
+  object-fit: cover;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.swiper {
+  height: 80%;
+  width: 100%;
+}
+
+.swiper-preview {
+  height: 20%;
+  box-sizing: border-box;
+  padding: 10px 0 0 0;
+}
+
+.swiper-preview swiper-slide {
+  width: 25%;
+  height: 100%;
+  opacity: 0.4;
+  cursor: pointer;
+}
+
+.swiper-preview .swiper-slide-thumb-active {
+  opacity: 1;
+  cursor: default;
+}
+
+.swiper-preview .swiper-slide-thumb-active img {
+  box-sizing: border-box;
+  border: 1px solid #fff;
+}
