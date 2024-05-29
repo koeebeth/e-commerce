@@ -9,7 +9,7 @@ export interface EcommerceState {
   customerDraft: CustomerDraft | null;
   loading: boolean;
   error: string;
-  userInfo?: CustomerInfo;
+  userInfo: CustomerInfo | null;
 }
 
 export const initialState: EcommerceState = {
@@ -19,6 +19,7 @@ export const initialState: EcommerceState = {
   customerDraft: null,
   loading: false,
   error: '',
+  userInfo: null,
 };
 
 export const ecommerceReducer = createReducer(
