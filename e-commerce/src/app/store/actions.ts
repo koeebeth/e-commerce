@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { CartBase, CustomerDraft, CustomerSignin } from '../shared/services/commercetoolsApi/apitypes';
+import { CartBase, CustomerDraft, CustomerInfo, CustomerSignin } from '../shared/services/commercetoolsApi/apitypes';
 
 export const loadAccsessToken = createAction('[Auth] Load Access Token', props<{ accessData: CustomerSignin }>());
 export const refreshAccsessToken = createAction(
@@ -38,6 +38,10 @@ export const loadAnonymousTokenFailure = createAction(
   '[Auth] Load Anonymous Token Failure',
   props<{ error: string }>(),
 );
+
+export const loadUserInfo = createAction('[Auth] Load User Info');
+export const loadUserInfoSuccess = createAction('[Auth] Load User Success', props<{ userInfo: CustomerInfo }>());
+export const loadUserInfoFailure = createAction('[Auth] Load User Failure', props<{ error: string }>());
 
 export const loadAnonymousCartSuccess = createAction(
   '[Cart] Cart Anonymous Id Success',

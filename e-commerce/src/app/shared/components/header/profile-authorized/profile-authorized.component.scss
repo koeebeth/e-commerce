@@ -44,3 +44,11 @@
   display: block;
   height: 100%;
 }
+
+.profile-options {
+  a {
+    color: white;
+    text-decoration: none;
+    @include link-element;
+  }
+}
