@@ -31,6 +31,7 @@ export interface CustomerInfo {
   firstName: string;
   lastName: string;
   password: string;
+  version: number;
 }
 
 export interface Address {

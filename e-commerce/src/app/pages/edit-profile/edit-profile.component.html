@@ -11,7 +11,7 @@
         <legend>Personal Info</legend>
         <app-input
           [validation]="nameValidation"
-          name="firstname"
+          name="lastName"
           label="First Name"
           [defaultValue]="userInfo.firstName"
           [form]="editForm"
@@ -19,7 +19,7 @@
         <app-input
           [validation]="nameValidation"
           [defaultValue]="userInfo.lastName"
-          name="lastname"
+          name="lastName"
           label="Last Name"
           [form]="editForm"
         ></app-input>
@@ -32,7 +32,7 @@
         ></app-input>
         <app-input
           type="date"
-          name="birthdate"
+          name="dateOfBirth"
           label="Date of Birth"
           [form]="editForm"
           [defaultValue]="userInfo.dateOfBirth"

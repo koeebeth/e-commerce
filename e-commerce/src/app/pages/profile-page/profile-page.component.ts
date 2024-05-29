@@ -23,6 +23,7 @@ export default class ProfilePageComponent {
     addresses: [],
     shippingAddressIds: [],
     billingAddressIds: [],
+    version: 0,
   };
 
   formatDate = formatDate;
