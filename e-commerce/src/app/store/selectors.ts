@@ -13,3 +13,5 @@ export const selectCartAnonId = createSelector(selectCartBase, (state) => state?
 export const selectError = createSelector(selectEcommerceState, (state) => state.error);
 
 export const selectLoading = createSelector(selectEcommerceState, (state) => state.loading);
+
+export const selectUserInfo = createSelector(selectEcommerceState, (state) => state.userInfo);

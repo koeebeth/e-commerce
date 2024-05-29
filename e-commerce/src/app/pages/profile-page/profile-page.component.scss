@@ -1,0 +1,166 @@
+@import '../../../styles.scss';
+
+.profile-info {
+  margin: auto;
+  margin-top: 2rem;
+  box-sizing: border-box;
+  padding: 30px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 700px;
+  background-color: #f2f2f2;
+  position: relative;
+  margin-bottom: 20px;
+  @include font-primary;
+
+  @media screen and (max-width: 768px) {
+    padding: 20px;
+  }
+
+  .edit {
+    @include link-element;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    color: $color-primary-300;
+    text-decoration: none;
+
+    &:hover::after {
+      background-color: $color-primary-300;
+    }
+  }
+}
+
+.profile-general-info {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 2rem;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}
+
+.profile-contact-info {
+  display: flex;
+  flex-direction: column;
+  @media screen and (max-width: 768px) {
+    align-items: center;
+  }
+}
+
+.profile-image {
+  height: 200px;
+  width: 200px;
+  border-radius: 100%;
+  background-color: $color-primary-400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60px;
+  color: white;
+
+  @include font-heading;
+
+  @media screen and (max-width: 768px) {
+    height: 160px;
+    width: 160px;
+  }
+}
+
+.profile-name {
+  @include font-heading;
+  font-size: 2.5rem;
+  color: $color-primary-300;
+  margin-top: 5px;
+  margin-bottom: 15px;
+
+  @media screen and (max-width: 768px) {
+    font-size: 1.8rem;
+  }
+}
+
+.profile-email {
+  font-size: 1.2rem;
+  color: $color-primary-500;
+  @media screen and (max-width: 768px) {
+    font-size: 1rem;
+  }
+}
+
+.profile-birthday {
+  font-size: 1rem;
+  color: $color-primary-300;
+}
+
+.profile-address-title {
+  text-align: center;
+  @include font-heading;
+  color: $color-primary-300;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+
+  &::before,
+  &::after {
+    content: '';
+    display: inline-block;
+    height: 2px;
+    width: 40%;
+    background-color: $color-primary-400;
+    vertical-align: middle;
+
+    @media screen and (max-width: 768px) {
+      width: 25%;
+    }
+  }
+
+  &::before {
+    margin-right: 20px;
+  }
+  &::after {
+    margin-left: 20px;
+  }
+}
+
+.profile-addresses {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-content: center;
+  gap: 20px;
+
+  @media screen and (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  h4 {
+    text-align: center;
+    @include font-heading;
+    color: $color-primary-500;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  li {
+    font-size: 0.8rem;
+    line-height: 130%;
+    padding: 15px 10px;
+    background-color: white;
+    min-height: 3rem;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px rgba($color: #000000, $alpha: 0.2);
+  }
+}
