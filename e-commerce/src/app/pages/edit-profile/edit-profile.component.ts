@@ -22,17 +22,21 @@ import { CustomerInfo } from '../../shared/services/commercetoolsApi/apitypes';
     SelectInputComponent,
     CheckboxInputComponent,
     ReactiveFormsModule,
+    CheckboxInputComponent,
   ],
   templateUrl: './edit-profile.component.html',
   styleUrl: './edit-profile.component.scss',
 })
 export default class EditProfileComponent {
   userInfo: CustomerInfo | null = null;
+
   editForm!: FormGroup;
+
+  changePassword = false;
 
   emailValidation = RegistrationValidators.emailValidation;
 
-  passwordValidation = { ...RegistrationValidators.passwordValidation, required: false };
+  passwordValidation = RegistrationValidators.passwordValidation;
 
   nameValidation = RegistrationValidators.nameValidation;
 
@@ -62,6 +66,13 @@ export default class EditProfileComponent {
 
   ngOnInit() {
     this.store
+      .select((state) => state.app.accessToken)
+      .subscribe((accessToken) => {
+        if (!accessToken) {
+          this.router.navigate(['/main']);
+        }
+      });
+    this.store
       .select((state) => state.app.userInfo)
       .subscribe((userInfo) => {
         if (userInfo) {
@@ -70,6 +81,14 @@ export default class EditProfileComponent {
         }
       });
     this.editForm = this.fb.group({});
+  }
+
+  onCheckChangePassword() {
+    this.changePassword = !this.changePassword;
+    if (!this.changePassword) {
+      this.editForm.removeControl('old-password');
+      this.editForm.removeControl('new-password');
+    }
   }
 
   onSubmit() {

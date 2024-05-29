@@ -32,8 +32,14 @@
         [defaultValue]="userInfo.dateOfBirth"
         [validation]="ageValidation"
       ></app-input>
+      <app-checkbox-input
+        label="Change Password"
+        [checked]="changePassword"
+        [form]="editForm"
+        (checkHandler)="onCheckChangePassword()"
+      ></app-checkbox-input>
     </fieldset>
-    <fieldset>
+    <fieldset *ngIf="changePassword">
       <legend>Change password</legend>
       <app-input
         [validation]="passwordValidation"
