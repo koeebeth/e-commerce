@@ -12,6 +12,9 @@
   @media screen and (max-width: 715px) {
     padding: 10px 50px;
   }
+  @media screen and (max-width: 510px) {
+    padding: 10px 25px;
+  }
 
   .catalog-title {
     font-family: 'Manrope', sans-serif;
@@ -19,5 +22,22 @@
     font-weight: 800;
     font-style: normal;
     font-size: 1.7rem;
+  }
+
+  .cards-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    column-gap: 15px;
+    row-gap: 30px;
+    justify-content: space-between;
+    align-content: center;
+
+    @media screen and (max-width: 615px) {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      column-gap: 10px;
+    }
+    @media screen and (max-width: 460px) {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
   }
 }
