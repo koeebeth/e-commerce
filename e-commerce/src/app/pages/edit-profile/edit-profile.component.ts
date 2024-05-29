@@ -83,14 +83,6 @@ export default class EditProfileComponent {
     this.editForm = this.fb.group({});
   }
 
-  onCheckChangePassword() {
-    this.changePassword = !this.changePassword;
-    if (!this.changePassword) {
-      this.editForm.removeControl('old-password');
-      this.editForm.removeControl('new-password');
-    }
-  }
-
   onSubmit() {
     console.log(this.editForm.value);
   }

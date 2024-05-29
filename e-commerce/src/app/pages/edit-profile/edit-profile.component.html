@@ -1,64 +1,48 @@
-<div class="edit-profile">
-  <h2>Edit Profile</h2>
-  <form [formGroup]="editForm" class="edit-form" *ngIf="userInfo">
-    <fieldset>
-      <legend>Personal Info</legend>
-      <app-input
-        [validation]="nameValidation"
-        name="firstname"
-        label="First Name"
-        [defaultValue]="userInfo.firstName"
-        [form]="editForm"
-      ></app-input>
-      <app-input
-        [validation]="nameValidation"
-        [defaultValue]="userInfo.lastName"
-        name="lastname"
-        label="Last Name"
-        [form]="editForm"
-      ></app-input>
-      <app-input
-        [validation]="emailValidation"
-        name="email"
-        label="E-mail"
-        [form]="editForm"
-        [defaultValue]="userInfo.email"
-      ></app-input>
-      <app-input
-        type="date"
-        name="birthdate"
-        label="Date of Birth"
-        [form]="editForm"
-        [defaultValue]="userInfo.dateOfBirth"
-        [validation]="ageValidation"
-      ></app-input>
-      <app-checkbox-input
-        label="Change Password"
-        [checked]="changePassword"
-        [form]="editForm"
-        (checkHandler)="onCheckChangePassword()"
-      ></app-checkbox-input>
-    </fieldset>
-    <fieldset *ngIf="changePassword">
-      <legend>Change password</legend>
-      <app-input
-        [validation]="passwordValidation"
-        name="old-password"
-        label="Old Password"
-        type="password"
-        [form]="editForm"
-      ></app-input>
-      <app-input
-        [validation]="passwordValidation"
-        name="new-password"
-        label="New Password"
-        type="password"
-        [form]="editForm"
-      ></app-input>
-    </fieldset>
-    <div class="buttons">
-      <app-button [isDisabled]="!editForm.valid" content="Save Changes" (clickHandler)="onSubmit()"></app-button>
-      <a routerLink="/profile">Cancel</a>
-    </div>
-  </form>
+<div class="edit-page">
+  <div class="navigation-buttons">
+    <a class="router router__profile" routerLink="/edit-profile">Profile</a>
+    <a class="router router__password" routerLink="/change-password">Password</a>
+    <a class="router router__addresses" routerLink="/manage-addresses">Addresses</a>
+  </div>
+  <div class="edit-profile">
+    <h2>Edit Profile</h2>
+    <form [formGroup]="editForm" class="edit-form" *ngIf="userInfo">
+      <fieldset>
+        <legend>Personal Info</legend>
+        <app-input
+          [validation]="nameValidation"
+          name="firstname"
+          label="First Name"
+          [defaultValue]="userInfo.firstName"
+          [form]="editForm"
+        ></app-input>
+        <app-input
+          [validation]="nameValidation"
+          [defaultValue]="userInfo.lastName"
+          name="lastname"
+          label="Last Name"
+          [form]="editForm"
+        ></app-input>
+        <app-input
+          [validation]="emailValidation"
+          name="email"
+          label="E-mail"
+          [form]="editForm"
+          [defaultValue]="userInfo.email"
+        ></app-input>
+        <app-input
+          type="date"
+          name="birthdate"
+          label="Date of Birth"
+          [form]="editForm"
+          [defaultValue]="userInfo.dateOfBirth"
+          [validation]="ageValidation"
+        ></app-input>
+      </fieldset>
+      <div class="buttons">
+        <app-button [isDisabled]="!editForm.valid" content="Save Changes" (clickHandler)="onSubmit()"></app-button>
+        <a routerLink="/profile" class="cancel">Cancel</a>
+      </div>
+    </form>
+  </div>
 </div>
