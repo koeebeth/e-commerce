@@ -40,4 +40,32 @@
       grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
   }
+
+  .pagination {
+    padding-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pagination-buttons {
+    display: flex;
+
+    .page,
+    .dots {
+      text-decoration: none;
+      color: aliceblue;
+      padding: 8px 16px;
+      transition: 0.3s;
+
+      &:hover:not(.active) {
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    .active {
+      background-color: #fff;
+      color: #000;
+    }
+  }
 }
