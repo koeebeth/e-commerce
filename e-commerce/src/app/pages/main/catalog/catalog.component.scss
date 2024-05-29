@@ -1,0 +1,23 @@
+@import '../../../../styles.scss';
+
+.catalog-container {
+  margin-top: 20px;
+  @include font-heading;
+  display: flex;
+  flex-direction: column;
+  color: $color-primary-700;
+  gap: 15px;
+  padding: 10px 100px;
+
+  @media screen and (max-width: 715px) {
+    padding: 10px 50px;
+  }
+
+  .catalog-title {
+    font-family: 'Manrope', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 1.7rem;
+  }
+}

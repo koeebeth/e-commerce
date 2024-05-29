@@ -6,8 +6,6 @@ import { CatalogCardComponent } from './catalog-card/catalog-card.component';
   standalone: true,
   imports: [CatalogCardComponent],
   templateUrl: './catalog.component.html',
-  styleUrl: './catalog.component.scss'
+  styleUrl: './catalog.component.scss',
 })
-export class CatalogComponent {
-
-}
+export class CatalogComponent {}
