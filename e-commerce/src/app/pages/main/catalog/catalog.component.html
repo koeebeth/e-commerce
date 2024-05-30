@@ -3,26 +3,25 @@
   <div class="cards-container">
     <div class="cards-list">
       <div *ngFor="let card of (productObjects$ | async)?.results">
-        <!-- <div>{{card}}</div> -->
-
         <app-card [card]="card"></app-card>
       </div>
     </div>
   </div>
   <div class="pagination">
     <div class="pagination-buttons">
-      <a class="page btn-prev" href="#" (click)="prevPage()">&NestedLessLess;</a>
-      <a
+      <div class="page btn-prev" [class.disabled]="currentPage === 1" (click)="prevPage()">&NestedLessLess;</div>
+      <div
         *ngFor="let page of visiblePages"
         class="page"
         [class.active]="currentPage === page"
-        href="#"
         (click)="goToPage(page)"
       >
         {{ page }}
-      </a>
-      <a class="dots" *ngIf="showDots" href="#">...</a>
-      <a class="page btn-next" href="#" (click)="nextPage()">&NestedGreaterGreater;</a>
+      </div>
+      <div class="dots" *ngIf="showDots">...</div>
+      <div class="page btn-next" [class.disabled]="currentPage === totalPages" (click)="nextPage()">
+        &NestedGreaterGreater;
+      </div>
     </div>
   </div>
 </section>

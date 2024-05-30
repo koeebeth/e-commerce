@@ -60,12 +60,14 @@
     }
 
     &:hover {
-      .card-image__hover {
-        opacity: 1;
-      }
+      .card-image__wrapper {
+        .card-image__hover {
+          opacity: 1;
+        }
 
-      .card-image {
-        opacity: 0;
+        .card-image {
+          opacity: 0;
+        }
       }
     }
 
