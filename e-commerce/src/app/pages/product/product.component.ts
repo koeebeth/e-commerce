@@ -1,13 +1,19 @@
 import { Component } from '@angular/core';
+import { register } from 'swiper/element/bundle';
+import SliderComponent from './slider/slider.component';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [],
+  imports: [SliderComponent],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
 })
 export default class ProductComponent {
+  constructor() {
+    register();
+  }
+
   originalPrice: number = 1300; // without API
 
   discountedPrice: number = 999; // without API
