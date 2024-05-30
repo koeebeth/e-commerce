@@ -27,11 +27,9 @@ export default class ProductsService {
     return this.http.get<ProductPagedQueryResponse>(url, { headers, params });
   }
 
-  getProductById(productId: string, accessToken: string): Observable<Product> {
+  getProductById(productId: string, token: string): Observable<Product> {
     const url = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/products/${productId}`;
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${accessToken}`);
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${token}`);
 
     return this.http.get<Product>(url, { headers });
   }

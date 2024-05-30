@@ -255,11 +255,12 @@ export default class EcommerceEffects {
   loadProductId$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadProductId),
-      mergeMap((action) =>
-        this.store.select(selectAccessToken).pipe(
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
           take(1),
-          switchMap((accessToken) =>
-            this.productsService.getProductById(action.id, accessToken).pipe(
+          switchMap(([anonToken, accessToken]) =>
+            this.productsService.getProductById(action.id, accessToken || anonToken).pipe(
               map((product: Product) => actions.loadProductIdSuccess({ product })),
               catchError((error) => of(actions.loadProductIdFailure({ error: error.message }))),
             ),
