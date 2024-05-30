@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { CartBase, CustomerDraft, CustomerSignin } from '../shared/services/commercetoolsApi/apitypes';
-import { Product } from '../shared/services/products/productTypes';
+import { Product, ProductPagedQueryResponse } from '../shared/services/products/productTypes';
 
 export const loadAccsessToken = createAction('[Auth] Load Access Token', props<{ accessData: CustomerSignin }>());
 export const refreshAccsessToken = createAction(
@@ -49,5 +49,13 @@ export const loadAnonymousCartFailure = createAction('[Cart] Cart Anonymous Id F
 export const logout = createAction('[Auth] Logout');
 export const logoutSuccess = createAction('[Auth] Logout Success');
 
-export const loadProsuctsSuccess = createAction('[Product] Load Products Success', props<{ products: Product[] }>());
-export const loadProsuctsFailure = createAction('[Product] Load Products Failure', props<{ error: string }>());
+export const loadProducts = createAction('[Auth] Load Access Token', props<{ offset: number; limit: number }>());
+export const loadProductsSuccess = createAction(
+  '[Products] Load Products Success',
+  props<{ products: ProductPagedQueryResponse }>(),
+);
+export const loadProductsFailure = createAction('[Products] Load Products Failure', props<{ error: string }>());
+
+// export const loadProsuctId = createAction('[Product] Load Products', props<{ id: string }>());
+// export const loadProsuctIdSuccess = createAction('[Product] Load Products Success', props<{ products: Product[] }>());
+// export const loadProsuctIdFailure = createAction('[Product] Load Products Failure', props<{ error: string }>());

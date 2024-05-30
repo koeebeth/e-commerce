@@ -8,10 +8,10 @@ import { AuthData, CartBase } from '../shared/services/commercetoolsApi/apitypes
 import * as actions from './actions';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
 import { AppState } from './store';
-import { selectAnonymousToken, selectCartAnonId } from './selectors';
+import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
 import { ProductsService } from '../shared/services/products/products.service';
-import { Product } from '../shared/services/products/productTypes';
+import { ProductPagedQueryResponse } from '../shared/services/products/productTypes';
 
 @Injectable()
 export default class EcommerceEffects {
@@ -28,7 +28,7 @@ export default class EcommerceEffects {
   loadAccsessToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadAccsessToken, actions.loadRegistrationSuccess),
-      filter((action) => !!action.accessData.email && !!action.accessData.password),
+      filter((action) => !!action.accessData && !!action.accessData.email && !!action.accessData.password),
       mergeMap((action) => {
         const { email, password } = action.accessData;
         return this.ecommerceApiService.authentication(email, password).pipe(
@@ -39,7 +39,6 @@ export default class EcommerceEffects {
               this.router.navigate(['/main']);
             }
             this.notificationService.showNotification('success', 'You have successfully logged in');
-            // this.ecommerceApiService.getProducts();
             return actions.loadAccsessTokenSuccess({
               accessToken: accessData.access_token,
             });
@@ -213,26 +212,56 @@ export default class EcommerceEffects {
     ),
   );
 
-  getProductList$ = createEffect(() =>
+  loadProducts$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(actions.loadAccsessTokenSuccess),
-      mergeMap((action) => {
-        return this.productsService.getProducts(action.accessToken).pipe(
-          tap((products: Product[]) => console.log('Products received:', products)),
-          map((products: Product[]) =>
-            actions.loadProsuctsSuccess({
-              products,
-            }),
-          ),
-          catchError((error) =>
-            of(
-              actions.loadProsuctsFailure({
-                error: error.message,
-              }),
+      ofType(actions.loadProducts),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.productsService.getProducts(accessToken ? accessToken : anonToken, action.offset, action.limit).pipe(
+              map((products: ProductPagedQueryResponse) =>
+                actions.loadProductsSuccess({
+                  products,
+                }),
+              ),
+              catchError((error) =>
+                of(
+                  actions.loadProductsFailure({
+                    error: error.message,
+                  }),
+                ),
+              ),
             ),
           ),
-        );
-      }),
+        ),
+      ),
     ),
   );
+
+  // getProductDetails$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(actions.loadProsuctsSuccess),
+  //     mergeMap((action) => {
+  //       return this.productsService.getProductById(action.products[2].id).pipe(
+  //         map((products: Product[]) =>
+  //           products.map(product => ({ id: product.id }))
+  //         ),
+  //         map((products: { id: string }[]) =>
+  //           actions.loadProsuctsSuccess({
+  //             products,
+  //           })
+  //         ),
+  //         catchError((error) =>
+  //           of(
+  //             actions.loadProsuctsFailure({
+  //               error: error.message,
+  //             }),
+  //           ),
+  //         ),
+  //       );
+  //     }),
+  //   ),
+  // );
 }

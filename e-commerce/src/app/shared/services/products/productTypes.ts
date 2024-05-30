@@ -1,3 +1,11 @@
+export interface ProductPagedQueryResponse {
+  offset: number;
+  limit: number;
+  count: number;
+  total: number;
+  results: Product[];
+}
+
 export interface Product {
   id: string;
   key?: string;

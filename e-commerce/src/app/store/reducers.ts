@@ -1,23 +1,25 @@
 import { createReducer, on } from '@ngrx/store';
 import * as actions from './actions';
 import { CartBase, CustomerDraft } from '../shared/services/commercetoolsApi/apitypes';
-import { Product } from '../shared/services/products/productTypes';
+import { Product, ProductPagedQueryResponse } from '../shared/services/products/productTypes';
 
 export interface EcommerceState {
   accessToken: string;
   anonymousToken: string;
   cartBase: CartBase | null;
-  products: Product[];
+  products: ProductPagedQueryResponse | null;
+  // productIds: { id: string }[];
   customerDraft: CustomerDraft | null;
   loading: boolean;
   error: string;
 }
 
 export const initialState: EcommerceState = {
-  products: [],
   accessToken: '',
   anonymousToken: '',
   cartBase: null,
+  products: null,
+  // productIds: [],
   customerDraft: null,
   loading: false,
   error: '',
@@ -45,6 +47,7 @@ export const ecommerceReducer = createReducer(
     return { ...state, accessToken: '', anonymousToken: '' };
   }),
   ///
-  on(actions.loadProsuctsSuccess, (state, { products }) => ({ ...state, products: products, loading: false })),
-  on(actions.loadProsuctsFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  on(actions.loadProducts, (state) => ({ ...state, loading: true })),
+  on(actions.loadProductsSuccess, (state, { products }) => ({ ...state, products, loading: false })),
+  on(actions.loadProductsFailure, (state, { error }) => ({ ...state, error, loading: false })),
 );

@@ -5,13 +5,14 @@ import { Observable, switchMap, take } from 'rxjs';
 import { AppState } from '../../../store/store';
 import { Store } from '@ngrx/store';
 import { selectAccessToken } from '../../../store/selectors';
-import { Product } from './productTypes';
+import { Product, ProductPagedQueryResponse } from './productTypes';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductsService {
   accessToken$!: Observable<string>;
+  anonToken$!: Observable<string>;
   tokenStorageService: any;
 
   constructor(
@@ -19,19 +20,17 @@ export class ProductsService {
     private store: Store<AppState>,
   ) {}
 
-  getProducts(accessToken: string, limit: number = 20, offset: number = 0): Observable<Product[]> {
+  getProducts(token: string, offset: number, limit: number = 10): Observable<ProductPagedQueryResponse> {
     const url = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/products`;
 
-    let params = new HttpParams();
-    params = params.append('limit', limit.toString());
-    params = params.append('offset', offset.toString());
+    let params = new HttpParams().set('limit', limit.toString()).set('offset', offset.toString());
 
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     });
 
-    return this.http.get<Product[]>(url, { headers, params });
+    return this.http.get<ProductPagedQueryResponse>(url, { headers, params });
   }
 
   // getProductById(productId: string): Observable<any> {

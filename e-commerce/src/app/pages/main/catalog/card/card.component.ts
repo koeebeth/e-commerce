@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product } from '../../../../shared/services/products/productTypes';
+import { Product, ProductPagedQueryResponse } from '../../../../shared/services/products/productTypes';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 })
 export class CardComponent {
   @Input() card!: Product;
-  productObjects$!: Observable<Product[]>;
+  productObjects$!: Observable<ProductPagedQueryResponse>;
 
   mainImage: string = '';
   mainGif: string = '';
