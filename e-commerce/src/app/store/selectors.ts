@@ -16,3 +16,5 @@ export const selectError = createSelector(selectEcommerceState, (state) => state
 export const selectLoading = createSelector(selectEcommerceState, (state) => state.loading);
 
 export const selectProducts = createSelector(selectEcommerceState, (state) => state.products);
+
+export const selectUserInfo = createSelector(selectEcommerceState, (state) => state.userInfo);

@@ -22,6 +22,17 @@ export interface CustomerDraft {
   billingAddresses?: number[];
 }
 
+export interface CustomerInfo {
+  addresses: Address[];
+  billingAddressIds: string[];
+  shippingAddressIds: string[];
+  dateOfBirth: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+}
+
 export interface Address {
   id?: string;
   city?: string;

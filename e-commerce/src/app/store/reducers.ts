@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import * as actions from './actions';
-import { CartBase, CustomerDraft } from '../shared/services/commercetoolsApi/apitypes';
 import { Product, ProductPagedQueryResponse } from '../shared/services/products/productTypes';
+import { CartBase, CustomerDraft, CustomerInfo } from '../shared/services/commercetoolsApi/apitypes';
 
 export interface EcommerceState {
   accessToken: string;
@@ -12,6 +12,7 @@ export interface EcommerceState {
   customerDraft: CustomerDraft | null;
   loading: boolean;
   error: string;
+  userInfo: CustomerInfo | null;
 }
 
 export const initialState: EcommerceState = {
@@ -23,6 +24,7 @@ export const initialState: EcommerceState = {
   customerDraft: null,
   loading: false,
   error: '',
+  userInfo: null,
 };
 
 export const ecommerceReducer = createReducer(
@@ -42,6 +44,10 @@ export const ecommerceReducer = createReducer(
   on(actions.loadRegistration, (state) => ({ ...state, loading: true })),
   on(actions.loadRegistrationSuccess, (state) => ({ ...state, loading: false })),
   on(actions.loadRegistrationFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.loadUserInfo, (state) => ({ ...state, loading: true })),
+  on(actions.loadUserInfoSuccess, (state, { userInfo }) => ({ ...state, userInfo, loading: false })),
+  on(actions.loadUserInfoFailure, (state, { error }) => ({ ...state, error, loading: false })),
   ///
   on(actions.logoutSuccess, (state) => {
     return { ...state, accessToken: '', anonymousToken: '' };
