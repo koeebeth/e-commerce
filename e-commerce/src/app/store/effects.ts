@@ -10,7 +10,7 @@ import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.se
 import { AppState } from './store';
 import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
-import { ProductsService } from '../shared/services/products/products.service';
+import ProductsService from '../shared/services/products/products.service';
 import { Product, ProductPagedQueryResponse } from '../shared/services/products/productTypes';
 
 @Injectable()
@@ -220,7 +220,7 @@ export default class EcommerceEffects {
           filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
           take(1),
           switchMap(([anonToken, accessToken]) =>
-            this.productsService.getProducts(accessToken ? accessToken : anonToken, action.offset, action.limit).pipe(
+            this.productsService.getProducts(accessToken || anonToken, action.offset, action.limit).pipe(
               map((products: ProductPagedQueryResponse) =>
                 actions.loadProductsSuccess({
                   products,

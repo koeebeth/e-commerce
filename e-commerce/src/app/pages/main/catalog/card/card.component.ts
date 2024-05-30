@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Product, ProductPagedQueryResponse } from '../../../../shared/services/products/productTypes';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
+import { Product, ProductPagedQueryResponse } from '../../../../shared/services/products/productTypes';
 import { AppState } from '../../../../store/store';
 import * as actions from '../../../../store/actions';
 
@@ -13,20 +13,31 @@ import * as actions from '../../../../store/actions';
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
 })
-export class CardComponent {
+export default class CardComponent {
   @Input() card!: Product;
+
   productObjects$!: Observable<ProductPagedQueryResponse>;
 
   mainImage: string = '';
+
   mainGif: string = '';
+
   name: string = '';
+
   centAmount: number = 0;
+
   fractionDigits: number = 0;
+
   discountCentAmount: number = 0;
+
   discountFractionDigits: number = 0;
+
   price!: string;
+
   originalPrice!: string;
+
   discuntedPrice!: string;
+
   discountPercnt!: number;
 
   constructor(private store: Store<AppState>) {}
@@ -64,15 +75,15 @@ export class CardComponent {
   }
 
   formatPrice() {
-    const price = this.centAmount / Math.pow(10, this.fractionDigits);
-    const discuntedPrice = this.discountCentAmount / Math.pow(10, this.discountFractionDigits);
+    const price = this.centAmount / 10 ** this.fractionDigits;
+    const discuntedPrice = this.discountCentAmount / 10 ** this.discountFractionDigits;
     this.originalPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
     this.discuntedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(discuntedPrice);
   }
 
   getDiscountProcentage() {
-    const originalPrice = this.centAmount / Math.pow(10, this.fractionDigits);
-    const discuntedPrice = this.discountCentAmount / Math.pow(10, this.discountFractionDigits);
+    const originalPrice = this.centAmount / 10 ** this.fractionDigits;
+    const discuntedPrice = this.discountCentAmount / 10 ** this.discountFractionDigits;
 
     if (originalPrice !== 0 && discuntedPrice !== 0) {
       this.discountPercnt = parseFloat((((originalPrice - discuntedPrice) / originalPrice) * 100).toFixed(0));

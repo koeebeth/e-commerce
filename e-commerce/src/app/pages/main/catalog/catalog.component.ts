@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { CardComponent } from './card/card.component';
-import { AppState } from '../../../store/store';
 import { Store } from '@ngrx/store';
-import * as actions from '../../../store/actions';
 import { Observable } from 'rxjs';
+import CardComponent from './card/card.component';
+import { AppState } from '../../../store/store';
+import * as actions from '../../../store/actions';
 import { ProductPagedQueryResponse } from '../../../shared/services/products/productTypes';
 
 @Component({
@@ -14,13 +14,19 @@ import { ProductPagedQueryResponse } from '../../../shared/services/products/pro
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.scss',
 })
-export class CatalogComponent {
+export default class CatalogComponent {
   productObjects$!: Observable<ProductPagedQueryResponse | null>;
+
   productResponse!: ProductPagedQueryResponse;
+
   currentPage: number = 1;
+
   maxVisiblePages: number = 5;
+
   totalPages: number = 1;
+
   visiblePages: number[] = [];
+
   showDots: boolean = false;
 
   constructor(private store: Store<AppState>) {}
@@ -49,7 +55,7 @@ export class CatalogComponent {
     const startPage = Math.max(1, this.currentPage - Math.floor(this.maxVisiblePages / 2));
     const endPage = Math.min(this.totalPages, startPage + this.maxVisiblePages - 1);
 
-    for (let i = startPage; i <= endPage; i++) {
+    for (let i = startPage; i <= endPage; i += 1) {
       pages.push(i);
     }
 
@@ -67,14 +73,14 @@ export class CatalogComponent {
 
   prevPage(): void {
     if (this.currentPage > 1) {
-      this.currentPage--;
+      this.currentPage -= 1;
       this.updateProducts();
     }
   }
 
   nextPage(): void {
     if (this.currentPage < this.totalPages) {
-      this.currentPage++;
+      this.currentPage += 1;
       this.updateProducts();
     }
   }

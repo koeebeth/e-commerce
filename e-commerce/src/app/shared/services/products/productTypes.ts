@@ -129,7 +129,6 @@ export interface Money {
 
 export interface Attribute {
   name: string;
-  value: any; // можно уточнить в зависимости от типа значения
 }
 
 export interface Image {
@@ -168,7 +167,7 @@ export interface AssetSource {
 export interface CustomFields {
   type: Reference;
   fields: {
-    [key: string]: any; // можно уточнить в зависимости от типа значения
+    [key: string]: string;
   };
 }
 
