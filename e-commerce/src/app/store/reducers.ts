@@ -8,7 +8,7 @@ export interface EcommerceState {
   anonymousToken: string;
   cartBase: CartBase | null;
   products: ProductPagedQueryResponse | null;
-  // productIds: { id: string }[];
+  product: Product | null;
   customerDraft: CustomerDraft | null;
   loading: boolean;
   error: string;
@@ -19,7 +19,7 @@ export const initialState: EcommerceState = {
   anonymousToken: '',
   cartBase: null,
   products: null,
-  // productIds: [],
+  product: null,
   customerDraft: null,
   loading: false,
   error: '',
@@ -50,4 +50,9 @@ export const ecommerceReducer = createReducer(
   on(actions.loadProducts, (state) => ({ ...state, loading: true })),
   on(actions.loadProductsSuccess, (state, { products }) => ({ ...state, products, loading: false })),
   on(actions.loadProductsFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.loadProductId, (state) => ({ ...state, loading: true })),
+  on(actions.loadProductIdSuccess, (state, { product }) => ({ ...state, product, loading: false })),
+  on(actions.loadProductIdFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
 );

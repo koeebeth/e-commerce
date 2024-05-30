@@ -2,6 +2,9 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product, ProductPagedQueryResponse } from '../../../../shared/services/products/productTypes';
 import { CommonModule } from '@angular/common';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../../store/store';
+import * as actions from '../../../../store/actions';
 
 @Component({
   selector: 'app-card',
@@ -25,6 +28,8 @@ export class CardComponent {
   originalPrice!: string;
   discuntedPrice!: string;
   discountPercnt!: number;
+
+  constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.mainImage = this.card?.masterData?.current?.masterVariant?.images[0]?.url || '';
@@ -74,6 +79,10 @@ export class CardComponent {
     } else {
       this.discountPercnt = 0;
     }
+  }
+
+  onCardClick() {
+    this.store.dispatch(actions.loadProductId({ id: this.card.id }));
   }
 
   originalPriceStyles() {

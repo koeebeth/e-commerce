@@ -33,14 +33,12 @@ export class ProductsService {
     return this.http.get<ProductPagedQueryResponse>(url, { headers, params });
   }
 
-  // getProductById(productId: string): Observable<any> {
-  //   const url = `${authVisitorAPI.ctpApiUrl}/products/${productId}`;
-  //   this.accessToken$ = this.store.select(selectAccessToken);
+  getProductById(productId: string, accessToken: string): Observable<any> {
+    const url = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/products/${productId}`;
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
 
-  //   const headers = new HttpHeaders()
-  //     .set('Content-Type', 'application/json')
-  //     .set('Authorization', `Bearer ${this.accessToken$}`);
-
-  //   return this.http.get(url, { headers });
-  // }
+    return this.http.get(url, { headers });
+  }
 }

@@ -11,7 +11,7 @@ import { AppState } from './store';
 import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
 import { ProductsService } from '../shared/services/products/products.service';
-import { ProductPagedQueryResponse } from '../shared/services/products/productTypes';
+import { Product, ProductPagedQueryResponse } from '../shared/services/products/productTypes';
 
 @Injectable()
 export default class EcommerceEffects {
@@ -240,28 +240,20 @@ export default class EcommerceEffects {
     ),
   );
 
-  // getProductDetails$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(actions.loadProsuctsSuccess),
-  //     mergeMap((action) => {
-  //       return this.productsService.getProductById(action.products[2].id).pipe(
-  //         map((products: Product[]) =>
-  //           products.map(product => ({ id: product.id }))
-  //         ),
-  //         map((products: { id: string }[]) =>
-  //           actions.loadProsuctsSuccess({
-  //             products,
-  //           })
-  //         ),
-  //         catchError((error) =>
-  //           of(
-  //             actions.loadProsuctsFailure({
-  //               error: error.message,
-  //             }),
-  //           ),
-  //         ),
-  //       );
-  //     }),
-  //   ),
-  // );
+  loadProductId$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadProductId),
+      mergeMap((action) =>
+        this.store.select(selectAccessToken).pipe(
+          take(1),
+          switchMap((accessToken) =>
+            this.productsService.getProductById(action.id, accessToken).pipe(
+              map((product: Product) => actions.loadProductIdSuccess({ product })),
+              catchError((error) => of(actions.loadProductIdFailure({ error: error.message }))),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
 }

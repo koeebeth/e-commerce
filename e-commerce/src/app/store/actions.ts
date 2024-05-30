@@ -56,6 +56,6 @@ export const loadProductsSuccess = createAction(
 );
 export const loadProductsFailure = createAction('[Products] Load Products Failure', props<{ error: string }>());
 
-// export const loadProsuctId = createAction('[Product] Load Products', props<{ id: string }>());
-// export const loadProsuctIdSuccess = createAction('[Product] Load Products Success', props<{ products: Product[] }>());
-// export const loadProsuctIdFailure = createAction('[Product] Load Products Failure', props<{ error: string }>());
+export const loadProductId = createAction('[Product] Load Products', props<{ id: string }>());
+export const loadProductIdSuccess = createAction('[Product] Load Products Success', props<{ product: Product }>());
+export const loadProductIdFailure = createAction('[Product] Load Products Failure', props<{ error: string }>());
