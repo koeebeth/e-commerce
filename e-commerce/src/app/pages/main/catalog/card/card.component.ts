@@ -44,12 +44,20 @@ export default class CardComponent {
 
   ngOnInit(): void {
     this.mainImage = this.card?.masterData?.current?.masterVariant?.images[0]?.url || '';
-    this.mainGif = this.card?.masterData?.current?.masterVariant?.images[1]?.url || '';
     this.name = this.card?.masterData?.current?.name['en-US'] || '';
     this.getPrice();
     this.getDiscuntedPrice();
     this.formatPrice();
     this.getDiscountProcentage();
+    this.addMainGif();
+  }
+
+  addMainGif(): void {
+    const gifPath = '/assets/gif/';
+    if (this.card?.key) {
+      const gifName = `${gifPath}${this.card?.key}.gif`;
+      this.mainGif = gifName;
+    }
   }
 
   getDiscuntedPrice() {
