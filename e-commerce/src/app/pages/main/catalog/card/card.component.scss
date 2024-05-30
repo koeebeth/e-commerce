@@ -125,3 +125,13 @@
     }
   }
 }
+
+@media (hover: none) {
+  .card .card-image__wrapper .card-image__hover {
+    opacity: 0 !important;
+  }
+
+  .card .card-image__wrapper .card-image {
+    opacity: 1 !important;
+  }
+}

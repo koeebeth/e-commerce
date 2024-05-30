@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import SliderComponent from './slider/slider.component';
-import { CatalogComponent } from './catalog/catalog.component';
+import CatalogComponent from './catalog/catalog.component';
 import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
 

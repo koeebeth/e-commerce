@@ -19,7 +19,7 @@ export default class SliderComponent {
 
   images = [
     { src: '../../../../assets/Enshrouded.jpg', alt: 'Enshrouded' },
-    // { src: '../../../../assets/banishers.jpeg', alt: 'Banishers' },
-    // { src: '../../../../assets/BALDURS_GATE.jpeg', alt: 'Baldurs Gate' },
+    { src: '../../../../assets/banishers.jpeg', alt: 'Banishers' },
+    { src: '../../../../assets/BALDURS_GATE.jpeg', alt: 'Baldurs Gate' },
   ];
 }
