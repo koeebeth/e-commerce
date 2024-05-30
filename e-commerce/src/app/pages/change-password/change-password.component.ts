@@ -19,6 +19,10 @@ import { loadUpdateUserPassword } from '../../store/actions';
 export default class ChangePasswordComponent {
   passwordForm!: FormGroup;
 
+  currentPasswordVisibility = false;
+
+  newPasswordVisibility = false;
+
   userInfo!: CustomerInfo;
 
   passwordValidation = RegistrationValidators.passwordValidation;
@@ -51,5 +55,13 @@ export default class ChangePasswordComponent {
     this.store.dispatch(
       loadUpdateUserPassword({ version: this.userInfo.version, passwordData: this.passwordForm.value }),
     );
+  }
+
+  onChangeCurrentVisibility() {
+    this.currentPasswordVisibility = !this.currentPasswordVisibility;
+  }
+
+  onChangeNewVisibility() {
+    this.newPasswordVisibility = !this.newPasswordVisibility;
   }
 }
