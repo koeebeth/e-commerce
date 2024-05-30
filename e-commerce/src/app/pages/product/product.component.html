@@ -1,0 +1,29 @@
+<div class="product-container">
+  <div class="images-container">
+    <img src="../../../assets/banishers.jpeg" alt="img" />
+  </div>
+  <div class="product-information">
+    <div class="description-container">
+      <h1>Banishers</h1>
+      <div class="category">RPG</div>
+      <p class="description">
+        Hunt ghosts as two memorable characters in a story-driven Action-RPG where your decisions carry dramatic
+        consequences. Torn between honoring your oath to the living and saving your departed partner, how far will you
+        go for love?
+      </p>
+    </div>
+    <div class="price-container">
+      <div class="prices">
+        <p class="original-price">{{ originalPrice }}$</p>
+        <p class="discount">-{{ getDiscountPercentage() }}%</p>
+      </div>
+      <p class="discounted-price">{{ discountedPrice }}$</p>
+      <div class="button-container">
+        <button>
+          <img src="../../../assets/cart.svg" width="18" height="18" alt="cart" />
+          <span>Buy</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -201,6 +201,18 @@ export default class EcommerceEffects {
     ),
   );
 
+  loadUserData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadAccsessTokenSuccess), // Trigger loading user data only after successful authentication
+      switchMap((action) =>
+        this.ecommerceApiService.getUserInfo(action.accessToken).pipe(
+          map((userInfo) => actions.loadUserInfoSuccess({ userInfo })),
+          catchError((error) => of(actions.loadUserInfoFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
   logout$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.logout),
