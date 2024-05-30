@@ -129,7 +129,7 @@ export default class CommerceApiService {
     return this.http.post<PersonalInfo>(requestUrl, JSON.stringify(body), { headers });
   }
 
-  updatePassword(accessToken: string, version: string, data: PasswordChange) {
+  updatePassword(accessToken: string, version: number, data: PasswordChange) {
     const requestUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/password`;
 
     const headers = new HttpHeaders()
@@ -141,7 +141,7 @@ export default class CommerceApiService {
       ...data,
     };
 
-    return this.http.post<PasswordChange>(requestUrl, JSON.stringify(body), { headers });
+    return this.http.post<CustomerInfo>(requestUrl, JSON.stringify(body), { headers });
   }
 
   checkTokens(): void {

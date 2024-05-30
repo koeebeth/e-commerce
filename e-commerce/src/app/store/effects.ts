@@ -209,11 +209,31 @@ export default class EcommerceEffects {
             this.notificationService.showNotification('success', 'Successfully updated personal information');
             return actions.loadUpdateUserInfoSuccess({ userInfo: <CustomerInfo>response });
           }),
+          catchError((error) => of(actions.loadUpdateUserInfoFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  loadUpdateUserPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadUpdateUserPassword),
+      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))), // Assuming accessToken is stored in the auth state
+      filter(([, accessToken]) => !!accessToken), // Filter out if access token is not present
+      switchMap(([action, accessToken]) =>
+        this.ecommerceApiService.updatePassword(accessToken, action.version, action.passwordData).pipe(
+          map((response) => {
+            this.store.dispatch(actions.logout());
+            this.router.navigateByUrl('/login');
+            this.notificationService.showNotification('success', 'Successfully updated password, please relogin');
+            return actions.loadUpdateUserInfoSuccess({ userInfo: response });
+          }),
           catchError((error) => {
-            this.notificationService.showNotification(
-              'error',
-              'An error occured when trying to update personal information',
-            );
+            if (error.error.errors[0].code === 'InvalidCurrentPassword')
+              this.notificationService.showNotification('error', 'The given current password does not match.');
+            else {
+              this.notificationService.showNotification('error', 'An error occured when trying to change password');
+            }
             return of(actions.loadUpdateUserInfoFailure({ error }));
           }),
         ),

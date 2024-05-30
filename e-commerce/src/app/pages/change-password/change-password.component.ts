@@ -7,6 +7,7 @@ import InputComponent from '../../shared/components/input/input.component';
 import { AppState } from '../../store/store';
 import ButtonComponent from '../../shared/components/button/button.component';
 import { CustomerInfo } from '../../shared/services/commercetoolsApi/apitypes';
+import { loadUpdateUserPassword } from '../../store/actions';
 
 @Component({
   selector: 'app-change-password',
@@ -18,7 +19,7 @@ import { CustomerInfo } from '../../shared/services/commercetoolsApi/apitypes';
 export default class ChangePasswordComponent {
   passwordForm!: FormGroup;
 
-  userInfo: CustomerInfo | null = null;
+  userInfo!: CustomerInfo;
 
   passwordValidation = RegistrationValidators.passwordValidation;
 
@@ -47,6 +48,8 @@ export default class ChangePasswordComponent {
   }
 
   onSubmit() {
-    console.log(this.passwordForm.value);
+    this.store.dispatch(
+      loadUpdateUserPassword({ version: this.userInfo.version, passwordData: this.passwordForm.value }),
+    );
   }
 }
