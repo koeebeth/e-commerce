@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { AuthData, CartBase, CustomerDraft, CustomerInfo, PersonalInfo } from './apitypes';
+import { AuthData, CartBase, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 import * as actions from '../../../store/actions';
 import { AppState } from '../../../store/store';
@@ -127,6 +127,21 @@ export default class CommerceApiService {
     };
 
     return this.http.post<PersonalInfo>(requestUrl, JSON.stringify(body), { headers });
+  }
+
+  updatePassword(accessToken: string, version: string, data: PasswordChange) {
+    const requestUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/password`;
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    const body = {
+      version,
+      ...data,
+    };
+
+    return this.http.post<PasswordChange>(requestUrl, JSON.stringify(body), { headers });
   }
 
   checkTokens(): void {

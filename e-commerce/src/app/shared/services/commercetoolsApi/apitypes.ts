@@ -116,3 +116,8 @@ export interface PersonalInfo {
   lastName: string;
   dateOfBirth: string;
 }
+
+export interface PasswordChange {
+  currentPassword: string;
+  newPassword: string;
+}

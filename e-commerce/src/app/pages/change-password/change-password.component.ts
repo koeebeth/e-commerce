@@ -6,6 +6,7 @@ import RegistrationValidators from '../../shared/utils/registration-validators';
 import InputComponent from '../../shared/components/input/input.component';
 import { AppState } from '../../store/store';
 import ButtonComponent from '../../shared/components/button/button.component';
+import { CustomerInfo } from '../../shared/services/commercetoolsApi/apitypes';
 
 @Component({
   selector: 'app-change-password',
@@ -16,6 +17,8 @@ import ButtonComponent from '../../shared/components/button/button.component';
 })
 export default class ChangePasswordComponent {
   passwordForm!: FormGroup;
+
+  userInfo: CustomerInfo | null = null;
 
   passwordValidation = RegistrationValidators.passwordValidation;
 
@@ -31,6 +34,13 @@ export default class ChangePasswordComponent {
       .subscribe((accessToken) => {
         if (!accessToken) {
           this.router.navigate(['/main']);
+        }
+      });
+    this.store
+      .select((state) => state.app.userInfo)
+      .subscribe((userInfo) => {
+        if (userInfo) {
+          this.userInfo = userInfo;
         }
       });
     this.passwordForm = this.fb.group({});
