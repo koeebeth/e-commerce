@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import InputComponent from '../../shared/components/input/input.component';
-import RegistrationValidators from '../../shared/utils/registration-validators';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule, FormBuilder } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Router, RouterLink } from '@angular/router';
+import RegistrationValidators from '../../shared/utils/registration-validators';
+import InputComponent from '../../shared/components/input/input.component';
 import { AppState } from '../../store/store';
 import ButtonComponent from '../../shared/components/button/button.component';
 
@@ -15,7 +14,7 @@ import ButtonComponent from '../../shared/components/button/button.component';
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss',
 })
-export class ChangePasswordComponent {
+export default class ChangePasswordComponent {
   passwordForm!: FormGroup;
 
   passwordValidation = RegistrationValidators.passwordValidation;

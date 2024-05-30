@@ -10,6 +10,7 @@ import ButtonComponent from '../../shared/components/button/button.component';
 import SelectInputComponent from '../../shared/components/select-input/select-input.component';
 import CheckboxInputComponent from '../../shared/components/checkbox-input/checkbox-input.component';
 import { CustomerInfo } from '../../shared/services/commercetoolsApi/apitypes';
+import { loadUpdateUserInfo } from '../../store/actions';
 
 @Component({
   selector: 'app-edit-profile',
@@ -77,13 +78,13 @@ export default class EditProfileComponent {
       .subscribe((userInfo) => {
         if (userInfo) {
           this.userInfo = userInfo;
-          console.log(this.userInfo);
         }
       });
     this.editForm = this.fb.group({});
   }
 
   onSubmit() {
-    console.log(this.editForm.value);
+    this.store.dispatch(loadUpdateUserInfo({ userInfo: { ...this.editForm.value, version: this.userInfo?.version } }));
+    this.router.navigateByUrl('/profile');
   }
 }

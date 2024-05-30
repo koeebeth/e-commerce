@@ -126,7 +126,7 @@ export default class CommerceApiService {
       ],
     };
 
-    return this.http.post<PersonalInfo>(requestUrl, body.toString(), { headers });
+    return this.http.post<PersonalInfo>(requestUrl, JSON.stringify(body), { headers });
   }
 
   checkTokens(): void {

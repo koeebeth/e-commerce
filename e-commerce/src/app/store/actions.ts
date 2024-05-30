@@ -43,6 +43,13 @@ export const loadUserInfo = createAction('[Auth] Load User Info');
 export const loadUserInfoSuccess = createAction('[Auth] Load User Success', props<{ userInfo: CustomerInfo }>());
 export const loadUserInfoFailure = createAction('[Auth] Load User Failure', props<{ error: string }>());
 
+export const loadUpdateUserInfo = createAction('[User] Load Updating User Info', props<{ userInfo: CustomerInfo }>());
+export const loadUpdateUserInfoSuccess = createAction(
+  '[User] Load Updating User Success',
+  props<{ userInfo: CustomerInfo }>(),
+);
+export const loadUpdateUserInfoFailure = createAction('[User] Load Updating User Failure', props<{ error: string }>());
+
 export const loadAnonymousCartSuccess = createAction(
   '[Cart] Cart Anonymous Id Success',
   props<{ cartBase: CartBase }>(),

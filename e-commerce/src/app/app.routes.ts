@@ -5,7 +5,7 @@ import MainComponent from './pages/main/main.component';
 import NotFoundComponent from './pages/not-found/not-found.component';
 import EditProfileComponent from './pages/edit-profile/edit-profile.component';
 import ProfilePageComponent from './pages/profile-page/profile-page.component';
-import { ChangePasswordComponent } from './pages/change-password/change-password.component';
+import ChangePasswordComponent from './pages/change-password/change-password.component';
 
 const routes: Routes = [
   { path: 'main', title: 'CyberVault', component: MainComponent },
