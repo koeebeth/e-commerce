@@ -1,6 +1,6 @@
 <div class="profile-page">
   <div class="profile-info">
-    <a routerLink="/edit-profile" class="edit">Edit</a>
+    <app-button content="Edit" (clickHandler)="onChangeEditMode()" btnType="link" btnClass="edit"></app-button>
     <section class="profile-general-info">
       <div class="profile-image">
         {{ userInfo.firstName.charAt(0).toUpperCase() || '' }}{{ userInfo.lastName.charAt(0).toUpperCase() || '' }}
@@ -32,5 +32,8 @@
         </div>
       </div>
     </section>
+  </div>
+  <div class="editing-form" *ngIf="isEditing">
+    <app-edit-user (closeHandler)="onChangeEditMode()"></app-edit-user>
   </div>
 </div>

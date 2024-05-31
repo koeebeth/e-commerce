@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Router, RouterLink } from '@angular/router';
-import { AppState } from '../../store/store';
-import RegistrationValidators from '../../shared/utils/registration-validators';
-import InputComponent from '../../shared/components/input/input.component';
-import ButtonComponent from '../../shared/components/button/button.component';
-import SelectInputComponent from '../../shared/components/select-input/select-input.component';
-import CheckboxInputComponent from '../../shared/components/checkbox-input/checkbox-input.component';
-import { CustomerInfo } from '../../shared/services/commercetoolsApi/apitypes';
-import { loadUpdateUserInfo } from '../../store/actions';
+import { AppState } from '../../../store/store';
+import RegistrationValidators from '../../../shared/utils/registration-validators';
+import InputComponent from '../../../shared/components/input/input.component';
+import ButtonComponent from '../../../shared/components/button/button.component';
+import SelectInputComponent from '../../../shared/components/select-input/select-input.component';
+import CheckboxInputComponent from '../../../shared/components/checkbox-input/checkbox-input.component';
+import { CustomerInfo } from '../../../shared/services/commercetoolsApi/apitypes';
+import { loadUpdateUserInfo } from '../../../store/actions';
 
 @Component({
   selector: 'app-edit-profile',
@@ -41,23 +41,9 @@ export default class EditProfileComponent {
 
   nameValidation = RegistrationValidators.nameValidation;
 
-  streetValidation = RegistrationValidators.streetValidation;
-
-  cityValidation = RegistrationValidators.cityValidation;
-
   ageValidation = RegistrationValidators.ageValidation;
 
-  usPostalcodeValidation = RegistrationValidators.usPostalcodeValidation;
-
-  ukPostalcodeValidation = RegistrationValidators.ukPostalcodeValidation;
-
-  countryList = ['United States', 'United Kingdom', 'Germany'];
-
-  countryIsoFormat = [
-    { contry: 'United States', iso: 'US' },
-    { contry: 'United Kingdom', iso: 'GB' },
-    { contry: 'Germany', iso: 'DE' },
-  ];
+  @Output() closeHandler = new EventEmitter();
 
   constructor(
     private fb: FormBuilder,
@@ -85,6 +71,10 @@ export default class EditProfileComponent {
 
   onSubmit() {
     this.store.dispatch(loadUpdateUserInfo({ userInfo: { ...this.editForm.value, version: this.userInfo?.version } }));
-    this.router.navigateByUrl('/profile');
+    this.onClose();
+  }
+
+  onClose() {
+    this.closeHandler.emit();
   }
 }
