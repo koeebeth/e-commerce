@@ -34,9 +34,9 @@ export default class CardComponent {
 
   price!: string;
 
-  originalPrice!: string;
+  originalPrice!: number;
 
-  discuntedPrice!: string;
+  discuntedPrice!: number;
 
   discountPercnt!: number;
 
@@ -86,8 +86,8 @@ export default class CardComponent {
   }
 
   formatPrice() {
-    this.originalPrice = `${this.centAmount / 10 ** this.fractionDigits}`;
-    this.discuntedPrice = `${this.discountCentAmount / 10 ** this.discountFractionDigits}`;
+    this.originalPrice = this.centAmount / 10 ** this.fractionDigits;
+    this.discuntedPrice = this.discountCentAmount / 10 ** this.discountFractionDigits;
     this.currency =
       this.card?.masterData?.current?.masterVariant?.prices?.find((c) => c.value?.currencyCode != null)?.value
         ?.currencyCode ?? 'USD';

@@ -4,20 +4,19 @@
   </div>
   <div class="product-information">
     <div class="description-container">
-      <h1>Banishers</h1>
+      <h1>{{ name }}</h1>
+      <!-- категория обновится после фильтра -->
       <div class="category">RPG</div>
       <p class="description">
-        Hunt ghosts as two memorable characters in a story-driven Action-RPG where your decisions carry dramatic
-        consequences. Torn between honoring your oath to the living and saving your departed partner, how far will you
-        go for love?
+        {{ description }}
       </p>
     </div>
     <div class="price-container">
       <div class="prices">
-        <p class="original-price">{{ originalPrice }}$</p>
-        <p class="discount">-{{ getDiscountPercentage() }}%</p>
+        <p class="original-price"></p>
+        <p class="discount"></p>
       </div>
-      <p class="discounted-price">{{ discountedPrice }}$</p>
+      <p class="discounted-price"></p>
       <div class="button-container">
         <button>
           <img src="../../../assets/cart.svg" width="18" height="18" alt="cart" />
