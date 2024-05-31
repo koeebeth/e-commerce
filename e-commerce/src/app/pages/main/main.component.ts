@@ -17,7 +17,7 @@ export default class MainComponent {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
-    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 10 }));
+    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 5 }));
   }
 
   categories = [

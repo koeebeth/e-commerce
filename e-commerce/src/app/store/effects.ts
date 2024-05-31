@@ -35,9 +35,6 @@ export default class EcommerceEffects {
           map((accessData: AuthData) => {
             this.tokenStorageService.saveAuthToken(accessData.refresh_token);
             this.tokenStorageService.removeAnonymousToken();
-            if (this.router.url === '/registration' || this.router.url === '/login') {
-              this.router.navigate(['/main']);
-            }
             this.notificationService.showNotification('success', 'You have successfully logged in');
             return actions.loadAccsessTokenSuccess({
               accessToken: accessData.access_token,
