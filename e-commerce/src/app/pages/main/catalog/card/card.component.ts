@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { Product, ProductPagedQueryResponse } from '../../../../shared/services/products/productTypes';
 import { AppState } from '../../../../store/store';
 import * as actions from '../../../../store/actions';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card',
@@ -42,7 +43,10 @@ export default class CardComponent {
 
   currency!: string;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.mainImage = this.card?.masterData?.current?.masterVariant?.images[0]?.url || '';
@@ -106,6 +110,7 @@ export default class CardComponent {
 
   onCardClick() {
     this.store.dispatch(actions.loadProductId({ id: this.card.id }));
+    this.router.navigate(['/products', this.card.id]);
   }
 
   originalPriceStyles() {

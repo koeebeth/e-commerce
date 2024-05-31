@@ -34,17 +34,18 @@ export default class ProductComponent {
   }
 
   ngOnInit() {
-    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 20 }));
+    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 13 }));
     this.route.params.subscribe((params) => {
       const productId = params['id'];
       this.store
         .select((state) => state.app.products)
         .subscribe((products) => {
           this.product = products?.results.find((p) => p.id === productId);
-          console.log(this.product);
-          this.name = this.product?.masterData?.current?.name['en-US'] || '';
-          if (this.product?.masterData?.current?.description) {
-            this.description = this.product?.masterData?.current?.description['en-US'] || '';
+          if (this.product) {
+            this.name = this.product?.masterData?.current?.name['en-US'] || '';
+            if (this.product?.masterData?.current?.description) {
+              this.description = this.product?.masterData?.current?.description['en-US'] || '';
+            }
           }
         });
     });
