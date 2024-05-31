@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   templateUrl: './address-input.component.html',
-  styleUrl: './address-input.component.scss'
+  styleUrl: './address-input.component.scss',
 })
-export class AddressInputComponent {
-
-}
+export class AddressInputComponent {}
