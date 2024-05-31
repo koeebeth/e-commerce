@@ -8,14 +8,17 @@ import { AuthData, CartBase } from '../shared/services/commercetoolsApi/apitypes
 import * as actions from './actions';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
 import { AppState } from './store';
-import { selectAnonymousToken, selectCartAnonId } from './selectors';
+import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
+import ProductsService from '../shared/services/products/products.service';
+import { Product, ProductPagedQueryResponse } from '../shared/services/products/productTypes';
 
 @Injectable()
 export default class EcommerceEffects {
   constructor(
     private actions$: Actions,
     private ecommerceApiService: CommerceApiService,
+    private productsService: ProductsService,
     private tokenStorageService: TokenStorageService,
     private notificationService: NotificationService,
     private store: Store<AppState>,
@@ -25,16 +28,13 @@ export default class EcommerceEffects {
   loadAccsessToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadAccsessToken, actions.loadRegistrationSuccess),
-      filter((action) => !!action.accessData.email && !!action.accessData.password),
+      filter((action) => !!action.accessData && !!action.accessData.email && !!action.accessData.password),
       mergeMap((action) => {
         const { email, password } = action.accessData;
         return this.ecommerceApiService.authentication(email, password).pipe(
           map((accessData: AuthData) => {
             this.tokenStorageService.saveAuthToken(accessData.refresh_token);
             this.tokenStorageService.removeAnonymousToken();
-            if (this.router.url === '/registration' || this.router.url === '/login') {
-              this.router.navigate(['/main']);
-            }
             this.notificationService.showNotification('success', 'You have successfully logged in');
             return actions.loadAccsessTokenSuccess({
               accessToken: accessData.access_token,
@@ -218,6 +218,52 @@ export default class EcommerceEffects {
         this.tokenStorageService.removeAnonymousToken();
       }),
       mergeMap(() => of(actions.logoutSuccess())),
+    ),
+  );
+
+  loadProducts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadProducts),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.productsService.getProducts(accessToken || anonToken, action.offset, action.limit).pipe(
+              map((products: ProductPagedQueryResponse) =>
+                actions.loadProductsSuccess({
+                  products,
+                }),
+              ),
+              catchError((error) =>
+                of(
+                  actions.loadProductsFailure({
+                    error: error.message,
+                  }),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  loadProductId$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadProductId),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.productsService.getProductById(action.id, accessToken || anonToken).pipe(
+              map((product: Product) => actions.loadProductIdSuccess({ product })),
+              catchError((error) => of(actions.loadProductIdFailure({ error: error.message }))),
+            ),
+          ),
+        ),
+      ),
     ),
   );
 }

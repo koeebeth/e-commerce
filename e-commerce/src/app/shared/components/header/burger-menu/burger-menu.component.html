@@ -5,8 +5,8 @@
   <nav [class]="isOpen ? 'burger-menu active' : 'burger-menu'">
     <section>
       <a>Cart</a>
-      <a>Catalog</a>
-      <a routerLink="/main">Category</a>
+      <a routerLink="/catalog" (click)="onClick()">Store</a>
+      <a routerLink="/main" (click)="onClick()">Category</a>
       <a>About us</a>
     </section>
   </nav>
