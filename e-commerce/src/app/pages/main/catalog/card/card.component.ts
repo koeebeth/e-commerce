@@ -2,10 +2,10 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 import { Product, ProductPagedQueryResponse } from '../../../../shared/services/products/productTypes';
 import { AppState } from '../../../../store/store';
 import * as actions from '../../../../store/actions';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-card',
