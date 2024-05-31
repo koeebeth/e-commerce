@@ -45,6 +45,8 @@ export default class ProductComponent {
 
   currency!: string;
 
+  imageUrls: string[] | undefined;
+
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
@@ -66,12 +68,20 @@ export default class ProductComponent {
               this.description = this.product?.masterData?.current?.description['en-US'] || '';
             }
           }
+          this.getImages();
           this.getOriginalPrice();
           this.getDiscuntedPrice();
           this.formatPrice();
           this.getDiscountProcentage();
         });
     });
+  }
+
+  getImages() {
+    const imagesWithEmptyLabel = this.product?.masterData?.current?.masterVariant?.images.filter(
+      (image) => !image.label,
+    );
+    this.imageUrls = imagesWithEmptyLabel?.map((image) => image.url);
   }
 
   getDiscuntedPrice() {

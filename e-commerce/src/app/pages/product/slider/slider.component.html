@@ -6,12 +6,12 @@
   thumbs-swiper=".swiper-preview"
 >
   <swiper-slide *ngFor="let image of images">
-    <img [src]="image.src" [alt]="image.alt" />
+    <img [src]="image" alt="card" />
   </swiper-slide>
 </swiper-container>
 
 <swiper-container class="swiper-preview" space-between="10" slides-per-view="3" free-mode="true">
   <swiper-slide *ngFor="let image of images">
-    <img [src]="image.src" [alt]="image.alt" />
+    <img [src]="image" alt="card" />
   </swiper-slide>
 </swiper-container>

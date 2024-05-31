@@ -14,7 +14,8 @@ const routes: Routes = [
   { path: 'profile', component: ProfilePageComponent },
   { path: 'catalog', component: CatalogPageComponent },
   { path: 'products/:id', component: ProductComponent },
-  { path: '**', component: NotFoundComponent },
+  { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: '/main', pathMatch: 'full' },
+  { path: '**', redirectTo: '/404', pathMatch: 'full' },
 ];
 export default routes;
