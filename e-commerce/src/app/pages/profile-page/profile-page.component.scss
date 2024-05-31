@@ -23,16 +23,10 @@
   }
 
   .edit {
-    @include link-element;
     position: absolute;
+    display: inline-block;
     top: 30px;
     right: 30px;
-    color: $color-primary-300;
-    text-decoration: none;
-
-    &:hover::after {
-      background-color: $color-primary-300;
-    }
   }
 }
 

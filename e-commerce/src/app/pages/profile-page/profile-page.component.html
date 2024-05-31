@@ -1,6 +1,6 @@
 <div class="profile-page">
   <div class="profile-info">
-    <app-button content="Edit" (clickHandler)="onChangeEditMode()" btnType="link" btnClass="edit"></app-button>
+    <app-button content="Edit" (clickHandler)="onChangeEditMode()" btnType="link" class="edit"></app-button>
     <section class="profile-general-info">
       <div class="profile-image">
         {{ userInfo.firstName.charAt(0).toUpperCase() || '' }}{{ userInfo.lastName.charAt(0).toUpperCase() || '' }}

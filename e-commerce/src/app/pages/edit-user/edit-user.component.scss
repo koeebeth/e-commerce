@@ -56,20 +56,3 @@
     text-decoration: underline;
   }
 }
-
-.modal__close {
-  @include font-primary;
-  position: absolute;
-  display: inline-block;
-  right: 20px;
-  top: 10px;
-  background-color: transparent;
-  border: none;
-  color: $color-primary-400;
-  font-size: 1.8rem;
-
-  &:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-}
