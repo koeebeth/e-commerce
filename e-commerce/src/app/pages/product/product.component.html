@@ -1,3 +1,7 @@
+<div class="back-btn" routerLink="/catalog">
+  <img src="../../../assets/arrow.svg" width="24" height="24" alt="back" />
+  <span>Back</span>
+</div>
 <div *ngIf="product" class="product-container">
   <div class="images-container">
     <app-slider [images]="imageUrls" [name]="name"></app-slider>
