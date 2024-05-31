@@ -47,6 +47,8 @@ export default class ProductComponent {
 
   imageUrls: string[] | undefined;
 
+  productID: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
@@ -57,23 +59,23 @@ export default class ProductComponent {
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      const productId = params['id'];
-      this.store.dispatch(actions.loadProductId({ id: productId }));
-      this.productObjects$ = this.store.select((state) => state.app.product);
-      this.productObjects$.subscribe((product) => {
-        if (product) {
-          this.product = product;
-          this.name = product.masterData?.current?.name['en-US'] || '';
-          if (product.masterData?.current?.description) {
-            this.description = product.masterData?.current?.description['en-US'] || '';
-          }
-          this.getImages();
-          this.getOriginalPrice();
-          this.getDiscuntedPrice();
-          this.formatPrice();
-          this.getDiscountProcentage();
+      this.productID = params['id'];
+    });
+    this.store.dispatch(actions.loadProductId({ id: this.productID }));
+    this.productObjects$ = this.store.select((state) => state.app.product);
+    this.productObjects$.subscribe((product) => {
+      if (product) {
+        this.product = product;
+        this.name = product.masterData?.current?.name['en-US'] || '';
+        if (product.masterData?.current?.description) {
+          this.description = product.masterData?.current?.description['en-US'] || '';
         }
-      });
+        this.getImages();
+        this.getOriginalPrice();
+        this.getDiscuntedPrice();
+        this.formatPrice();
+        this.getDiscountProcentage();
+      }
     });
   }
 

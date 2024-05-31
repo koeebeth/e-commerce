@@ -1,4 +1,4 @@
-<div class="product-container">
+<div *ngIf="product" class="product-container">
   <div class="images-container">
     <app-slider [images]="imageUrls" [name]="name"></app-slider>
   </div>
