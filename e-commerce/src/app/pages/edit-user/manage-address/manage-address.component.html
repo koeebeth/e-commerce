@@ -1,0 +1,13 @@
+<div class="manage-address">
+  <h2>Manage Addresses</h2>
+  <form [formGroup]="addressForm" class="address-form">
+    <fieldset>
+      <legend>Shipping</legend>
+    </fieldset>
+    <fieldset>
+      <legend>Billing</legend>
+    </fieldset>
+    <app-button [isDisabled]="!addressForm.valid" content="Save Changes" (clickHandler)="onSubmit()"></app-button>
+    <app-button btnType="link" content="Cancel" (clickHandler)="onClose()"></app-button>
+  </form>
+</div>
