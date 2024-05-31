@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { register } from 'swiper/element/bundle';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import SliderComponent from './slider/slider.component';
 import { AppState } from '../../store/store';
 import { Product, ProductPagedQueryResponse } from '../../shared/services/products/productTypes';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
