@@ -1,4 +1,4 @@
-export interface ProductPagedQueryResponse {
+export interface ProductsArray {
   offset: number;
   limit: number;
   count: number;
@@ -226,4 +226,62 @@ export interface ReviewRatingStatistics {
   ratingsDistribution: {
     [key: number]: number;
   };
+}
+
+//Categories
+export interface CategoriesArray {
+  limit: number;
+  offset: number;
+  count: number;
+  total: number;
+  results: Category[];
+}
+
+export interface Category {
+  id: string;
+  version: number;
+  createdAt: string;
+  lastModifiedAt: string;
+  name: LocalizedString;
+  slug: LocalizedString;
+  description?: LocalizedString;
+  ancestors: Reference[];
+  parent?: Reference;
+  orderHint: string;
+  externalId?: string;
+  metaTitle?: LocalizedString;
+  metaDescription?: LocalizedString;
+  metaKeywords?: LocalizedString;
+  assets?: Asset[];
+}
+
+export interface LocalizedString {
+  [key: string]: string;
+}
+
+export interface Reference {
+  typeId: string;
+  id: string;
+}
+
+export interface Asset {
+  id: string;
+  sources: AssetSource[];
+  name: LocalizedString;
+  description?: LocalizedString;
+  tags?: string[];
+  custom?: CustomFields;
+  key?: string;
+}
+
+export interface AssetSource {
+  uri: string;
+  key?: string;
+  dimensions?: AssetDimensions;
+  contentType?: string;
+}
+
+export interface AssetDimensions {
+  w: number;
+  h: number;
 }

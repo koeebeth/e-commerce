@@ -5,19 +5,20 @@ import { Observable } from 'rxjs';
 import CardComponent from '../main/catalog/card/card.component';
 import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
-import { ProductPagedQueryResponse } from '../../shared/services/products/productTypes';
+import { ProductsArray } from '../../shared/services/products/productTypes';
+import { FilterComponent } from './filter/filter.component';
 
 @Component({
   selector: 'app-catalog-page',
   standalone: true,
-  imports: [CommonModule, CardComponent],
+  imports: [CommonModule, CardComponent, FilterComponent],
   templateUrl: './catalog-page.component.html',
   styleUrl: './catalog-page.component.scss',
 })
 export default class CatalogPageComponent {
-  productObjects$!: Observable<ProductPagedQueryResponse | null>;
+  productObjects$!: Observable<ProductsArray | null>;
 
-  productResponse!: ProductPagedQueryResponse;
+  productResponse!: ProductsArray;
 
   currentPage: number = 1;
 

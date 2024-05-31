@@ -11,7 +11,7 @@ import { AppState } from './store';
 import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
 import ProductsService from '../shared/services/products/products.service';
-import { Product, ProductPagedQueryResponse } from '../shared/services/products/productTypes';
+import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
 
 @Injectable()
 export default class EcommerceEffects {
@@ -230,7 +230,7 @@ export default class EcommerceEffects {
           take(1),
           switchMap(([anonToken, accessToken]) =>
             this.productsService.getProducts(accessToken || anonToken, action.offset, action.limit).pipe(
-              map((products: ProductPagedQueryResponse) =>
+              map((products: ProductsArray) =>
                 actions.loadProductsSuccess({
                   products,
                 }),
@@ -260,6 +260,24 @@ export default class EcommerceEffects {
             this.productsService.getProductById(action.id, accessToken || anonToken).pipe(
               map((product: Product) => actions.loadProductIdSuccess({ product })),
               catchError((error) => of(actions.loadProductIdFailure({ error: error.message }))),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  loadCategories$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadCategories),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.productsService.getCategories(accessToken || anonToken, action.offset, action.limit).pipe(
+              map((categories: CategoriesArray) => actions.loadCategoriesSuccess({ categories })),
+              catchError((error) => of(actions.loadCategoriesFailure({ error: error.message }))),
             ),
           ),
         ),
