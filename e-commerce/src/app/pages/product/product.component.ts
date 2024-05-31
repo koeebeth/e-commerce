@@ -6,8 +6,8 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import SliderComponent from './slider/slider.component';
 import { AppState } from '../../store/store';
-import * as actions from '../../store/actions';
 import { Product, ProductPagedQueryResponse } from '../../shared/services/products/productTypes';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -50,30 +50,31 @@ export default class ProductComponent {
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
+    private router: Router,
   ) {
     register();
   }
 
   ngOnInit() {
-    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 13 }));
     this.route.params.subscribe((params) => {
       const productId = params['id'];
-      this.store
-        .select((state) => state.app.products)
-        .subscribe((products) => {
-          this.product = products?.results.find((p) => p.id === productId);
-          if (this.product) {
-            this.name = this.product?.masterData?.current?.name['en-US'] || '';
-            if (this.product?.masterData?.current?.description) {
-              this.description = this.product?.masterData?.current?.description['en-US'] || '';
-            }
+      this.productObjects$ = this.store.select((state) => state.app.products);
+      this.productObjects$.subscribe((products) => {
+        this.product = products?.results.find((p) => p.id === productId);
+        if (this.product) {
+          this.name = this.product?.masterData?.current?.name['en-US'] || '';
+          if (this.product?.masterData?.current?.description) {
+            this.description = this.product?.masterData?.current?.description['en-US'] || '';
           }
-          this.getImages();
-          this.getOriginalPrice();
-          this.getDiscuntedPrice();
-          this.formatPrice();
-          this.getDiscountProcentage();
-        });
+        } else {
+          this.router.navigate(['/catalog']);
+        }
+        this.getImages();
+        this.getOriginalPrice();
+        this.getDiscuntedPrice();
+        this.formatPrice();
+        this.getDiscountProcentage();
+      });
     });
   }
 
@@ -82,6 +83,10 @@ export default class ProductComponent {
       (image) => !image.label,
     );
     this.imageUrls = imagesWithEmptyLabel?.map((image) => image.url);
+    this.imageUrls?.forEach((url) => {
+      const img = new Image();
+      img.src = url;
+    });
   }
 
   getDiscuntedPrice() {
