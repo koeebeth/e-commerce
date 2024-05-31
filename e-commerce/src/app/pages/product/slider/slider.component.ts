@@ -11,4 +11,5 @@ import { CommonModule } from '@angular/common';
 })
 export default class SliderComponent {
   @Input() images: string[] | undefined = [];
+  @Input() name: string = '';
 }
