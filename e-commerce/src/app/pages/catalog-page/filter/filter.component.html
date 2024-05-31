@@ -1,0 +1,18 @@
+<div class="filter-container">
+  <button class="filter-button">Filters</button>
+  <div class="filter-dropdown" [class.show]="isFilterMenuOpen">
+    <div *ngFor="let group of filterGroups" class="filter-group">
+      <div class="filter-group-header">
+        {{ group.name }}
+      </div>
+      <div class="filter-group-content">
+        <div *ngFor="let filter of group.filters">
+          <label>
+            <input type="checkbox" />
+            {{ filter }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

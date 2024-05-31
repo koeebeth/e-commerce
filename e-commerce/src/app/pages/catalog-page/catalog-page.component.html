@@ -1,4 +1,5 @@
 <section class="catalog-container">
+  <app-filter></app-filter>
   <div class="cards-container">
     <div class="cards-list">
       <div *ngFor="let card of (productObjects$ | async)?.results">
