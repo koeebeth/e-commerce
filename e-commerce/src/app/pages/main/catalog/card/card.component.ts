@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { Product, ProductPagedQueryResponse } from '../../../../shared/services/products/productTypes';
 import { AppState } from '../../../../store/store';
-import * as actions from '../../../../store/actions';
 
 @Component({
   selector: 'app-card',
@@ -109,7 +108,6 @@ export default class CardComponent {
   }
 
   onCardClick() {
-    this.store.dispatch(actions.loadProductId({ id: this.card.id }));
     this.router.navigate(['/products', this.card.id]);
   }
 

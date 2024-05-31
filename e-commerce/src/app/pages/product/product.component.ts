@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import SliderComponent from './slider/slider.component';
 import { AppState } from '../../store/store';
 import { Product, ProductPagedQueryResponse } from '../../shared/services/products/productTypes';
+import * as actions from '../../store/actions';
 
 @Component({
   selector: 'app-product',
@@ -16,7 +17,7 @@ import { Product, ProductPagedQueryResponse } from '../../shared/services/produc
   styleUrl: './product.component.scss',
 })
 export default class ProductComponent {
-  productObjects$!: Observable<ProductPagedQueryResponse | null>;
+  productObjects$!: Observable<Product | null>;
 
   productResponse!: ProductPagedQueryResponse;
 
@@ -57,22 +58,21 @@ export default class ProductComponent {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       const productId = params['id'];
-      this.productObjects$ = this.store.select((state) => state.app.products);
-      this.productObjects$.subscribe((products) => {
-        this.product = products?.results.find((p) => p.id === productId);
-        if (this.product) {
-          this.name = this.product?.masterData?.current?.name['en-US'] || '';
-          if (this.product?.masterData?.current?.description) {
-            this.description = this.product?.masterData?.current?.description['en-US'] || '';
+      this.store.dispatch(actions.loadProductId({ id: productId }));
+      this.productObjects$ = this.store.select((state) => state.app.product);
+      this.productObjects$.subscribe((product) => {
+        if (product) {
+          this.product = product;
+          this.name = product.masterData?.current?.name['en-US'] || '';
+          if (product.masterData?.current?.description) {
+            this.description = product.masterData?.current?.description['en-US'] || '';
           }
-        } else {
-          this.router.navigate(['/catalog']);
+          this.getImages();
+          this.getOriginalPrice();
+          this.getDiscuntedPrice();
+          this.formatPrice();
+          this.getDiscountProcentage();
         }
-        this.getImages();
-        this.getOriginalPrice();
-        this.getDiscuntedPrice();
-        this.formatPrice();
-        this.getDiscountProcentage();
       });
     });
   }
