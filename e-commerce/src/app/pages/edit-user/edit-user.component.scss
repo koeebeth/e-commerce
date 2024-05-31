@@ -2,7 +2,6 @@
 
 .modal {
   box-sizing: border-box;
-  height: fit-content;
   width: 90%;
   max-width: 600px;
   position: relative;
@@ -22,8 +21,10 @@
 
 .modal__form {
   position: relative;
+  overflow: scroll;
   background-color: white;
   padding: 20px;
+  max-height: 70vh;
   box-sizing: border-box;
   border-radius: 0 0 10px 10px;
 }
