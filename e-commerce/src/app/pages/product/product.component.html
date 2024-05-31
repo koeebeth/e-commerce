@@ -13,10 +13,12 @@
     </div>
     <div class="price-container">
       <div class="prices">
-        <p class="original-price"></p>
-        <p class="discount"></p>
+        <p *ngIf="discountPercnt > 0" class="original-price">{{ originalPrice | currency }}</p>
+        <p *ngIf="discountPercnt > 0" class="discount">{{ discountPercnt }}%</p>
       </div>
-      <p class="discounted-price"></p>
+      <p class="discounted-price">
+        {{ discountPercnt > 0 ? (discuntedPrice | currency) : (originalPrice | currency) }}
+      </p>
       <div class="button-container">
         <button>
           <img src="../../../assets/cart.svg" width="18" height="18" alt="cart" />
