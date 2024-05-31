@@ -8,7 +8,8 @@
   color: $color-primary-700;
   gap: 15px;
   padding: 10px 100px;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   justify-content: space-between;
 
   @media screen and (max-width: 715px) {

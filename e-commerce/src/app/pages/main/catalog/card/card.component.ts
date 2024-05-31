@@ -40,12 +40,15 @@ export default class CardComponent {
 
   discountPercnt!: number;
 
+  currency!: string;
+
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     this.mainImage = this.card?.masterData?.current?.masterVariant?.images[0]?.url || '';
     this.name = this.card?.masterData?.current?.name['en-US'] || '';
-    this.getPrice();
+
+    this.getOriginalPrice();
     this.getDiscuntedPrice();
     this.formatPrice();
     this.getDiscountProcentage();
@@ -72,7 +75,7 @@ export default class CardComponent {
     }
   }
 
-  getPrice() {
+  getOriginalPrice() {
     const prices = this.card?.masterData?.current?.masterVariant?.prices;
     const priceObj = prices?.find((p) => p.value?.centAmount != null && p.value?.fractionDigits != null);
 
@@ -83,10 +86,11 @@ export default class CardComponent {
   }
 
   formatPrice() {
-    const price = this.centAmount / 10 ** this.fractionDigits;
-    const discuntedPrice = this.discountCentAmount / 10 ** this.discountFractionDigits;
-    this.originalPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(price);
-    this.discuntedPrice = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(discuntedPrice);
+    this.originalPrice = `${this.centAmount / 10 ** this.fractionDigits}`;
+    this.discuntedPrice = `${this.discountCentAmount / 10 ** this.discountFractionDigits}`;
+    this.currency =
+      this.card?.masterData?.current?.masterVariant?.prices?.find((c) => c.value?.currencyCode != null)?.value
+        ?.currencyCode ?? 'USD';
   }
 
   getDiscountProcentage() {
