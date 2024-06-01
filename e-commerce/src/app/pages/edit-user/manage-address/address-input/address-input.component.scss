@@ -1,0 +1,8 @@
+.address-input-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+}

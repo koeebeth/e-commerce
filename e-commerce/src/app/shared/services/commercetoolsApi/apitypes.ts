@@ -36,10 +36,10 @@ export interface CustomerInfo {
 
 export interface Address {
   id?: string;
-  city?: string;
+  city: string;
   country: string;
-  streetNumber?: string;
-  postalCode?: string;
+  streetNumber: string;
+  postalCode: string;
   additionalAddressInfo?: string;
 }
 

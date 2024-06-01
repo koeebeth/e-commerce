@@ -3,11 +3,25 @@
   <form [formGroup]="addressForm" class="address-form">
     <fieldset>
       <legend>Shipping</legend>
+      <app-address-input
+        *ngFor="let address of shippingAddresses.controls"
+        [defaultValue]="address.value"
+        [form]="address"
+      ></app-address-input>
+      <app-button btnType="link" content="+ Add address" (clickHandler)="addAddress('shipping')"></app-button>
     </fieldset>
     <fieldset>
       <legend>Billing</legend>
+      <app-address-input
+        *ngFor="let address of billingAddresses.controls"
+        [form]="address"
+        [defaultValue]="address.value"
+      ></app-address-input>
+      <app-button btnType="link" content="+ Add address" (clickHandler)="addAddress('billing')"></app-button>
     </fieldset>
-    <app-button [isDisabled]="!addressForm.valid" content="Save Changes" (clickHandler)="onSubmit()"></app-button>
-    <app-button btnType="link" content="Cancel" (clickHandler)="onClose()"></app-button>
+    <div class="buttons">
+      <app-button [isDisabled]="!addressForm.valid" content="Save Changes" (clickHandler)="onSubmit()"></app-button>
+      <app-button btnType="link" content="Cancel" (clickHandler)="onClose()"></app-button>
+    </div>
   </form>
 </div>
