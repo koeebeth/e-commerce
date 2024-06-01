@@ -142,7 +142,7 @@ export default class CommerceApiService {
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`);
 
-    const requestActions = [];
+    const requestActions: object[] = [];
     const addIdActions: object[] = [];
 
     addresses.forEach((address) => {
@@ -157,8 +157,7 @@ export default class CommerceApiService {
       } else {
         requestActions.push({
           action: 'addAddress',
-          adressKey: address.key,
-          address: addressInfo,
+          address,
         });
         if (address.type === 'billing') {
           addIdActions.push({
@@ -185,7 +184,7 @@ export default class CommerceApiService {
 
     const body = {
       version,
-      actions,
+      actions: requestActions,
     };
 
     return this.http.post<CustomerInfo>(requestUrl, JSON.stringify(body), { headers }).pipe(
