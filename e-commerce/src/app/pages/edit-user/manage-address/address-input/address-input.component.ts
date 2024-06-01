@@ -1,9 +1,9 @@
-import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import InputComponent from '../../../../shared/components/input/input.component';
 import SelectInputComponent from '../../../../shared/components/select-input/select-input.component';
 import RegistrationValidators from '../../../../shared/utils/registration-validators';
-import { CommonModule } from '@angular/common';
 import ButtonComponent from '../../../../shared/components/button/button.component';
 
 @Component({
@@ -13,7 +13,7 @@ import ButtonComponent from '../../../../shared/components/button/button.compone
   templateUrl: './address-input.component.html',
   styleUrl: './address-input.component.scss',
 })
-export class AddressInputComponent {
+export default class AddressInputComponent {
   @Input() form!: FormGroup;
 
   @Input() defaultValue = {

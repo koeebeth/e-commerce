@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
 import { Address, AuthData, CartBase, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';
@@ -133,7 +133,7 @@ export default class CommerceApiService {
     accessToken: string,
     version: number,
     currentUser: CustomerInfo,
-    addresses: (Address & { key: number; type: 'billing' | 'shipping' })[],
+    addresses: (Address & { key: string; type: 'billing' | 'shipping' })[],
   ) {
     const requestUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me`;
     const currentAddresses = currentUser.addresses;
@@ -142,52 +142,63 @@ export default class CommerceApiService {
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`);
 
-    const actions = [];
+    const requestActions = [];
+    const addIdActions: object[] = [];
 
-    for (let address of addresses) {
+    addresses.forEach((address) => {
       const { city, country, postalCode, streetNumber } = address;
       const addressInfo = { city, country, postalCode, streetNumber };
       if (currentAddresses.find((a) => a.id === address.id)) {
-        actions.push({
+        requestActions.push({
           action: 'changeAddress',
           addressId: address.id,
           address: addressInfo,
         });
       } else {
-        actions.push({
+        requestActions.push({
           action: 'addAddress',
-          key: address.key,
+          adressKey: address.key,
           address: addressInfo,
         });
         if (address.type === 'billing') {
-          actions.push({
+          addIdActions.push({
             action: 'addBillingAddressId',
             addressKey: address.key,
           });
         } else {
-          actions.push({
+          addIdActions.push({
             action: 'addShippingAddressId',
             addressKey: address.key,
           });
         }
       }
-    }
+    });
 
-    for (let address of currentAddresses) {
+    currentAddresses.forEach((address) => {
       if (!addresses.find((a) => a.id === address.id)) {
-        actions.push({
+        requestActions.push({
           action: 'removeAddress',
           addressId: address.id,
         });
       }
-    }
+    });
 
     const body = {
       version,
       actions,
     };
 
-    return this.http.post<PersonalInfo>(requestUrl, JSON.stringify(body), { headers });
+    return this.http.post<CustomerInfo>(requestUrl, JSON.stringify(body), { headers }).pipe(
+      mergeMap((res) => {
+        return this.http.post<PersonalInfo>(
+          requestUrl,
+          JSON.stringify({ version: res.version, actions: addIdActions }),
+          {
+            headers,
+          },
+        );
+      }),
+    );
   }
 
   updatePassword(accessToken: string, version: number, data: PasswordChange) {

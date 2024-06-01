@@ -51,6 +51,10 @@ export const ecommerceReducer = createReducer(
   on(actions.loadUpdateUserPasswordSuccess, (state, { userInfo }) => ({ ...state, userInfo, loading: false })),
   on(actions.loadUpdateUserPasswordFailure, (state, { error }) => ({ ...state, error, loading: false })),
   ///
+  on(actions.loadUpdateUserAddresses, (state) => ({ ...state, loading: true })),
+  on(actions.loadUpdateUserAddressesSuccess, (state, { userInfo }) => ({ ...state, userInfo, loading: false })),
+  on(actions.loadUpdateUserAddressesFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
   on(actions.logoutSuccess, (state) => {
     return { ...state, accessToken: '', anonymousToken: '' };
   }),

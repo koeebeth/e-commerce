@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Form, FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { CustomerInfo } from '../../../shared/services/commercetoolsApi/apitypes';
-import ButtonComponent from '../../../shared/components/button/button.component';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { Address, CustomerInfo } from '../../../shared/services/commercetoolsApi/apitypes';
+import ButtonComponent from '../../../shared/components/button/button.component';
 import { AppState } from '../../../store/store';
-import { AddressInputComponent } from './address-input/address-input.component';
+import AddressInputComponent from './address-input/address-input.component';
+import { loadUpdateUserAddresses } from '../../../store/actions';
 
 @Component({
   selector: 'app-manage-address',
@@ -63,7 +64,28 @@ export class ManageAddressComponent {
   }
 
   onSubmit() {
-    console.log(this.addressForm.value);
+    const addresses: (Address & { key: string; type: 'billing' | 'shipping' })[] = [];
+    console.log(this.billingAddresses.value);
+    this.billingAddresses.value.forEach((address) => {
+      addresses.push({
+        ...address,
+        country: this.countryIsoFormat.find((c) => c.country === address.country)?.iso,
+        key: Math.floor(Math.random() * 100000).toString(),
+        type: 'billing',
+      });
+    });
+    this.shippingAddresses.value.forEach((address) => {
+      addresses.push({
+        ...address,
+        country: this.countryIsoFormat.find((c) => c.country === address.country)?.iso,
+        key: Math.floor(Math.random() * 100000).toString(),
+        type: 'shipping',
+      });
+    });
+
+    this.store.dispatch(
+      loadUpdateUserAddresses({ version: this.userInfo.version, addresses, userInfo: this.userInfo }),
+    );
   }
 
   onClose() {

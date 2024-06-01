@@ -215,6 +215,25 @@ export default class EcommerceEffects {
     ),
   );
 
+  loadUpdateUserAddress$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadUpdateUserAddresses),
+      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))), // Assuming accessToken is stored in the auth state
+      filter(([, accessToken]) => !!accessToken), // Filter out if access token is not present
+      switchMap(([action, accessToken]) =>
+        this.ecommerceApiService
+          .updateAddresses(accessToken, action.userInfo.version, action.userInfo, action.addresses)
+          .pipe(
+            map((response) => {
+              this.notificationService.showNotification('success', 'Successfully updated addresses');
+              return actions.loadUpdateUserAddressesSuccess({ userInfo: <CustomerInfo>response });
+            }),
+            catchError((error) => of(actions.loadUpdateUserAddressesFailure({ error }))),
+          ),
+      ),
+    ),
+  );
+
   loadUpdateUserPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadUpdateUserPassword),
