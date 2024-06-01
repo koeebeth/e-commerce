@@ -261,7 +261,10 @@ export default class EcommerceEffects {
               map((product: Product) => actions.loadProductIdSuccess({ product })),
               catchError((error) => {
                 this.router.navigate(['/catalog']);
-                this.notificationService.showNotification('error', 'The Product was not found');
+                this.notificationService.showNotification(
+                  'error',
+                  `${error.error.statusCode}: The Product was not found`,
+                );
                 return of(
                   actions.loadProductIdFailure({
                     error: error.message,
