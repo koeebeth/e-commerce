@@ -4,18 +4,20 @@
     <fieldset>
       <legend>Shipping</legend>
       <app-address-input
-        *ngFor="let address of shippingAddresses.controls"
+        *ngFor="let address of shippingAddresses.controls; let i = index"
         [defaultValue]="address.value"
         [form]="address"
+        (delete)="deleteShippingAddress(i)"
       ></app-address-input>
       <app-button btnType="link" content="+ Add address" (clickHandler)="addAddress('shipping')"></app-button>
     </fieldset>
     <fieldset>
       <legend>Billing</legend>
       <app-address-input
-        *ngFor="let address of billingAddresses.controls"
+        *ngFor="let address of billingAddresses.controls; let i = index"
         [form]="address"
         [defaultValue]="address.value"
+        (delete)="deleteBillingAddress(i)"
       ></app-address-input>
       <app-button btnType="link" content="+ Add address" (clickHandler)="addAddress('billing')"></app-button>
     </fieldset>

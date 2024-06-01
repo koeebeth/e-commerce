@@ -109,4 +109,12 @@ export class ManageAddressComponent {
       country: this.countryIsoFormat.find((c) => c.iso === a.country)?.country || '',
     }));
   }
+
+  deleteShippingAddress(index: number) {
+    this.shippingAddresses.removeAt(index);
+  }
+
+  deleteBillingAddress(index: number) {
+    this.billingAddresses.removeAt(index);
+  }
 }

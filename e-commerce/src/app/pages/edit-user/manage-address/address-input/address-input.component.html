@@ -17,7 +17,7 @@
     name="country"
     label="Country"
     [form]="form"
-    (change)="onSelect($event)"
+    (change)="onSelectCountry($event)"
     [value]="form.value.country"
     [optList]="countries"
   ></app-select-input>
@@ -37,4 +37,5 @@
     [defaultValue]="form.value.postalCode"
     label="Postal Code"
   ></app-input>
+  <app-button content="delete" (clickHandler)="onDelete()" btnType="link"></app-button>
 </div>

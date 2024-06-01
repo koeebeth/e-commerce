@@ -1,14 +1,15 @@
-import { AfterViewInit, Component, Input } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import InputComponent from '../../../../shared/components/input/input.component';
 import SelectInputComponent from '../../../../shared/components/select-input/select-input.component';
 import RegistrationValidators from '../../../../shared/utils/registration-validators';
 import { CommonModule } from '@angular/common';
+import ButtonComponent from '../../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-address-input',
   standalone: true,
-  imports: [CommonModule, InputComponent, SelectInputComponent, ReactiveFormsModule],
+  imports: [CommonModule, InputComponent, SelectInputComponent, ReactiveFormsModule, ButtonComponent],
   templateUrl: './address-input.component.html',
   styleUrl: './address-input.component.scss',
 })
@@ -21,6 +22,8 @@ export class AddressInputComponent {
     streetNumber: '',
     postalCode: '',
   };
+
+  @Output() delete = new EventEmitter();
 
   selectedCountry = '';
 
@@ -42,9 +45,13 @@ export class AddressInputComponent {
     this.form.controls['postalCode'].setValue(this.defaultValue.postalCode);
   }
 
-  onSelect(e: Event) {
+  onSelectCountry(e: Event) {
     const country = (e.target as HTMLSelectElement).value;
     this.selectedCountry = country;
     this.form.controls['postalCode'].setValue('');
+  }
+
+  onDelete() {
+    this.delete.emit();
   }
 }
