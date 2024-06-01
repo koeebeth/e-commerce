@@ -35,7 +35,7 @@ export interface CustomerInfo {
 }
 
 export interface Address {
-  id?: string;
+  id: string;
   city: string;
   country: string;
   streetNumber: string;

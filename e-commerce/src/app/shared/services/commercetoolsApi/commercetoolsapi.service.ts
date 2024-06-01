@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { AuthData, CartBase, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';
+import { Address, AuthData, CartBase, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 import * as actions from '../../../store/actions';
 import { AppState } from '../../../store/store';
@@ -124,6 +124,67 @@ export default class CommerceApiService {
           dateOfBirth: data.dateOfBirth,
         },
       ],
+    };
+
+    return this.http.post<PersonalInfo>(requestUrl, JSON.stringify(body), { headers });
+  }
+
+  updateAddresses(
+    accessToken: string,
+    version: number,
+    currentUser: CustomerInfo,
+    addresses: (Address & { key: number; type: 'billing' | 'shipping' })[],
+  ) {
+    const requestUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me`;
+    const currentAddresses = currentUser.addresses;
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    const actions = [];
+
+    for (let address of addresses) {
+      const { city, country, postalCode, streetNumber } = address;
+      const addressInfo = { city, country, postalCode, streetNumber };
+      if (currentAddresses.find((a) => a.id === address.id)) {
+        actions.push({
+          action: 'changeAddress',
+          addressId: address.id,
+          address: addressInfo,
+        });
+      } else {
+        actions.push({
+          action: 'addAddress',
+          key: address.key,
+          address: addressInfo,
+        });
+        if (address.type === 'billing') {
+          actions.push({
+            action: 'addBillingAddressId',
+            addressKey: address.key,
+          });
+        } else {
+          actions.push({
+            action: 'addShippingAddressId',
+            addressKey: address.key,
+          });
+        }
+      }
+    }
+
+    for (let address of currentAddresses) {
+      if (!addresses.find((a) => a.id === address.id)) {
+        actions.push({
+          action: 'removeAddress',
+          addressId: address.id,
+        });
+      }
+    }
+
+    const body = {
+      version,
+      actions,
     };
 
     return this.http.post<PersonalInfo>(requestUrl, JSON.stringify(body), { headers });

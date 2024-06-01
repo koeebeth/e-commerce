@@ -6,6 +6,7 @@ import {
   CustomerSignin,
   PasswordChange,
 } from '../shared/services/commercetoolsApi/apitypes';
+import { Address } from '@commercetools/importapi-sdk';
 
 export const loadAccsessToken = createAction('[Auth] Load Access Token', props<{ accessData: CustomerSignin }>());
 export const refreshAccsessToken = createAction(
@@ -67,6 +68,19 @@ export const loadUpdateUserPasswordSuccess = createAction(
 export const loadUpdateUserPasswordFailure = createAction(
   '[User] Load Updating User Password Failure',
   props<{ error: string }>(),
+);
+
+export const loadUpdateUserAddresses = createAction(
+  '[User] Load Updating User Addresses',
+  props<{ version: number; addresses: (Address & { key: number })[]; userInfo: CustomerInfo }>,
+);
+export const loadUpdateUserAddressesSuccess = createAction(
+  '[User] Load Updating User Addresses',
+  props<{ userInfo: CustomerInfo }>,
+);
+export const loadUpdateUserAddressesFailure = createAction(
+  '[User] Load Updating User Addresses',
+  props<{ error: string }>,
 );
 
 export const loadAnonymousCartSuccess = createAction(
