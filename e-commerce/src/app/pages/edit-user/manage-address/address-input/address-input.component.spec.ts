@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { AddressInputComponent } from './address-input.component';
+import AddressInputComponent from './address-input.component';
 
 describe('AddressInputComponent', () => {
   let component: AddressInputComponent;

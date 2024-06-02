@@ -5,11 +5,19 @@ import InputComponent from '../../../../shared/components/input/input.component'
 import SelectInputComponent from '../../../../shared/components/select-input/select-input.component';
 import RegistrationValidators from '../../../../shared/utils/registration-validators';
 import ButtonComponent from '../../../../shared/components/button/button.component';
+import CheckboxInputComponent from '../../../../shared/components/checkbox-input/checkbox-input.component';
 
 @Component({
   selector: 'app-address-input',
   standalone: true,
-  imports: [CommonModule, InputComponent, SelectInputComponent, ReactiveFormsModule, ButtonComponent],
+  imports: [
+    CommonModule,
+    InputComponent,
+    SelectInputComponent,
+    ReactiveFormsModule,
+    ButtonComponent,
+    CheckboxInputComponent,
+  ],
   templateUrl: './address-input.component.html',
   styleUrl: './address-input.component.scss',
 })
@@ -22,8 +30,11 @@ export default class AddressInputComponent {
     streetNumber: '',
     postalCode: '',
   };
+  @Input() isDefault = false;
 
   @Output() delete = new EventEmitter();
+
+  @Output() setDefault = new EventEmitter();
 
   selectedCountry = '';
 
@@ -53,5 +64,9 @@ export default class AddressInputComponent {
 
   onDelete() {
     this.delete.emit();
+  }
+
+  onSetDefault() {
+    this.setDefault.emit();
   }
 }

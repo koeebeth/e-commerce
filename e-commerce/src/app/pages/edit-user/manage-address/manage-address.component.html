@@ -8,6 +8,8 @@
         [defaultValue]="address.value"
         [form]="address"
         (delete)="deleteShippingAddress(i)"
+        (setDefault)="onSelectDefault('shipping', i)"
+        [isDefault]="defaultShippingIndex === i"
       ></app-address-input>
       <app-button btnType="link" content="+ Add address" (clickHandler)="addAddress('shipping')"></app-button>
     </fieldset>
@@ -18,6 +20,8 @@
         [form]="address"
         [defaultValue]="address.value"
         (delete)="deleteBillingAddress(i)"
+        (setDefault)="onSelectDefault('billing', i)"
+        [isDefault]="defaultBillingIndex === i"
       ></app-address-input>
       <app-button btnType="link" content="+ Add address" (clickHandler)="addAddress('billing')"></app-button>
     </fieldset>

@@ -26,6 +26,10 @@ export class ManageAddressComponent {
     { country: 'Germany', iso: 'DE' },
   ];
 
+  defaultShippingIndex: number = -1;
+
+  defaultBillingIndex: number = -1;
+
   @Output() closeHandler = new EventEmitter();
 
   constructor(
@@ -47,12 +51,14 @@ export class ManageAddressComponent {
         }
       });
 
-    this.getBillingAddresses().forEach((fg) =>
-      (this.addressForm.get('billing') as FormArray).push(this.createAddress(fg)),
-    );
-    this.getShippingAddresses().forEach((fg) =>
-      (this.addressForm.get('shipping') as FormArray).push(this.createAddress(fg)),
-    );
+    this.getBillingAddresses().forEach((address, i) => {
+      if (address.id === this.userInfo.defaultBillingAddressId) this.defaultBillingIndex = i;
+      (this.addressForm.get('billing') as FormArray).push(this.createAddress(address));
+    });
+    this.getShippingAddresses().forEach((address, i) => {
+      if (address.id === this.userInfo.defaultShippingAddressId) this.defaultShippingIndex = i;
+      (this.addressForm.get('shipping') as FormArray).push(this.createAddress(address));
+    });
   }
 
   get billingAddresses() {
@@ -64,28 +70,32 @@ export class ManageAddressComponent {
   }
 
   onSubmit() {
-    const addresses: (Address & { key: string; type: 'billing' | 'shipping' })[] = [];
+    const addresses: (Address & { key: string; type: 'billing' | 'shipping'; default: boolean })[] = [];
     console.log(this.billingAddresses.value);
-    this.billingAddresses.value.forEach((address) => {
+    this.billingAddresses.value.forEach((address, i) => {
       addresses.push({
         ...address,
         country: this.countryIsoFormat.find((c) => c.country === address.country)?.iso,
         key: Math.floor(Math.random() * 100000).toString(),
         type: 'billing',
+        default: i === this.defaultBillingIndex,
       });
     });
-    this.shippingAddresses.value.forEach((address) => {
+    this.shippingAddresses.value.forEach((address, i) => {
       addresses.push({
         ...address,
         country: this.countryIsoFormat.find((c) => c.country === address.country)?.iso,
         key: Math.floor(Math.random() * 100000).toString(),
         type: 'shipping',
+        default: i === this.defaultShippingIndex,
       });
     });
 
     this.store.dispatch(
       loadUpdateUserAddresses({ version: this.userInfo.version, addresses, userInfo: this.userInfo }),
     );
+
+    this.onClose();
   }
 
   onClose() {
@@ -116,6 +126,14 @@ export class ManageAddressComponent {
     }
   }
 
+  onSelectDefault(type: 'billing' | 'shipping', index: number) {
+    if (type === 'billing') {
+      this.defaultBillingIndex = this.defaultBillingIndex === index ? -1 : index;
+    } else {
+      this.defaultShippingIndex = this.defaultShippingIndex === index ? -1 : index;
+    }
+  }
+
   getBillingAddresses() {
     const addresses = this.userInfo.addresses.filter((a) => this.userInfo.billingAddressIds.includes(a.id || ''));
     return addresses.map((a) => ({
@@ -134,9 +152,11 @@ export class ManageAddressComponent {
 
   deleteShippingAddress(index: number) {
     this.shippingAddresses.removeAt(index);
+    if (this.defaultShippingIndex === index) this.defaultShippingIndex = -1;
   }
 
   deleteBillingAddress(index: number) {
     this.billingAddresses.removeAt(index);
+    if (this.defaultBillingIndex === index) this.defaultBillingIndex = -1;
   }
 }

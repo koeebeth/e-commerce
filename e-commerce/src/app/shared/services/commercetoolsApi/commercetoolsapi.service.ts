@@ -133,7 +133,7 @@ export default class CommerceApiService {
     accessToken: string,
     version: number,
     currentUser: CustomerInfo,
-    addresses: (Address & { key: string; type: 'billing' | 'shipping' })[],
+    addresses: (Address & { key: string; type: 'billing' | 'shipping'; default: boolean })[],
   ) {
     const requestUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me`;
     const currentAddresses = currentUser.addresses;
@@ -154,6 +154,18 @@ export default class CommerceApiService {
           addressId: address.id,
           address: addressInfo,
         });
+
+        if (address.default && address.type === 'billing') {
+          requestActions.push({
+            action: 'setDefaultBillingAddress',
+            addressId: address.id,
+          });
+        } else if (address.default && address.type === 'shipping') {
+          requestActions.push({
+            action: 'setDefaultShippingAddress',
+            addressId: address.id,
+          });
+        }
       } else {
         requestActions.push({
           action: 'addAddress',
@@ -164,11 +176,25 @@ export default class CommerceApiService {
             action: 'addBillingAddressId',
             addressKey: address.key,
           });
+
+          if (address.default) {
+            addIdActions.push({
+              action: 'setDefaultBillingAddress',
+              addressKey: address.key,
+            });
+          }
         } else {
           addIdActions.push({
             action: 'addShippingAddressId',
             addressKey: address.key,
           });
+
+          if (address.default) {
+            addIdActions.push({
+              action: 'setDefaultShippingAddress',
+              addressKey: address.key,
+            });
+          }
         }
       }
     });
@@ -181,6 +207,15 @@ export default class CommerceApiService {
         });
       }
     });
+
+    if (!addresses.find((a) => a.type === 'billing' && a.default))
+      requestActions.push({
+        action: 'setDefaultBillingAddress',
+      });
+    if (!addresses.find((a) => a.type === 'shipping' && a.default))
+      requestActions.push({
+        action: 'setDefaultBillingAddress',
+      });
 
     const body = {
       version,

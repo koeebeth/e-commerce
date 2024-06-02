@@ -74,7 +74,7 @@ export const loadUpdateUserAddresses = createAction(
   '[User] Load Updating User Addresses',
   props<{
     version: number;
-    addresses: (Address & { key: string; type: 'billing' | 'shipping' })[];
+    addresses: (Address & { key: string; type: 'billing' | 'shipping'; default: boolean })[];
     userInfo: CustomerInfo;
   }>(),
 );

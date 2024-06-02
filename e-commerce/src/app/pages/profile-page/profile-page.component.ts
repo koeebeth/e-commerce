@@ -26,6 +26,8 @@ export default class ProfilePageComponent {
     shippingAddressIds: [],
     billingAddressIds: [],
     version: 0,
+    defaultBillingAddressId: '',
+    defaultShippingAddressId: '',
   };
 
   formatDate = formatDate;

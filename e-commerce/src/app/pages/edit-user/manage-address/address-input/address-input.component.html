@@ -38,4 +38,8 @@
     label="Postal Code"
   ></app-input>
   <app-button content="delete" (clickHandler)="onDelete()" btnType="link"></app-button>
+  <label class="default-check">
+    <input type="checkbox" (change)="onSetDefault()" [checked]="isDefault" />
+    Default Address
+  </label>
 </div>

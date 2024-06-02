@@ -24,6 +24,8 @@ export interface CustomerDraft {
 
 export interface CustomerInfo {
   addresses: Address[];
+  defaultShippingAddressId: string;
+  defaultBillingAddressId: string;
   billingAddressIds: string[];
   shippingAddressIds: string[];
   dateOfBirth: string;
