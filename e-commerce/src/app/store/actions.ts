@@ -89,3 +89,13 @@ export const loadProductsFailure = createAction('[Products] Load Products Failur
 export const loadProductId = createAction('[Product] Load Products', props<{ id: string }>());
 export const loadProductIdSuccess = createAction('[Product] Load Products Success', props<{ product: Product }>());
 export const loadProductIdFailure = createAction('[Product] Load Products Failure', props<{ error: string }>());
+
+export const searchProducts = createAction(
+  '[Products] Search Products',
+  props<{ searchText: string; offset: number; limit: number }>(),
+);
+export const searchProductsSuccess = createAction(
+  '[Products] Search Products Success',
+  props<{ products: ProductPagedQueryResponse }>(),
+);
+export const searchProductsFailure = createAction('[Products] Search Products Failure', props<{ error: string }>());

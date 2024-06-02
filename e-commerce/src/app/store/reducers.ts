@@ -69,4 +69,8 @@ export const ecommerceReducer = createReducer(
   on(actions.loadProductIdSuccess, (state, { product }) => ({ ...state, product, loading: false })),
   on(actions.loadProductIdFailure, (state, { error }) => ({ ...state, error, loading: false })),
   ///
+  on(actions.searchProducts, (state) => ({ ...state, loading: true })),
+  on(actions.searchProductsSuccess, (state, { products }) => ({ ...state, products, loading: false })),
+  on(actions.searchProductsFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
 );

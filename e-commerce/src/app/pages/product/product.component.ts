@@ -21,6 +21,8 @@ export default class ProductComponent {
 
   productResponse!: ProductPagedQueryResponse;
 
+  productsObjects$!: Observable<ProductPagedQueryResponse | null>;
+
   product!: Product | undefined;
 
   name: string = '';
@@ -77,6 +79,7 @@ export default class ProductComponent {
         this.getDiscountProcentage();
       }
     });
+    // to use searching: this.store.dispatch(actions.searchProducts({ searchText: 'tyranny', offset: 0, limit: 10 }));
   }
 
   getImages() {

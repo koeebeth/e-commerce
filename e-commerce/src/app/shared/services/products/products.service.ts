@@ -47,7 +47,8 @@ export default class ProductsService {
     });
 
     const params = new HttpParams()
-      .set('text.en', searchText)
+      .set('text.en-US', searchText)
+      .set('fuzzy', true)
       .set('limit', limit.toString())
       .set('offset', offset.toString());
 

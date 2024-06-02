@@ -320,4 +320,34 @@ export default class EcommerceEffects {
       ),
     ),
   );
+
+  loadSearchProducts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.searchProducts),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.productsService
+              .searchProducts(action.searchText, accessToken || anonToken, action.offset, action.limit)
+              .pipe(
+                map((products: ProductPagedQueryResponse) =>
+                  actions.searchProductsSuccess({
+                    products,
+                  }),
+                ),
+                catchError((error) =>
+                  of(
+                    actions.searchProductsFailure({
+                      error: error.message,
+                    }),
+                  ),
+                ),
+              ),
+          ),
+        ),
+      ),
+    ),
+  );
 }
