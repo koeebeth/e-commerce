@@ -6,13 +6,24 @@
         {{ group.name }}
       </div>
       <div class="filter-group-content" [class.show]="group.isOpen">
-        <div *ngFor="let filter of group.filters">
+        <div *ngIf="group.name === '🤑 Price'">
           <label>
+            From:
+            <input type="number" [(ngModel)]="priceRange.from" />
+          </label>
+          <label>
+            To:
+            <input type="number" [(ngModel)]="priceRange.to" />
+          </label>
+        </div>
+        <div *ngIf="group.name !== '🤑 Price'">
+          <label *ngFor="let filter of group.filters">
             <input type="checkbox" [value]="filter" (change)="onFilterChange(filter, $event)" />
             {{ filter }}
           </label>
         </div>
       </div>
     </div>
+    <button class="apply-button" (click)="applyFilters()">Apply</button>
   </div>
 </div>

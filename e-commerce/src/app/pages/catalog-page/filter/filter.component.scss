@@ -55,6 +55,22 @@
       input[type='checkbox'] {
         margin-right: 5px;
       }
+
+      input[type='number'] {
+        width: 70px;
+        margin: 5px 0;
+      }
+    }
+
+    .apply-button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      text-align: center;
     }
 
     &:hover {
@@ -64,7 +80,6 @@
   }
 }
 
-// Адаптивность для мобильных устройств
 @media screen and (max-width: 700px) {
   .filter-container {
     width: 100%;
@@ -89,5 +104,9 @@
     .filter-group-content {
       padding-left: 5px;
     }
+  }
+
+  .apply-button {
+    font-size: 16px;
   }
 }

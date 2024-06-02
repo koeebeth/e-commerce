@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { AppState } from '../../../store/store';
 import * as actions from '../../../store/actions';
 import { Store } from '@ngrx/store';
+import { FormsModule } from '@angular/forms';
 
 interface FilterGroup {
   name: string;
@@ -13,12 +14,13 @@ interface FilterGroup {
 @Component({
   selector: 'app-filter',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.scss',
 })
 export class FilterComponent {
   isFilterMenuOpen: boolean = false;
+  priceRange: { from: number | null; to: number | null } = { from: null, to: null };
   filterGroups: FilterGroup[] = [
     {
       name: '🤖 Category',
@@ -33,17 +35,17 @@ export class FilterComponent {
     {
       name: '🤑 Price',
       isOpen: false,
-      filters: ['Under $5', '$5 - $15', 'Above $15'],
-    },
+      filters: []
+    }
   ];
 
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
-    this.loadCategories();
+    this.getCategories();
   }
 
-  loadCategories() {
+  getCategories() {
     this.store.dispatch(actions.loadCategories({ offset: 0, limit: 100 }));
     this.store
       .select((state) => state.app.categories)
@@ -68,5 +70,25 @@ export class FilterComponent {
   onFilterChange(filter: string, event: Event) {
     const isChecked = (event.target as HTMLInputElement).checked;
     console.log(`Filter ${filter} is ${isChecked ? 'checked' : 'unchecked'}`);
+  }
+
+  applyFilters() {
+    const appliedFilters = {
+      categories: this.getCheckedFilters('🤖 Category'),
+      discount: this.getCheckedFilters('🤩 Discount'),
+      priceRange: this.priceRange
+    };
+    console.log('Applied Filters:', appliedFilters);
+  }
+
+  getCheckedFilters(groupName: string): string[] {
+    const group = this.filterGroups.find(g => g.name === groupName);
+    if (group) {
+      return group.filters.filter(filter => {
+        const checkbox = document.querySelector(`input[type='checkbox'][value='${filter}']`) as HTMLInputElement;
+        return checkbox.checked;
+      });
+    }
+    return [];
   }
 }
