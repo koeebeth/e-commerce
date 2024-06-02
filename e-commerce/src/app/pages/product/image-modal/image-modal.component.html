@@ -1,6 +1,16 @@
 <div class="modal" (click)="closeModalOutsideClick($event)" (keyup.enter)="closeModalOutsideClick($event)" tabindex="0">
   <div class="modal-container">
     <div class="close-btn" (click)="close()" (keyup.enter)="close()" tabindex="0">x</div>
-    <img [src]="selectedImage" alt="" />
+    <swiper-container
+      #swiperContainer
+      style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
+      init="false"
+      navigation="true"
+      space-between="3"
+    >
+      <swiper-slide *ngFor="let image of images">
+        <img [src]="image" [alt]="name" />
+      </swiper-slide>
+    </swiper-container>
   </div>
 </div>
