@@ -30,6 +30,7 @@ export default class AddressInputComponent {
     streetNumber: '',
     postalCode: '',
   };
+
   @Input() isDefault = false;
 
   @Output() delete = new EventEmitter();

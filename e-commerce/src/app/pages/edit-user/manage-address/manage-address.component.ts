@@ -15,7 +15,7 @@ import { loadUpdateUserAddresses } from '../../../store/actions';
   templateUrl: './manage-address.component.html',
   styleUrl: './manage-address.component.scss',
 })
-export class ManageAddressComponent {
+export default class ManageAddressComponent {
   addressForm!: FormGroup;
 
   userInfo!: CustomerInfo;
