@@ -30,7 +30,6 @@ export default class ProfilePageComponent {
 
   formatDate = formatDate;
 
-
   isEditing = false;
 
   constructor(

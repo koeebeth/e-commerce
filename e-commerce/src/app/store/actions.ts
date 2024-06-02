@@ -70,7 +70,6 @@ export const loadUpdateUserPasswordFailure = createAction(
   props<{ error: string }>(),
 );
 
-
 export const loadAnonymousCartSuccess = createAction(
   '[Cart] Cart Anonymous Id Success',
   props<{ cartBase: CartBase }>(),

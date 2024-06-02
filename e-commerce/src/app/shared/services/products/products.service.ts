@@ -33,4 +33,24 @@ export default class ProductsService {
 
     return this.http.get<Product>(url, { headers });
   }
+
+  searchProducts(
+    searchText: string,
+    token: string,
+    offset: number,
+    limit: number,
+  ): Observable<ProductPagedQueryResponse> {
+    const url = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/product-projections/search`;
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    const params = new HttpParams()
+      .set('text.en', searchText)
+      .set('limit', limit.toString())
+      .set('offset', offset.toString());
+
+    return this.http.get<ProductPagedQueryResponse>(url, { headers, params });
+  }
 }
