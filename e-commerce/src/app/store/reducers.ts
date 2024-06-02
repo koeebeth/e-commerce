@@ -1,6 +1,11 @@
 import { createReducer, on } from '@ngrx/store';
 import * as actions from './actions';
-import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
+import {
+  CategoriesArray,
+  Product,
+  ProductProjectionArray,
+  ProductsArray,
+} from '../shared/services/products/productTypes';
 import { CartBase, CustomerDraft, CustomerInfo } from '../shared/services/commercetoolsApi/apitypes';
 
 export interface EcommerceState {
@@ -66,5 +71,12 @@ export const ecommerceReducer = createReducer(
   on(actions.loadCategories, (state) => ({ ...state, loading: true })),
   on(actions.loadCategoriesSuccess, (state, { categories }) => ({ ...state, categories, loading: false })),
   on(actions.loadCategoriesFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  ///
+  on(actions.loadFilter, (state) => ({ ...state, loading: true })),
+  on(actions.loadFilterSuccess, (state, { products }) => {
+    return { ...state, products, loading: false };
+  }),
+  on(actions.loadFilterFailure, (state, { error }) => ({ ...state, error, loading: false })),
   ///
 );

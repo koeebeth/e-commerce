@@ -8,9 +8,8 @@ import { FormsModule } from '@angular/forms';
 interface FilterGroup {
   name: string;
   isOpen: boolean;
-  filters: string[];
+  filters: { name: string; id: string; checked: boolean }[];
 }
-
 @Component({
   selector: 'app-filter',
   standalone: true,
@@ -30,13 +29,16 @@ export class FilterComponent {
     {
       name: '🤩 Discount',
       isOpen: false,
-      filters: ['With', 'Without'],
+      filters: [
+        { name: 'With', id: '1', checked: false },
+        { name: 'Without', id: '2', checked: false },
+      ],
     },
     {
       name: '🤑 Price',
       isOpen: false,
-      filters: []
-    }
+      filters: [],
+    },
   ];
 
   constructor(private store: Store<AppState>) {}
@@ -51,7 +53,13 @@ export class FilterComponent {
       .select((state) => state.app.categories)
       .subscribe((categories) => {
         if (categories) {
-          this.filterGroups[0].filters = categories.results.map((category) => category?.name['en-US'] || '');
+          const categoryFilters = categories.results.map((category) => ({
+            name: category?.name['en-US'] || '',
+            id: category?.id || '',
+            checked: false,
+          }));
+          this.filterGroups[0].filters = categoryFilters;
+          console.log('this.filterGroups[0].filters', this.filterGroups[0].filters);
         }
       });
   }
@@ -67,27 +75,17 @@ export class FilterComponent {
     }
   }
 
-  onFilterChange(filter: string, event: Event) {
-    const isChecked = (event.target as HTMLInputElement).checked;
-    console.log(`Filter ${filter} is ${isChecked ? 'checked' : 'unchecked'}`);
-  }
-
   applyFilters() {
-    const appliedFilters = {
-      categories: this.getCheckedFilters('🤖 Category'),
-      discount: this.getCheckedFilters('🤩 Discount'),
-      priceRange: this.priceRange
-    };
-    console.log('Applied Filters:', appliedFilters);
+    const categoryFilters = this.getCheckedFilters('🤖 Category');
+    const categoryIds = categoryFilters.map((filter) => filter.id);
+    this.store.dispatch(actions.loadFilter({ categoryIds: categoryIds, offset: 0, limit: 100 }));
+    console.log('Applied Filters:', categoryIds);
   }
 
-  getCheckedFilters(groupName: string): string[] {
-    const group = this.filterGroups.find(g => g.name === groupName);
+  getCheckedFilters(groupName: string): { name: string; id: string; checked: boolean }[] {
+    const group = this.filterGroups.find((g) => g.name === groupName);
     if (group) {
-      return group.filters.filter(filter => {
-        const checkbox = document.querySelector(`input[type='checkbox'][value='${filter}']`) as HTMLInputElement;
-        return checkbox.checked;
-      });
+      return group.filters.filter((filter) => filter.checked);
     }
     return [];
   }

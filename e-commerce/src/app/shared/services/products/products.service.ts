@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { authVisitorAPI } from '../../../../environment';
-import { CategoriesArray, Product, ProductsArray } from './productTypes';
+import { CategoriesArray, Product, ProductProjectionArray, ProductsArray } from './productTypes';
 
 @Injectable({
   providedIn: 'root',
@@ -45,5 +45,34 @@ export default class ProductsService {
     });
 
     return this.http.get<CategoriesArray>(url, { headers, params });
+  }
+
+  filterProducts(
+    token: string,
+    categoryIds: string[],
+    sort?: string,
+    offset: number = 0,
+    limit: number = 10,
+  ): Observable<ProductProjectionArray> {
+    const url = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/product-projections/search`;
+
+    let params = new HttpParams().set('limit', limit.toString()).set('offset', offset.toString());
+
+    if (sort) {
+      params = params.set('sort', sort);
+    }
+
+    if (categoryIds && categoryIds.length > 0) {
+      categoryIds.forEach((categoryId) => {
+        params = params.append('filter', `categories.id:"${categoryId}"`);
+      });
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+
+    return this.http.get<ProductProjectionArray>(url, { headers, params });
   }
 }

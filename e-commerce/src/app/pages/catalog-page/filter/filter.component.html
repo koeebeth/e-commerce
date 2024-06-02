@@ -7,19 +7,15 @@
       </div>
       <div class="filter-group-content" [class.show]="group.isOpen">
         <div *ngIf="group.name === '🤑 Price'">
-          <label>
-            From:
-            <input type="number" [(ngModel)]="priceRange.from" />
-          </label>
-          <label>
-            To:
-            <input type="number" [(ngModel)]="priceRange.to" />
-          </label>
+          <label for="from-input">From:</label>
+          <input type="number" id="from-input" [(ngModel)]="priceRange.from" />
+          <label for="to-input">To:</label>
+          <input type="number" id="to-input" [(ngModel)]="priceRange.to" />
         </div>
         <div *ngIf="group.name !== '🤑 Price'">
-          <label *ngFor="let filter of group.filters">
-            <input type="checkbox" [value]="filter" (change)="onFilterChange(filter, $event)" />
-            {{ filter }}
+          <label *ngFor="let filter of group.filters" [for]="'filter-' + filter.id">
+            <input type="checkbox" [id]="'filter-' + filter.id" [value]="filter.id" [(ngModel)]="filter.checked" />
+            {{ filter.name }}
           </label>
         </div>
       </div>

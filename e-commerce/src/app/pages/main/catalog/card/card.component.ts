@@ -57,6 +57,10 @@ export default class CardComponent {
 
   addMainGif(): void {
     const gifPath = '/assets/gif/';
+    if (this.card?.masterData?.current?.key) {
+      const gifName = `${gifPath}${this.card?.masterData?.current?.key}.gif`;
+      this.mainGif = gifName;
+    }
     if (this.card?.key) {
       const gifName = `${gifPath}${this.card?.key}.gif`;
       this.mainGif = gifName;

@@ -1,5 +1,10 @@
 import { createAction, props } from '@ngrx/store';
-import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
+import {
+  CategoriesArray,
+  Product,
+  ProductsArray,
+  ProductProjectionArray,
+} from '../shared/services/products/productTypes';
 import { CartBase, CustomerDraft, CustomerInfo, CustomerSignin } from '../shared/services/commercetoolsApi/apitypes';
 
 export const loadAccsessToken = createAction('[Auth] Load Access Token', props<{ accessData: CustomerSignin }>());
@@ -70,3 +75,10 @@ export const loadCategoriesSuccess = createAction(
   props<{ categories: CategoriesArray }>(),
 );
 export const loadCategoriesFailure = createAction('[Product] Load Categories Failure', props<{ error: string }>());
+///
+export const loadFilter = createAction(
+  '[Filter] Load Filter',
+  props<{ offset: number; limit: number; categoryIds: string[]; sort?: string }>(),
+);
+export const loadFilterSuccess = createAction('[Filter] Load Filter Success', props<{ products: ProductsArray }>());
+export const loadFilterFailure = createAction('[Filter] Load Filter Failure', props<{ error: string }>());

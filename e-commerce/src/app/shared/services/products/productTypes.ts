@@ -6,93 +6,78 @@ export interface ProductsArray {
   results: Product[];
 }
 
+export interface ProductProjectionArray {
+  limit: number;
+  count: number;
+  total: number;
+  offset: number;
+  results: ProductData[];
+}
+
 export interface Product {
   id: string;
   key?: string;
-  version?: number;
-  createdAt?: string;
-  lastModifiedAt?: string;
-  masterData: ProductCatalogData;
-  productType?: {
-    typeId: string;
-    id: string;
-  };
-  name?: {
-    [locale: string]: string;
-  };
-  description?: {
-    [locale: string]: string;
-  };
-  slug?: {
-    [locale: string]: string;
-  };
+  name?: LocalizedString;
+  categories?: Reference[];
+  description?: LocalizedString;
+  slug?: LocalizedString;
   masterVariant?: ProductVariant;
   variants?: ProductVariant[];
-  taxCategory?: {
-    typeId: string;
-    id: string;
-  };
-  state?: {
-    typeId: string;
-    id: string;
-  };
-  categories?: {
-    typeId: string;
-    id: string;
-  }[];
-  categoryOrderHints?: {
-    [categoryId: string]: string;
-  };
+  createdAt?: string;
+  lastModifiedAt?: string;
+  masterData: MasterData;
+  productType?: Reference;
+  taxCategory?: Reference;
+  state?: Reference;
+  version?: number;
+  categoryOrderHints?: LocalizedString;
 }
 
-export interface ProductCatalogData {
+// export interface ProductProjection {
+//   id: string;
+//   name: LocalizedString;
+//   categories: Reference[];
+//   description?: LocalizedString;
+//   slug: LocalizedString;
+//   metaTitle?: LocalizedString;
+//   metaDescription?: LocalizedString;
+//   metaKeywords?: LocalizedString;
+//   masterVariant: ProductVariant;
+//   variants: ProductVariant[];
+//   hasStagedChanges: boolean;
+//   published: boolean;
+//   version: number;
+//   productType: Reference;
+//   categoryOrderHints?: { [key: string]: string };
+// }
+
+export interface MasterData {
   current?: ProductData;
   staged?: ProductData;
 }
 
 export interface ProductData {
-  name: {
-    [locale: string]: string;
-  };
-  categories?: {
-    typeId: string;
-    id: string;
-  }[];
-  description?: {
-    [locale: string]: string;
-  };
-  slug?: {
-    [locale: string]: string;
-  };
-  metaTitle?: {
-    [locale: string]: string;
-  };
-  metaDescription?: {
-    [locale: string]: string;
-  };
-  metaKeywords?: {
-    [locale: string]: string;
-  };
+  id: string;
+  key?: string;
+  name: LocalizedString;
+  categories?: Reference[];
+  createdAt?: string;
+  description?: LocalizedString;
+  lastModifiedAt?: string;
+  slug?: LocalizedString;
+  metaTitle?: LocalizedString;
+  metaDescription?: LocalizedString;
+  metaKeywords?: LocalizedString;
   masterVariant?: ProductVariant;
   variants?: ProductVariant[];
-  searchKeywords?: {
-    [locale: string]: SearchKeyword[];
-  };
   hasStagedChanges?: boolean;
   published?: boolean;
-  taxCategory?: {
-    typeId: string;
-    id: string;
-  };
-  state?: {
-    typeId: string;
-    id: string;
-  };
+  taxCategory?: Reference;
+  state?: Reference;
   reviewRatingStatistics?: ReviewRatingStatistics;
-  productType?: {
-    typeId: string;
-    id: string;
-  };
+  productType?: Reference;
+  version: number;
+  categoryOrderHints?: { [key: string]: string };
 }
 
 export interface ProductVariant {
@@ -110,15 +95,14 @@ export interface ProductVariant {
 }
 
 export interface Price {
-  value: Money;
   id?: string;
+  value: Money;
   country?: string;
   customerGroup?: Reference;
   channel?: Reference;
   validFrom?: string;
   validUntil?: string;
   discounted?: DiscountedPrice;
-  custom?: CustomFields;
 }
 
 export interface Money {
@@ -150,7 +134,6 @@ export interface Asset {
     [locale: string]: string;
   };
   tags?: string[];
-  custom?: CustomFields;
   key?: string;
 }
 
@@ -162,13 +145,6 @@ export interface AssetSource {
     h: number;
   };
   contentType?: string;
-}
-
-export interface CustomFields {
-  type: Reference;
-  fields: {
-    [key: string]: string;
-  };
 }
 
 export interface Reference {
@@ -205,7 +181,6 @@ export interface ScopedPrice {
   validFrom?: string;
   validUntil?: string;
   discounted?: DiscountedPrice;
-  custom?: CustomFields;
 }
 
 export interface SearchKeyword {
@@ -270,18 +245,15 @@ export interface Asset {
   name: LocalizedString;
   description?: LocalizedString;
   tags?: string[];
-  custom?: CustomFields;
   key?: string;
 }
 
 export interface AssetSource {
   uri: string;
   key?: string;
-  dimensions?: AssetDimensions;
+  dimensions?: {
+    w: number;
+    h: number;
+  };
   contentType?: string;
-}
-
-export interface AssetDimensions {
-  w: number;
-  h: number;
 }
