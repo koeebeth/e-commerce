@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import EditProfileComponent from './edit-profile/edit-profile.component';
 import ChangePasswordComponent from './change-password/change-password.component';
 import ButtonComponent from '../../shared/components/button/button.component';
-import { ManageAddressComponent } from './manage-address/manage-address.component';
+import ManageAddressComponent from './manage-address/manage-address.component';
 
 @Component({
   selector: 'app-edit-user',
