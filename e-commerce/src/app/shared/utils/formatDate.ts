@@ -1,6 +1,6 @@
 const formatDate = (date: number | string) => {
   const dateObj = new Date(date);
-  const day = dateObj.getDay();
+  const day = dateObj.getDate();
   const year = dateObj.getFullYear();
   const month = dateObj.getMonth();
 

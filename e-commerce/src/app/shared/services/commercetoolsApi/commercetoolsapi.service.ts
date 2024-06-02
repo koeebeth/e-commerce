@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { AuthData, CartBase, CustomerDraft, CustomerInfo } from './apitypes';
+import { AuthData, CartBase, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 import * as actions from '../../../store/actions';
 import { AppState } from '../../../store/store';
@@ -95,6 +95,53 @@ export default class CommerceApiService {
       .set('Authorization', `Bearer ${accessToken}`);
 
     return this.http.get<CustomerInfo>(requestUrl, { headers });
+  }
+
+  updatePersonalInfo(accessToken: string, version: number, data: PersonalInfo) {
+    const requestUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me`;
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    const body = {
+      version,
+      actions: [
+        {
+          action: 'changeEmail',
+          email: data.email,
+        },
+        {
+          action: 'setFirstName',
+          firstName: data.firstName,
+        },
+        {
+          action: 'setLastName',
+          lastName: data.lastName,
+        },
+        {
+          action: 'setDateOfBirth',
+          dateOfBirth: data.dateOfBirth,
+        },
+      ],
+    };
+
+    return this.http.post<PersonalInfo>(requestUrl, JSON.stringify(body), { headers });
+  }
+
+  updatePassword(accessToken: string, version: number, data: PasswordChange) {
+    const requestUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/password`;
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    const body = {
+      version,
+      ...data,
+    };
+
+    return this.http.post<CustomerInfo>(requestUrl, JSON.stringify(body), { headers });
   }
 
   checkTokens(): void {

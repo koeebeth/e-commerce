@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter, tap } from 'rxjs';
-import { Store } from '@ngrx/store';
+import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter, tap, withLatestFrom } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
 import CommerceApiService from '../shared/services/commercetoolsApi/commercetoolsapi.service';
-import { AuthData, CartBase } from '../shared/services/commercetoolsApi/apitypes';
+import { AuthData, CartBase, CustomerInfo } from '../shared/services/commercetoolsApi/apitypes';
 import * as actions from './actions';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
 import { AppState } from './store';
@@ -193,6 +193,49 @@ export default class EcommerceEffects {
               }),
             ),
           ),
+        ),
+      ),
+    ),
+  );
+
+  loadUpdateUserData$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadUpdateUserInfo),
+      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))), // Assuming accessToken is stored in the auth state
+      filter(([, accessToken]) => !!accessToken), // Filter out if access token is not present
+      switchMap(([action, accessToken]) =>
+        this.ecommerceApiService.updatePersonalInfo(accessToken, action.userInfo.version, action.userInfo).pipe(
+          map((response) => {
+            this.notificationService.showNotification('success', 'Successfully updated personal information');
+            return actions.loadUpdateUserInfoSuccess({ userInfo: <CustomerInfo>response });
+          }),
+          catchError((error) => of(actions.loadUpdateUserInfoFailure({ error }))),
+        ),
+      ),
+    ),
+  );
+
+  loadUpdateUserPassword$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadUpdateUserPassword),
+      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))), // Assuming accessToken is stored in the auth state
+      filter(([, accessToken]) => !!accessToken), // Filter out if access token is not present
+      switchMap(([action, accessToken]) =>
+        this.ecommerceApiService.updatePassword(accessToken, action.version, action.passwordData).pipe(
+          map((response) => {
+            this.store.dispatch(actions.logout());
+            this.router.navigateByUrl('/login');
+            this.notificationService.showNotification('success', 'Successfully updated password, please relogin');
+            return actions.loadUpdateUserInfoSuccess({ userInfo: response });
+          }),
+          catchError((error) => {
+            if (error.error.errors[0].code === 'InvalidCurrentPassword')
+              this.notificationService.showNotification('error', 'The given current password does not match.');
+            else {
+              this.notificationService.showNotification('error', 'An error occured when trying to change password');
+            }
+            return of(actions.loadUpdateUserInfoFailure({ error }));
+          }),
         ),
       ),
     ),

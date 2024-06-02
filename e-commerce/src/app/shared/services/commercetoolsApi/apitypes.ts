@@ -31,6 +31,7 @@ export interface CustomerInfo {
   firstName: string;
   lastName: string;
   password: string;
+  version: number;
 }
 
 export interface Address {
@@ -107,4 +108,16 @@ export interface DirectDiscount {
   discountType: string;
   discountedAmount: Money;
   description?: string;
+}
+
+export interface PersonalInfo {
+  email: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+}
+
+export interface PasswordChange {
+  currentPassword: string;
+  newPassword: string;
 }
