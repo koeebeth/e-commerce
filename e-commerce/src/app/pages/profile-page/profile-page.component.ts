@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AppState } from '../../store/store';
 import { CustomerInfo } from '../../shared/services/commercetoolsApi/apitypes';
@@ -11,7 +11,7 @@ import ButtonComponent from '../../shared/components/button/button.component';
 @Component({
   selector: 'app-profile-page',
   standalone: true,
-  imports: [CommonModule, RouterLink, EditUserComponent, ButtonComponent],
+  imports: [CommonModule, EditUserComponent, ButtonComponent],
   templateUrl: './profile-page.component.html',
   styleUrl: './profile-page.component.scss',
 })
@@ -29,6 +29,7 @@ export default class ProfilePageComponent {
   };
 
   formatDate = formatDate;
+
 
   isEditing = false;
 

@@ -1,0 +1,22 @@
+<div class="card" (click)="onCardClick()" (keydown.enter)="onCardClick()" tabindex="0">
+  <div class="card-content-container">
+    <div class="card-image__wrapper">
+      <img class="card-image" [src]="mainImage" alt="" />
+      <img class="card-image__hover" [src]="mainGif" alt="" />
+    </div>
+    <div class="card-info">
+      <p class="game-name">
+        {{ name }}
+      </p>
+      <div [ngStyle]="originalPriceStyles()" class="price-container">
+        <div *ngIf="discountPercnt > 0" class="discount">{{ discountPercnt }}%</div>
+        <div class="prices-variant">
+          <div class="original-price" *ngIf="discountPercnt > 0">{{ originalPrice | currency }}</div>
+          <div class="discounted-price">
+            {{ discountPercnt > 0 ? (discuntedPrice | currency) : (originalPrice | currency) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

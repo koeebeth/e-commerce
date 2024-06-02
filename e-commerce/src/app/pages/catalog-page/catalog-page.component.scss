@@ -1,0 +1,87 @@
+@import '../../../styles.scss';
+
+.catalog-container {
+  margin-top: 20px;
+  @include font-heading;
+  display: flex;
+  flex-direction: column;
+  color: $color-primary-700;
+  gap: 15px;
+  padding: 10px 100px;
+  height: 100%;
+  min-height: 100vh;
+  justify-content: space-between;
+
+  @media screen and (max-width: 715px) {
+    padding: 10px 50px;
+  }
+  @media screen and (max-width: 510px) {
+    padding: 10px 25px;
+  }
+
+  .cards-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    column-gap: 15px;
+    row-gap: 30px;
+    justify-content: space-between;
+    align-content: center;
+
+    @media screen and (min-width: 1600px) {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+    @media screen and (max-width: 1200px) {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    @media screen and (max-width: 860px) {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+    @media screen and (max-width: 460px) {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+  }
+
+  .pagination {
+    padding-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .pagination-buttons {
+    display: flex;
+    background-color: #001c3070;
+    border-radius: 100px;
+
+    .btn-next,
+    .btn-prev {
+      cursor: pointer;
+    }
+
+    .page,
+    .dots {
+      color: rgba(218, 218, 218, 0.905);
+      padding: 8px 16px;
+      transition: 0.3s;
+      cursor: pointer;
+
+      &:hover:not(.active) {
+        box-shadow: inset 0px 0px 8px 3px rgb(1 26 41 / 65%);
+        border-radius: 10px;
+      }
+    }
+
+    .active {
+      border-radius: 10px;
+      color: gray;
+      color: aliceblue;
+      box-shadow: 0px 0px 8px 2px rgb(1 26 41 / 85%);
+      pointer-events: none;
+    }
+
+    .disabled {
+      pointer-events: none;
+      color: gray;
+    }
+  }
+}
