@@ -6,7 +6,7 @@
   display: flex;
   flex-direction: row;
   gap: 15px;
-  padding: 3%;
+  padding: 1% 3% 3% 3%;
   height: 100%;
   max-width: 1300px;
   margin: 0 auto;
@@ -103,6 +103,15 @@ button {
   padding: 5px 10px;
   border-radius: 10px;
   border: 1px solid rgba($color-primary-500, 0.6);
+}
+
+.back-btn {
+  @include font-primary;
+  display: flex;
+  align-items: center;
+  color: white;
+  padding: 3% 0 0 3%;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1200px) {

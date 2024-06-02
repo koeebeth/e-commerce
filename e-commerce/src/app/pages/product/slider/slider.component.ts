@@ -1,4 +1,4 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -10,9 +10,7 @@ import { CommonModule } from '@angular/common';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export default class SliderComponent {
-  images = [
-    { src: '../../../../assets/banishers.jpeg', alt: 'Banishers' },
-    { src: '../../../../assets/banishers1.jpg', alt: 'Banishers' },
-    { src: '../../../../assets/banishers2.jpg', alt: 'Banishers' },
-  ];
+  @Input() images: string[] | undefined = [];
+
+  @Input() name: string = '';
 }
