@@ -208,15 +208,6 @@ export default class CommerceApiService {
       }
     });
 
-    if (!addresses.find((a) => a.type === 'billing' && a.default))
-      requestActions.push({
-        action: 'setDefaultBillingAddress',
-      });
-    if (!addresses.find((a) => a.type === 'shipping' && a.default))
-      requestActions.push({
-        action: 'setDefaultBillingAddress',
-      });
-
     const body = {
       version,
       actions: requestActions,

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Address, CustomerInfo } from '../../../shared/services/commercetoolsApi/apitypes';
 import ButtonComponent from '../../../shared/components/button/button.component';
@@ -71,7 +71,6 @@ export class ManageAddressComponent {
 
   onSubmit() {
     const addresses: (Address & { key: string; type: 'billing' | 'shipping'; default: boolean })[] = [];
-    console.log(this.billingAddresses.value);
     this.billingAddresses.value.forEach((address, i) => {
       addresses.push({
         ...address,
@@ -115,7 +114,12 @@ export class ManageAddressComponent {
       postalCode: '',
     },
   ) {
-    return this.fb.group({ ...value }) as FormGroup;
+    return this.fb.group({
+      streetNumber: [value.streetNumber, Validators.required],
+      city: [value.city, Validators.required],
+      country: [value.country, Validators.required],
+      postalCode: [value.postalCode, Validators.required],
+    }) as FormGroup;
   }
 
   addAddress(type: 'billing' | 'shipping') {
@@ -128,9 +132,9 @@ export class ManageAddressComponent {
 
   onSelectDefault(type: 'billing' | 'shipping', index: number) {
     if (type === 'billing') {
-      this.defaultBillingIndex = this.defaultBillingIndex === index ? -1 : index;
+      this.defaultBillingIndex = index;
     } else {
-      this.defaultShippingIndex = this.defaultShippingIndex === index ? -1 : index;
+      this.defaultShippingIndex = index;
     }
   }
 
