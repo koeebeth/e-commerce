@@ -1,4 +1,6 @@
 <section class="catalog-container">
+  <input type="search" [(ngModel)]="searchText" />
+  <button (click)="searchProduct()">Search</button>
   <div class="cards-container">
     <div class="cards-list">
       <div *ngFor="let card of (productObjects$ | async)?.results">

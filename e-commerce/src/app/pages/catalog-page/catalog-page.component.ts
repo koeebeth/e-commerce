@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import CardComponent from '../main/catalog/card/card.component';
@@ -10,7 +11,7 @@ import { ProductPagedQueryResponse } from '../../shared/services/products/produc
 @Component({
   selector: 'app-catalog-page',
   standalone: true,
-  imports: [CommonModule, CardComponent],
+  imports: [CommonModule, CardComponent, FormsModule],
   templateUrl: './catalog-page.component.html',
   styleUrl: './catalog-page.component.scss',
 })
@@ -28,6 +29,8 @@ export default class CatalogPageComponent {
   visiblePages: number[] = [];
 
   showDots: boolean = false;
+
+  searchText: string = '';
 
   constructor(private store: Store<AppState>) {}
 
@@ -90,5 +93,15 @@ export default class CatalogPageComponent {
     const offset = (this.currentPage - 1) * this.productResponse.limit;
     console.log('offset', offset);
     this.store.dispatch(actions.loadProducts({ offset, limit: this.productResponse.limit }));
+  }
+
+  searchProduct() {
+    this.store.dispatch(actions.searchProducts({ searchText: this.searchText, offset: 0, limit: 10 }));
+    this.productObjects$ = this.store.select((state) => state.app.products);
+    this.productObjects$.subscribe((products) => {
+      if (products) {
+        console.log(products.results);
+      }
+    });
   }
 }

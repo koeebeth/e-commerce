@@ -79,7 +79,6 @@ export default class ProductComponent {
         this.getDiscountProcentage();
       }
     });
-    // to use searching: this.store.dispatch(actions.searchProducts({ searchText: 'tyranny', offset: 0, limit: 10 }));
   }
 
   getImages() {
