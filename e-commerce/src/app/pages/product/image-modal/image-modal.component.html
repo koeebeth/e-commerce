@@ -1,0 +1,6 @@
+<div class="modal" (click)="closeModalOutsideClick($event)" (keyup.enter)="closeModalOutsideClick($event)" tabindex="0">
+  <div class="modal-container">
+    <div class="close-btn" (click)="close()" (keyup.enter)="close()" tabindex="0">x</div>
+    <img [src]="selectedImage" alt="" />
+  </div>
+</div>
