@@ -9,6 +9,10 @@
   box-sizing: border-box;
   padding-block: 20px;
 
+  @media screen and (max-width: 760px) {
+    grid-template-columns: 1fr;
+  }
+
   .default-check {
     @include font-primary;
     color: $color-primary-300;
