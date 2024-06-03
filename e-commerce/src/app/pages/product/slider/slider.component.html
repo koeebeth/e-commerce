@@ -1,0 +1,18 @@
+<swiper-container
+  style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
+  navigation="true"
+  pagination="true"
+  class="swiper"
+  thumbs-swiper=".swiper-preview"
+  space-between="3"
+>
+  <swiper-slide *ngFor="let image of images">
+    <img [src]="image" [alt]="name" />
+  </swiper-slide>
+</swiper-container>
+
+<swiper-container class="swiper-preview" space-between="10" slides-per-view="3" free-mode="true">
+  <swiper-slide *ngFor="let image of images">
+    <img [src]="image" [alt]="name" />
+  </swiper-slide>
+</swiper-container>

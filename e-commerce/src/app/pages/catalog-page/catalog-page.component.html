@@ -1,0 +1,43 @@
+<section class="catalog-container">
+  <div class="cards-container">
+    <div class="cards-list">
+      <div *ngFor="let card of (productObjects$ | async)?.results">
+        <app-card [card]="card"></app-card>
+        <!-- <app-card [card]="card"></app-card> -->
+      </div>
+    </div>
+  </div>
+  <div class="pagination">
+    <div class="pagination-buttons">
+      <div
+        class="page btn-prev"
+        [class.disabled]="currentPage === 1"
+        (click)="prevPage()"
+        (keydown.enter)="prevPage()"
+        tabindex="0"
+      >
+        &NestedLessLess;
+      </div>
+      <div
+        tabindex="0"
+        *ngFor="let page of visiblePages"
+        class="page"
+        [class.active]="currentPage === page"
+        (click)="goToPage(page)"
+        (keydown.enter)="goToPage(page)"
+      >
+        {{ page }}
+      </div>
+      <div class="dots" *ngIf="showDots" tabindex="0">...</div>
+      <div
+        tabindex="0"
+        class="page btn-next"
+        [class.disabled]="currentPage === totalPages"
+        (click)="nextPage()"
+        (keydown.enter)="nextPage()"
+      >
+        &NestedGreaterGreater;
+      </div>
+    </div>
+  </div>
+</section>

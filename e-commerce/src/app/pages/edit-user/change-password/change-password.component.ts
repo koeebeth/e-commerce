@@ -38,6 +38,13 @@ export default class ChangePasswordComponent {
 
   ngOnInit() {
     this.store
+      .select((state) => state.app.accessToken)
+      .subscribe((accessToken) => {
+        if (!accessToken) {
+          this.router.navigate(['/main']);
+        }
+      });
+    this.store
       .select((state) => state.app.userInfo)
       .subscribe((userInfo) => {
         if (userInfo) {
