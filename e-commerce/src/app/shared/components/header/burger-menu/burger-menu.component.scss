@@ -60,7 +60,7 @@
 }
 
 .burger-menu {
-  position: absolute;
+  position: fixed;
   box-sizing: border-box;
   height: 100vh;
   width: 250px;
@@ -69,7 +69,7 @@
   background-color: $color-primary-200;
   transition: all 0.5s ease-out;
   padding: 20px;
-  z-index: 111;
+  z-index: 2;
 
   section {
     display: flex;

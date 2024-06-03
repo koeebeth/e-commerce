@@ -14,7 +14,7 @@ const routes: Routes = [
   { path: 'registration', component: RegistrationComponent },
   { path: 'profile', component: ProfilePageComponent },
   { path: 'catalog', component: CatalogPageComponent },
-  { path: 'category', component: CategoriesComponent },
+  { path: 'categories', component: CategoriesComponent },
   { path: 'products/:id', component: ProductComponent },
   { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: '/main', pathMatch: 'full' },
