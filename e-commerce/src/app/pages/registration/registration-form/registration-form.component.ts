@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import InputComponent from '../../../shared/components/input/input.component';
 import ButtonComponent from '../../../shared/components/button/button.component';
-import RegistrationValidators from './registration-validators';
+import RegistrationValidators from '../../../shared/utils/registration-validators';
 import CheckboxInputComponent from '../../../shared/components/checkbox-input/checkbox-input.component';
 import SelectInputComponent from '../../../shared/components/select-input/select-input.component';
 import { AppState } from '../../../store/store';

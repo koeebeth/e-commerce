@@ -1,7 +1,8 @@
 <div class="select-input-group">
   <label [for]="name">Country</label>
   <select [name]="name" [id]="name" [formControl]="control">
-    <option *ngIf="optList[0]" [value]="optList[0]" selected="true">{{ optList[0] }}</option>
-    <option *ngFor="let opt of optList.slice(1)" [value]="opt">{{ opt }}</option>
+    <option *ngFor="let opt of optList; let i = index" [value]="opt" [selected]="i === defaultValueIndex">
+      {{ opt }}
+    </option>
   </select>
 </div>

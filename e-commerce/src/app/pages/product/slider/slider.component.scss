@@ -26,6 +26,7 @@ swiper-slide img {
 .swiper {
   height: 80%;
   width: 100%;
+  cursor: pointer;
 }
 
 .swiper-preview {
@@ -49,4 +50,8 @@ swiper-slide img {
 .swiper-preview .swiper-slide-thumb-active img {
   box-sizing: border-box;
   border: 1px solid #fff;
+}
+
+::ng-deep body.modal-open {
+  overflow-y: hidden;
 }

@@ -24,6 +24,8 @@ export interface CustomerDraft {
 
 export interface CustomerInfo {
   addresses: Address[];
+  defaultShippingAddressId: string;
+  defaultBillingAddressId: string;
   billingAddressIds: string[];
   shippingAddressIds: string[];
   dateOfBirth: string;
@@ -31,14 +33,15 @@ export interface CustomerInfo {
   firstName: string;
   lastName: string;
   password: string;
+  version: number;
 }
 
 export interface Address {
   id?: string;
-  city?: string;
+  city: string;
   country: string;
-  streetNumber?: string;
-  postalCode?: string;
+  streetNumber: string;
+  postalCode: string;
   additionalAddressInfo?: string;
 }
 
@@ -107,4 +110,16 @@ export interface DirectDiscount {
   discountType: string;
   discountedAmount: Money;
   description?: string;
+}
+
+export interface PersonalInfo {
+  email: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+}
+
+export interface PasswordChange {
+  currentPassword: string;
+  newPassword: string;
 }

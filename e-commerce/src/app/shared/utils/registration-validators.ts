@@ -61,7 +61,7 @@ const RegistrationValidators = {
         };
       },
       name: 'age',
-      errorMsg: 'You should be at least 13 years old to register',
+      errorMsg: 'You should be at least 13 years old',
     },
   },
 

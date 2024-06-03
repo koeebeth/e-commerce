@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
 import { CartBase, CustomerDraft, CustomerInfo, CustomerSignin } from '../shared/services/commercetoolsApi/apitypes';
+import { CartBase, CustomerDraft, CustomerInfo, CustomerSignin, PasswordChange, Address } from '../shared/services/commercetoolsApi/apitypes';
 
 export const loadAccsessToken = createAction('[Auth] Load Access Token', props<{ accessData: CustomerSignin }>());
 export const refreshAccsessToken = createAction(
@@ -43,7 +44,44 @@ export const loadAnonymousTokenFailure = createAction(
 export const loadUserInfo = createAction('[Auth] Load User Info');
 export const loadUserInfoSuccess = createAction('[Auth] Load User Success', props<{ userInfo: CustomerInfo }>());
 export const loadUserInfoFailure = createAction('[Auth] Load User Failure', props<{ error: string }>());
-///
+
+export const loadUpdateUserInfo = createAction('[User] Load Updating User Info', props<{ userInfo: CustomerInfo }>());
+export const loadUpdateUserInfoSuccess = createAction(
+  '[User] Load Updating User Success',
+  props<{ userInfo: CustomerInfo }>(),
+);
+export const loadUpdateUserInfoFailure = createAction('[User] Load Updating User Failure', props<{ error: string }>());
+
+export const loadUpdateUserPassword = createAction(
+  '[User] Load Updating User Password',
+  props<{ version: number; passwordData: PasswordChange }>(),
+);
+export const loadUpdateUserPasswordSuccess = createAction(
+  '[User] Load Updating User Password Success',
+  props<{ userInfo: CustomerInfo }>(),
+);
+export const loadUpdateUserPasswordFailure = createAction(
+  '[User] Load Updating User Password Failure',
+  props<{ error: string }>(),
+);
+
+export const loadUpdateUserAddresses = createAction(
+  '[User] Load Updating User Addresses',
+  props<{
+    version: number;
+    addresses: (Address & { key: string; type: 'billing' | 'shipping'; default: boolean })[];
+    userInfo: CustomerInfo;
+  }>(),
+);
+export const loadUpdateUserAddressesSuccess = createAction(
+  '[User] Load Updating User Addresses',
+  props<{ userInfo: CustomerInfo }>(),
+);
+export const loadUpdateUserAddressesFailure = createAction(
+  '[User] Load Updating User Addresses',
+  props<{ error: string }>(),
+);
+
 export const loadAnonymousCartSuccess = createAction(
   '[Cart] Cart Anonymous Id Success',
   props<{ cartBase: CartBase }>(),

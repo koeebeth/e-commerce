@@ -51,6 +51,18 @@ export const ecommerceReducer = createReducer(
   on(actions.loadUserInfoSuccess, (state, { userInfo }) => ({ ...state, userInfo, loading: false })),
   on(actions.loadUserInfoFailure, (state, { error }) => ({ ...state, error, loading: false })),
   ///
+  on(actions.loadUpdateUserInfo, (state) => ({ ...state, loading: true })),
+  on(actions.loadUpdateUserInfoSuccess, (state, { userInfo }) => ({ ...state, userInfo, loading: false })),
+  on(actions.loadUpdateUserInfoFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.loadUpdateUserPassword, (state) => ({ ...state, loading: true })),
+  on(actions.loadUpdateUserPasswordSuccess, (state, { userInfo }) => ({ ...state, userInfo, loading: false })),
+  on(actions.loadUpdateUserPasswordFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.loadUpdateUserAddresses, (state) => ({ ...state, loading: true })),
+  on(actions.loadUpdateUserAddressesSuccess, (state, { userInfo }) => ({ ...state, userInfo, loading: false })),
+  on(actions.loadUpdateUserAddressesFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
   on(actions.logoutSuccess, (state) => {
     return { ...state, accessToken: '', anonymousToken: '' };
   }),

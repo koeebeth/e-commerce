@@ -1,0 +1,20 @@
+<div class="modal">
+  <nav class="modal__nav mode">
+    <ul>
+      <li [class]="editMode === 'personal-info' ? 'mode__option active' : 'mode__option'">
+        <button class="mode__button" (click)="changeMode('personal-info')">Personal Info</button>
+      </li>
+      <li [class]="editMode === 'password' ? 'mode__option active' : 'mode__option'">
+        <button class="mode__button" (click)="changeMode('password')">Password</button>
+      </li>
+      <li [class]="editMode === 'address' ? 'mode__option active' : 'mode__option'">
+        <button class="mode__button" (click)="changeMode('address')">Address</button>
+      </li>
+    </ul>
+  </nav>
+  <div class="modal__form">
+    <app-edit-profile *ngIf="editMode === 'personal-info'" (closeHandler)="onClose()"></app-edit-profile>
+    <app-change-password *ngIf="editMode === 'password'" (closeHandler)="onClose()"></app-change-password>
+    <app-manage-address *ngIf="editMode === 'address'" (closeHandler)="onClose()"></app-manage-address>
+  </div>
+</div>
