@@ -14,6 +14,11 @@ export interface EcommerceState {
   loading: boolean;
   error: string;
   userInfo: CustomerInfo | null;
+  offset: number;
+  limit: number;
+  searchText?: string;
+  filters: { [key: string]: string[] };
+  sort: string;
 }
 
 export const initialState: EcommerceState = {
@@ -27,6 +32,11 @@ export const initialState: EcommerceState = {
   loading: false,
   error: '',
   userInfo: null,
+  offset: 0,
+  limit: 10,
+  searchText: '',
+  filters: {},
+  sort: '',
 };
 
 export const ecommerceReducer = createReducer(
@@ -81,6 +91,14 @@ export const ecommerceReducer = createReducer(
   ///
   ///
   on(actions.loadFilter, (state) => ({ ...state, loading: true })),
+  on(actions.saveFilter, (state, { filters }) => ({
+    ...state,
+    filters: filters || {},
+  })),
+  on(actions.saveSort, (state, { sort }) => ({
+    ...state,
+    sort: sort || '',
+  })),
   on(actions.loadFilterSuccess, (state, { products }) => {
     return { ...state, products, loading: false };
   }),

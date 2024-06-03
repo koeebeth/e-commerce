@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { Product, ProductsArray, CategoriesArray } from '../../../../shared/services/products/productTypes';
 import { AppState } from '../../../../store/store';
 import * as actions from '../../../../store/actions';
+import { selecCategories } from '../../../../store/selectors';
 
 @Component({
   selector: 'app-card',
@@ -130,8 +131,7 @@ export default class CardComponent {
   }
 
   getCategory() {
-    this.store.dispatch(actions.loadCategories({ offset: 0, limit: 10 }));
-    this.categoryObjects$ = this.store.select((state) => state.app.categories);
+    this.categoryObjects$ = this.store.select(selecCategories);
     this.categoryObjects$.subscribe((categories) => {
       if (this.card?.masterData?.current?.categories) {
         this.categoryID = this.card?.masterData?.current?.categories[0].id;

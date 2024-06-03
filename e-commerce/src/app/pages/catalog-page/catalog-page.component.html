@@ -5,6 +5,14 @@
     <app-sorting></app-sorting>
   </div>
   <div class="cards-container">
+    <div class="empty-container">
+      <data
+        *ngIf="(productObjects$ | async)?.results?.length === 0"
+        [ngStyle]="showEmptyFilterResult()"
+        value="No products"
+        >There are no results matching your query</data
+      >
+    </div>
     <div class="cards-list">
       <div *ngFor="let card of (productObjects$ | async)?.results">
         <app-card [card]="card"></app-card>

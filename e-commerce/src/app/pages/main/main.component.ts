@@ -19,6 +19,7 @@ export default class MainComponent {
 
   ngOnInit() {
     this.store.dispatch(actions.loadProducts({ offset: 0, limit: 5 }));
+    this.store.dispatch(actions.loadCategories({ offset: 0, limit: 10 }));
   }
 
   categories = [

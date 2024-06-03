@@ -19,4 +19,8 @@ export const selectProducts = createSelector(selectEcommerceState, (state) => st
 
 export const selectUserInfo = createSelector(selectEcommerceState, (state) => state.userInfo);
 
-export const selecCategories = createSelector(selectEcommerceState, (state) => state.userInfo);
+export const selecCategories = createSelector(selectEcommerceState, (state) => state.categories);
+
+export const selecFilters = createSelector(selectEcommerceState, (state) => state.filters);
+
+export const selecSort = createSelector(selectEcommerceState, (state) => state.sort);

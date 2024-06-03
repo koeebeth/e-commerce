@@ -26,8 +26,7 @@ export default class SortingComponent {
 
   onSortChange(event: Event) {
     const selectElement = event.target as HTMLSelectElement;
-    const sortValue = selectElement.value;
-    this.applySort(sortValue);
+    this.applySort(selectElement.value);
   }
 
   applySort(sortValue: string) {
@@ -35,10 +34,10 @@ export default class SortingComponent {
     console.log('sortValue', sortValue);
     switch (sortValue) {
       case 'name-asc':
-        sortParam = 'name.en asc';
+        sortParam = 'name.en-US asc';
         break;
       case 'name-desc':
-        sortParam = 'name.en desc';
+        sortParam = 'name.en-US desc';
         break;
       case 'price-asc':
         sortParam = 'price asc';
@@ -49,6 +48,7 @@ export default class SortingComponent {
       default:
         sortParam = '';
     }
+    this.store.dispatch(actions.saveSort({ sort: sortParam }));
     this.store.dispatch(actions.loadFilter({ sort: sortParam, offset: 0, limit: 10 }));
   }
 }

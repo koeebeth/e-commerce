@@ -119,5 +119,7 @@ export const loadFilter = createAction(
   '[Filter] Load Filter',
   props<{ offset: number; limit: number; searchText?: string; filters?: { [key: string]: string[] }; sort?: string }>(),
 );
+export const saveFilter = createAction('[Filter] Load Filter', props<{ filters?: { [key: string]: string[] } }>());
+export const saveSort = createAction('[Filter] Load Filter', props<{ sort?: string }>());
 export const loadFilterSuccess = createAction('[Filter] Load Filter Success', props<{ products: ProductsArray }>());
 export const loadFilterFailure = createAction('[Filter] Load Filter Failure', props<{ error: string }>());

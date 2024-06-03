@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import CardComponent from './card/card.component';
 import { AppState } from '../../../store/store';
 import { ProductsArray } from '../../../shared/services/products/productTypes';
@@ -30,7 +30,10 @@ export default class CatalogComponent {
 
   showDots: boolean = false;
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.productObjects$ = this.store.select((state) => state.app.products);
@@ -38,6 +41,12 @@ export default class CatalogComponent {
       if (products) {
         this.productResponse = products;
       }
+    });
+  }
+
+  onSeeMore() {
+    this.router.navigate(['/catalog']).then(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     });
   }
 }
