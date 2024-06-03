@@ -12,19 +12,7 @@ import { AppState } from '../../../../store/store';
   styleUrl: './profile-authorized.component.scss',
 })
 export default class ProfileAuthorizedComponent {
-  userId = '';
-
   constructor(private store: Store<AppState>) {}
-
-  ngOnInit() {
-    this.store
-      .select((state) => state.app.userInfo)
-      .subscribe((userInfo) => {
-        if (userInfo) {
-          this.userId = userInfo.id;
-        }
-      });
-  }
 
   onLogout() {
     this.store.dispatch(actions.logout());
