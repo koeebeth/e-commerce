@@ -13,7 +13,7 @@ const routes: Routes = [
   { path: 'registration', component: RegistrationComponent },
   { path: 'profile', component: ProfilePageComponent },
   { path: 'catalog', component: CatalogPageComponent },
-  { path: 'products/:id', component: ProductComponent },
+  { path: 'catalog/:category/:id', component: ProductComponent },
   { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: '/main', pathMatch: 'full' },
   { path: '**', redirectTo: '/404', pathMatch: 'full' },
