@@ -6,8 +6,8 @@ import CardComponent from '../main/catalog/card/card.component';
 import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
 import { ProductsArray } from '../../shared/services/products/productTypes';
-import { FilterComponent } from './filter/filter.component';
-import { SortingComponent } from './sorting/sorting.component';
+import FilterComponent from './filter/filter.component';
+import SortingComponent from './sorting/sorting.component';
 
 @Component({
   selector: 'app-catalog-page',

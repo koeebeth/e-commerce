@@ -63,17 +63,15 @@ export default class ProductsService {
     }
 
     if (filters) {
-      for (const key in filters) {
-        if (filters.hasOwnProperty(key)) {
-          filters[key].forEach((value) => {
-            let filterValue = value;
-            if (key === 'categories.id') {
-              filterValue = `"${value}"`;
-            }
-            params = params.append('filter', `${key}:${filterValue}`);
-          });
-        }
-      }
+      Object.keys(filters).forEach((key) => {
+        filters[key].forEach((value) => {
+          let filterValue = value;
+          if (key === 'categories.id') {
+            filterValue = `"${value}"`;
+          }
+          params = params.append('filter', `${key}:${filterValue}`);
+        });
+      });
     }
 
     const headers = new HttpHeaders({

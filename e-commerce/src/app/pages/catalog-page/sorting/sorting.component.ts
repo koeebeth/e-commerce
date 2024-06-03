@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/store';
 import * as actions from '../../../store/actions';
-import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-sorting',
@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
   templateUrl: './sorting.component.html',
   styleUrl: './sorting.component.scss',
 })
-export class SortingComponent {
+export default class SortingComponent {
   @Input() sortValue!: string;
 
   sortOptions = [

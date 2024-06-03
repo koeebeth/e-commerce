@@ -1,11 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as actions from './actions';
-import {
-  CategoriesArray,
-  Product,
-  ProductProjectionArray,
-  ProductsArray,
-} from '../shared/services/products/productTypes';
+import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
 import { CartBase, CustomerDraft, CustomerInfo } from '../shared/services/commercetoolsApi/apitypes';
 
 export interface EcommerceState {

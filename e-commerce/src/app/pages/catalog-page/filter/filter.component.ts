@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { AppState } from '../../../store/store';
-import * as actions from '../../../store/actions';
 import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
+import { AppState } from '../../../store/store';
+import * as actions from '../../../store/actions';
 
 interface FilterGroup {
   icon: string;
@@ -18,9 +18,11 @@ interface FilterGroup {
   templateUrl: './filter.component.html',
   styleUrl: './filter.component.scss',
 })
-export class FilterComponent {
+export default class FilterComponent {
   isFilterMenuOpen: boolean = false;
+
   priceRange: { from: number | null; to: number | null } = { from: null, to: null };
+
   filterGroups: FilterGroup[] = [
     {
       name: 'Category',
@@ -63,7 +65,6 @@ export class FilterComponent {
             checked: false,
           }));
           this.filterGroups[0].filters = categoryFilters;
-          console.log('this.filterGroups[0].filters', this.filterGroups[0].filters);
         }
       });
   }
@@ -87,7 +88,7 @@ export class FilterComponent {
     return [];
   }
 
-  addCategoryFilters(appliedFilters: { [key: string]: any }) {
+  addCategoryFilters(appliedFilters: { [key: string]: string[] }) {
     const categoryFilters = this.getCheckedFilters('Category');
     const categoryIds = categoryFilters.map((filter) => filter.id);
     appliedFilters['categories.id'] = categoryIds;
@@ -97,7 +98,7 @@ export class FilterComponent {
     return value * 100;
   }
 
-  addPriceFilters(appliedFilters: { [key: string]: any }) {
+  addPriceFilters(appliedFilters: { [key: string]: string[] }) {
     const priceRangeFrom = this.priceRange.from !== null ? this.parseToCents(this.priceRange.from) : null;
     const priceRangeTo = this.priceRange.to !== null ? this.parseToCents(this.priceRange.to) : null;
 
@@ -106,25 +107,26 @@ export class FilterComponent {
     }
   }
 
-  addDiscountFilters(appliedFilters: { [key: string]: any }) {
+  addDiscountFilters(appliedFilters: { [key: string]: string[] }) {
     const discountedFilters = this.getCheckedFilters('Discount');
     const discountedWith = discountedFilters.find((filter) => filter.name === 'With')?.checked || false;
     const discountedWithout = discountedFilters.find((filter) => filter.name === 'Without')?.checked || false;
     const discounted = discountedWith ? true : discountedWithout ? false : null;
 
     if (discounted !== null) {
-      appliedFilters['variants.scopedPriceDiscounted'] = [discounted];
+      appliedFilters['variants.scopedPriceDiscounted'] = [discounted.toString()];
     }
   }
 
   applyFilters() {
-    const appliedFilters: { [key: string]: any } = {};
+    const appliedFilters: { [key: string]: string[] } = {};
 
     this.addCategoryFilters(appliedFilters);
     this.addPriceFilters(appliedFilters);
     this.addDiscountFilters(appliedFilters);
 
     this.store.dispatch(actions.loadFilter({ filters: appliedFilters, offset: 0, limit: 10 }));
+    this.toggleFilterMenu();
   }
 
   resetFilters() {

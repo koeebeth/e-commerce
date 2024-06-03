@@ -105,29 +105,6 @@ export interface Image {
   label?: string;
 }
 
-export interface Asset {
-  id: string;
-  sources: AssetSource[];
-  name: {
-    [locale: string]: string;
-  };
-  description?: {
-    [locale: string]: string;
-  };
-  tags?: string[];
-  key?: string;
-}
-
-export interface AssetSource {
-  uri: string;
-  key?: string;
-  dimensions?: {
-    w: number;
-    h: number;
-  };
-  contentType?: string;
-}
-
 export interface Reference {
   typeId: string;
   id: string;
@@ -184,7 +161,7 @@ export interface ReviewRatingStatistics {
   };
 }
 
-//Categories
+// Categories
 export interface CategoriesArray {
   limit: number;
   offset: number;
@@ -213,11 +190,6 @@ export interface Category {
 
 export interface LocalizedString {
   [key: string]: string;
-}
-
-export interface Reference {
-  typeId: string;
-  id: string;
 }
 
 export interface Asset {

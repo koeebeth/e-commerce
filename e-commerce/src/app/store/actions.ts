@@ -1,10 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import {
-  CategoriesArray,
-  Product,
-  ProductsArray,
-  ProductProjectionArray,
-} from '../shared/services/products/productTypes';
+import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
 import { CartBase, CustomerDraft, CustomerInfo, CustomerSignin } from '../shared/services/commercetoolsApi/apitypes';
 
 export const loadAccsessToken = createAction('[Auth] Load Access Token', props<{ accessData: CustomerSignin }>());

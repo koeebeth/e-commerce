@@ -290,6 +290,30 @@ export default class EcommerceEffects {
     ),
   );
 
+  prepareProducts(products: ProductProjectionArray): ProductsArray {
+    if (products) {
+      const productsArray: ProductsArray = {
+        limit: products.limit,
+        count: products.count,
+        total: products.total,
+        offset: products.offset,
+        results: [],
+      };
+
+      products.results.forEach((card) => {
+        productsArray.results.push({
+          id: card.id,
+          masterData: {
+            current: card,
+          },
+        });
+      });
+
+      return productsArray;
+    }
+    return products;
+  }
+
   loadFilter$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadFilter),
@@ -302,7 +326,7 @@ export default class EcommerceEffects {
               .filterProducts(accessToken || anonToken, action.filters, action.sort, action.offset, action.limit)
               .pipe(
                 map((products: ProductProjectionArray) =>
-                  actions.loadFilterSuccess({ products: prepareProducts(products) }),
+                  actions.loadFilterSuccess({ products: this.prepareProducts(products) }),
                 ),
                 catchError((error) => of(actions.loadFilterFailure({ error: error.message }))),
               ),
@@ -311,28 +335,4 @@ export default class EcommerceEffects {
       ),
     ),
   );
-}
-
-function prepareProducts(products: ProductProjectionArray): ProductsArray {
-  if (products) {
-    const productsArray: ProductsArray = {
-      limit: products.limit,
-      count: products.count,
-      total: products.total,
-      offset: products.offset,
-      results: [],
-    };
-
-    products.results.forEach((card) => {
-      productsArray.results.push({
-        id: card.id,
-        masterData: {
-          current: card,
-        },
-      });
-    });
-
-    return productsArray;
-  }
-  return products;
 }
