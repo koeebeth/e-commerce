@@ -134,9 +134,12 @@ button {
     align-items: stretch;
   }
 
-  .images-container,
+  .images-container {
+    width: 80%;
+  }
+
   .product-information {
-    width: 100%;
+    width: 70%;
   }
 
   .description {

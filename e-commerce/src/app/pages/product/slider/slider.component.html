@@ -2,12 +2,13 @@
   style="--swiper-navigation-color: #fff; --swiper-pagination-color: #fff"
   navigation="true"
   pagination="true"
+  pagination-clickable="true"
   class="swiper"
   thumbs-swiper=".swiper-preview"
   space-between="3"
 >
   <swiper-slide *ngFor="let image of images">
-    <img [src]="image" [alt]="name" />
+    <img [src]="image" [alt]="name" (click)="openModal(image)" (keyup.enter)="openModal(image)" tabindex="0" />
   </swiper-slide>
 </swiper-container>
 
@@ -16,3 +17,12 @@
     <img [src]="image" [alt]="name" />
   </swiper-slide>
 </swiper-container>
+
+<app-image-modal
+  *ngIf="selectedImage"
+  [images]="images"
+  [name]="name"
+  [selectedImage]="selectedImage"
+  (closeModalEvent)="closeModal()"
+>
+</app-image-modal>
