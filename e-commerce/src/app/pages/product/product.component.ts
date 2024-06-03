@@ -21,8 +21,6 @@ export default class ProductComponent {
 
   productResponse!: ProductPagedQueryResponse;
 
-  productsObjects$!: Observable<ProductPagedQueryResponse | null>;
-
   product!: Product | undefined;
 
   name: string = '';
