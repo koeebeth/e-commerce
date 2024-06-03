@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import SliderComponent from './slider/slider.component';
 import CatalogComponent from './catalog/catalog.component';
 import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-main',
