@@ -1,1 +1,13 @@
-<p>categories works!</p>
+<div class="categories-page">
+  <h2 class="page__title">Categories</h2>
+  <section class="page__categories">
+    <a routerLink="/catalog" *ngFor="let category of categories">
+      <div class="category">
+        <h3 class="category__title">{{ category.categoryName }}</h3>
+        <div class="category__image">
+          <img [src]="category.image" [alt]="category.alt" />
+        </div>
+      </div>
+    </a>
+  </section>
+</div>
