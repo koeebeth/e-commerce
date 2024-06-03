@@ -1,0 +1,14 @@
+<div class="search-container">
+  <input
+    type="search"
+    id="from-input"
+    [(ngModel)]="searchText"
+    (keyup.enter)="searchProduct()"
+    (input)="onInputChange()"
+    maxlength="256"
+    placeholder="Search..."
+  />
+  <div class="search-btn_container">
+    <button class="search-button" [disabled]="!searchText" (click)="searchProduct()">Search</button>
+  </div>
+</div>
