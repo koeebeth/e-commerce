@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import SliderComponent from './slider/slider.component';
 import { AppState } from '../../store/store';
-import { Product, ProductPagedQueryResponse } from '../../shared/services/products/productTypes';
+import { Product } from '../../shared/services/products/productTypes';
 import * as actions from '../../store/actions';
 
 @Component({
@@ -18,8 +18,6 @@ import * as actions from '../../store/actions';
 })
 export default class ProductComponent {
   productObjects$!: Observable<Product | null>;
-
-  productResponse!: ProductPagedQueryResponse;
 
   product!: Product | undefined;
 

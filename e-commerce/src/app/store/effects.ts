@@ -396,7 +396,14 @@ export default class EcommerceEffects {
           take(1),
           switchMap(([anonToken, accessToken]) =>
             this.productsService
-              .filterProducts(accessToken || anonToken, action.filters, action.sort, action.offset, action.limit)
+              .filterProducts(
+                accessToken || anonToken,
+                action.searchText,
+                action.filters,
+                action.sort,
+                action.offset,
+                action.limit,
+              )
               .pipe(
                 map((products: ProductProjectionArray) =>
                   actions.loadFilterSuccess({ products: this.prepareProducts(products) }),

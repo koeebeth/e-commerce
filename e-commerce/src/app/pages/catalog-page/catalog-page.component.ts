@@ -8,11 +8,12 @@ import * as actions from '../../store/actions';
 import { ProductsArray } from '../../shared/services/products/productTypes';
 import FilterComponent from './filter/filter.component';
 import SortingComponent from './sorting/sorting.component';
+import SearchingComponent from './searching/searching.component';
 
 @Component({
   selector: 'app-catalog-page',
   standalone: true,
-  imports: [CommonModule, CardComponent, FilterComponent, SortingComponent],
+  imports: [CommonModule, CardComponent, FilterComponent, SortingComponent, SearchingComponent],
   templateUrl: './catalog-page.component.html',
   styleUrl: './catalog-page.component.scss',
 })

@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { Product, ProductsArray } from '../../../../shared/services/products/productTypes';
 import { Router } from '@angular/router';
+import { Product, ProductsArray } from '../../../../shared/services/products/productTypes';
 import { AppState } from '../../../../store/store';
 
 @Component({
