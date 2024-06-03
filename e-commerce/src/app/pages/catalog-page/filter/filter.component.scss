@@ -47,7 +47,18 @@
     .filter-group-header {
       font-weight: bold;
       cursor: pointer;
+      align-items: center;
       display: flex;
+
+      &::after {
+        content: '^';
+        transform: rotate(180deg);
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        height: 1px;
+      }
     }
 
     .filter-group-content {
@@ -88,6 +99,13 @@
       box-shadow: inset -1px 0px 6px 2px rgb(8 68 73 / 48%);
       border-radius: 10px;
     }
+  }
+
+  .filtrs-btn_container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    column-gap: 5px;
   }
 }
 

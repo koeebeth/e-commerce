@@ -66,7 +66,11 @@ export default class ProductsService {
       for (const key in filters) {
         if (filters.hasOwnProperty(key)) {
           filters[key].forEach((value) => {
-            params = params.append('filter', `${key}:"${value}"`);
+            let filterValue = value;
+            if (key === 'categories.id') {
+              filterValue = `"${value}"`;
+            }
+            params = params.append('filter', `${key}:${filterValue}`);
           });
         }
       }

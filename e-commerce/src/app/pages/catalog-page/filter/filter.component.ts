@@ -102,7 +102,7 @@ export class FilterComponent {
     const priceRangeTo = this.priceRange.to !== null ? this.parseToCents(this.priceRange.to) : null;
 
     if (priceRangeFrom !== null && priceRangeTo !== null) {
-      appliedFilters['masterVariant.prices.value.centAmount'] = [`range(${priceRangeFrom} to ${priceRangeTo})`];
+      appliedFilters['variants.prices.value.centAmount'] = [`range(${priceRangeFrom} to ${priceRangeTo})`];
     }
   }
 
@@ -113,7 +113,7 @@ export class FilterComponent {
     const discounted = discountedWith ? true : discountedWithout ? false : null;
 
     if (discounted !== null) {
-      appliedFilters['masterVariant.scopedPriceDiscounted'] = [discounted];
+      appliedFilters['variants.scopedPriceDiscounted'] = [discounted];
     }
   }
 
