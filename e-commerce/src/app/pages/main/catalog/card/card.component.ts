@@ -5,7 +5,6 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { Product, ProductsArray, CategoriesArray } from '../../../../shared/services/products/productTypes';
 import { AppState } from '../../../../store/store';
-import * as actions from '../../../../store/actions';
 import { selecCategories } from '../../../../store/selectors';
 
 @Component({

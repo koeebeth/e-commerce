@@ -22,9 +22,11 @@ export default class CatalogPageComponent {
   productObjects$!: Observable<ProductsArray | null>;
 
   filters$!: Observable<{ [key: string]: string[] }>;
+
   sort$!: Observable<string>;
 
   filters!: { [key: string]: string[] };
+
   sort!: string;
 
   productResponse!: ProductsArray;

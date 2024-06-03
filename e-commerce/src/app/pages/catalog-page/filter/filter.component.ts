@@ -102,7 +102,7 @@ export default class FilterComponent {
     return [];
   }
 
-  addCategoryFilters(appliedFilters: { [key: string]: any }) {
+  addCategoryFilters(appliedFilters: { [key: string]: string[] }) {
     const categoryFilters = this.getCheckedFilters('Category');
     const categoryIds = categoryFilters.map((filter) => filter.id);
     appliedFilters['categories.id'] = categoryIds;
