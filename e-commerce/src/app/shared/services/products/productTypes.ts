@@ -32,25 +32,6 @@ export interface Product {
   version?: number;
   categoryOrderHints?: LocalizedString;
 }
-
-// export interface ProductProjection {
-//   id: string;
-//   name: LocalizedString;
-//   categories: Reference[];
-//   description?: LocalizedString;
-//   slug: LocalizedString;
-//   metaTitle?: LocalizedString;
-//   metaDescription?: LocalizedString;
-//   metaKeywords?: LocalizedString;
-//   masterVariant: ProductVariant;
-//   variants: ProductVariant[];
-//   hasStagedChanges: boolean;
-//   published: boolean;
-//   version: number;
-//   productType: Reference;
-//   categoryOrderHints?: { [key: string]: string };
-// }
-
 export interface MasterData {
   current?: ProductData;
   staged?: ProductData;

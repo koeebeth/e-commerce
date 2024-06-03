@@ -6,9 +6,10 @@ import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
 
 interface FilterGroup {
+  icon: string;
   name: string;
   isOpen: boolean;
-  filters: { name: string; id: string; checked: boolean }[];
+  filters: { name: string; checked: boolean; id: string }[];
 }
 @Component({
   selector: 'app-filter',
@@ -22,20 +23,23 @@ export class FilterComponent {
   priceRange: { from: number | null; to: number | null } = { from: null, to: null };
   filterGroups: FilterGroup[] = [
     {
-      name: '🤖 Category',
+      name: 'Category',
+      icon: '🤖',
       isOpen: false,
       filters: [],
     },
     {
-      name: '🤩 Discount',
+      name: 'Discount',
+      icon: '🤩',
       isOpen: false,
       filters: [
-        { name: 'With', id: '1', checked: false },
-        { name: 'Without', id: '2', checked: false },
+        { name: 'With', checked: false, id: '1' },
+        { name: 'Without', checked: false, id: '2' },
       ],
     },
     {
-      name: '🤑 Price',
+      name: 'Price',
+      icon: '🤑',
       isOpen: false,
       filters: [],
     },
@@ -75,18 +79,63 @@ export class FilterComponent {
     }
   }
 
-  applyFilters() {
-    const categoryFilters = this.getCheckedFilters('🤖 Category');
-    const categoryIds = categoryFilters.map((filter) => filter.id);
-    this.store.dispatch(actions.loadFilter({ categoryIds: categoryIds, offset: 0, limit: 100 }));
-    console.log('Applied Filters:', categoryIds);
-  }
-
-  getCheckedFilters(groupName: string): { name: string; id: string; checked: boolean }[] {
+  getCheckedFilters(groupName: string): { name: string; checked: boolean; id: string }[] {
     const group = this.filterGroups.find((g) => g.name === groupName);
     if (group) {
       return group.filters.filter((filter) => filter.checked);
     }
     return [];
+  }
+
+  addCategoryFilters(appliedFilters: { [key: string]: any }) {
+    const categoryFilters = this.getCheckedFilters('Category');
+    const categoryIds = categoryFilters.map((filter) => filter.id);
+    appliedFilters['categories.id'] = categoryIds;
+  }
+
+  parseToCents(value: number): number {
+    return value * 100;
+  }
+
+  addPriceFilters(appliedFilters: { [key: string]: any }) {
+    const priceRangeFrom = this.priceRange.from !== null ? this.parseToCents(this.priceRange.from) : null;
+    const priceRangeTo = this.priceRange.to !== null ? this.parseToCents(this.priceRange.to) : null;
+
+    if (priceRangeFrom !== null && priceRangeTo !== null) {
+      appliedFilters['masterVariant.prices.value.centAmount'] = [`range(${priceRangeFrom} to ${priceRangeTo})`];
+    }
+  }
+
+  addDiscountFilters(appliedFilters: { [key: string]: any }) {
+    const discountedFilters = this.getCheckedFilters('Discount');
+    const discountedWith = discountedFilters.find((filter) => filter.name === 'With')?.checked || false;
+    const discountedWithout = discountedFilters.find((filter) => filter.name === 'Without')?.checked || false;
+    const discounted = discountedWith ? true : discountedWithout ? false : null;
+
+    if (discounted !== null) {
+      appliedFilters['masterVariant.scopedPriceDiscounted'] = [discounted];
+    }
+  }
+
+  applyFilters() {
+    const appliedFilters: { [key: string]: any } = {};
+
+    this.addCategoryFilters(appliedFilters);
+    this.addPriceFilters(appliedFilters);
+    this.addDiscountFilters(appliedFilters);
+
+    this.store.dispatch(actions.loadFilter({ filters: appliedFilters, offset: 0, limit: 10 }));
+  }
+
+  resetFilters() {
+    this.filterGroups.forEach((group) => {
+      group.filters.forEach((filter) => {
+        filter.checked = false;
+      });
+    });
+    this.priceRange = { from: null, to: null };
+
+    this.applyFilters();
+    this.toggleFilterMenu();
   }
 }

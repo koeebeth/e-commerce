@@ -49,7 +49,7 @@ export default class ProductsService {
 
   filterProducts(
     token: string,
-    categoryIds: string[],
+    filters?: { [key: string]: string[] },
     sort?: string,
     offset: number = 0,
     limit: number = 10,
@@ -59,13 +59,17 @@ export default class ProductsService {
     let params = new HttpParams().set('limit', limit.toString()).set('offset', offset.toString());
 
     if (sort) {
-      params = params.set('sort', sort);
+      params = params.set('sort:', sort);
     }
 
-    if (categoryIds && categoryIds.length > 0) {
-      categoryIds.forEach((categoryId) => {
-        params = params.append('filter', `categories.id:"${categoryId}"`);
-      });
+    if (filters) {
+      for (const key in filters) {
+        if (filters.hasOwnProperty(key)) {
+          filters[key].forEach((value) => {
+            params = params.append('filter', `${key}:"${value}"`);
+          });
+        }
+      }
     }
 
     const headers = new HttpHeaders({
