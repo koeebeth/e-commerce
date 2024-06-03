@@ -7,11 +7,12 @@ import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
 import { ProductsArray } from '../../shared/services/products/productTypes';
 import { FilterComponent } from './filter/filter.component';
+import { SortingComponent } from './sorting/sorting.component';
 
 @Component({
   selector: 'app-catalog-page',
   standalone: true,
-  imports: [CommonModule, CardComponent, FilterComponent],
+  imports: [CommonModule, CardComponent, FilterComponent, SortingComponent],
   templateUrl: './catalog-page.component.html',
   styleUrl: './catalog-page.component.scss',
 })
