@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { RouterLink } from '@angular/router';
 import CardComponent from './card/card.component';
 import { AppState } from '../../../store/store';
-import { ProductPagedQueryResponse } from '../../../shared/services/products/productTypes';
+import { ProductsArray } from '../../../shared/services/products/productTypes';
 import ButtonComponent from '../../../shared/components/button/button.component';
 
 @Component({
@@ -16,9 +16,9 @@ import ButtonComponent from '../../../shared/components/button/button.component'
   styleUrl: './catalog.component.scss',
 })
 export default class CatalogComponent {
-  productObjects$!: Observable<ProductPagedQueryResponse | null>;
+  productObjects$!: Observable<ProductsArray | null>;
 
-  productResponse!: ProductPagedQueryResponse;
+  productResponse!: ProductsArray;
 
   currentPage: number = 1;
 
