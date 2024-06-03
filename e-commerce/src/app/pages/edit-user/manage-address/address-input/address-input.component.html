@@ -1,0 +1,45 @@
+<div [formGroup]="form" class="address-input-group">
+  <app-input
+    name="city"
+    label="City"
+    [defaultValue]="form.value.city"
+    [validation]="cityValidation"
+    [form]="form"
+  ></app-input>
+  <app-input
+    name="streetNumber"
+    label="Street"
+    [defaultValue]="form.value.streetNumber"
+    [validation]="streetValidation"
+    [form]="form"
+  ></app-input>
+  <app-select-input
+    name="country"
+    label="Country"
+    [form]="form"
+    (change)="onSelectCountry($event)"
+    [value]="form.value.country"
+    [optList]="countries"
+  ></app-select-input>
+  <app-input
+    *ngIf="selectedCountry === 'Germany' || selectedCountry === 'United States'"
+    [form]="form"
+    [validation]="usPostalcodeValidation"
+    [defaultValue]="form.value.postalCode"
+    name="postalCode"
+    label="Postal Code"
+  ></app-input>
+  <app-input
+    *ngIf="selectedCountry === 'United Kingdom'"
+    name="postalCode"
+    [form]="form"
+    [validation]="ukPostalcodeValidation"
+    [defaultValue]="form.value.postalCode"
+    label="Postal Code"
+  ></app-input>
+  <app-button content="delete" (clickHandler)="onDelete()" btnType="link"></app-button>
+  <label class="default-check">
+    <input type="checkbox" (change)="onSetDefault()" [checked]="isDefault" />
+    Default Address
+  </label>
+</div>

@@ -12,6 +12,8 @@ import { FormGroup, FormControl, ReactiveFormsModule } from '@angular/forms';
 export default class SelectInputComponent {
   @Input() optList: string[] = [];
 
+  @Input() value: string = '';
+
   @Input() form!: FormGroup;
 
   @Input() name: string = '';
@@ -20,8 +22,11 @@ export default class SelectInputComponent {
 
   control!: FormControl;
 
+  defaultValueIndex = 0;
+
   ngOnInit() {
-    this.control = new FormControl(this.optList[0] || '');
+    this.defaultValueIndex = this.value ? this.optList.indexOf(this.value) : 0;
+    this.control = new FormControl(this.optList[this.defaultValueIndex] || '');
     this.form.addControl(this.name, this.control);
   }
 }

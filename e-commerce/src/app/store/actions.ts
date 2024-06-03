@@ -5,6 +5,7 @@ import {
   CustomerInfo,
   CustomerSignin,
   PasswordChange,
+  Address,
 } from '../shared/services/commercetoolsApi/apitypes';
 import { Product, ProductPagedQueryResponse } from '../shared/services/products/productTypes';
 
@@ -70,6 +71,22 @@ export const loadUpdateUserPasswordFailure = createAction(
   props<{ error: string }>(),
 );
 
+export const loadUpdateUserAddresses = createAction(
+  '[User] Load Updating User Addresses',
+  props<{
+    version: number;
+    addresses: (Address & { key: string; type: 'billing' | 'shipping'; default: boolean })[];
+    userInfo: CustomerInfo;
+  }>(),
+);
+export const loadUpdateUserAddressesSuccess = createAction(
+  '[User] Load Updating User Addresses',
+  props<{ userInfo: CustomerInfo }>(),
+);
+export const loadUpdateUserAddressesFailure = createAction(
+  '[User] Load Updating User Addresses',
+  props<{ error: string }>(),
+);
 
 export const loadAnonymousCartSuccess = createAction(
   '[Cart] Cart Anonymous Id Success',

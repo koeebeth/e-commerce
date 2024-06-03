@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { AuthData, CartBase, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';
+import { Address, AuthData, CartBase, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 import * as actions from '../../../store/actions';
 import { AppState } from '../../../store/store';
@@ -127,6 +127,103 @@ export default class CommerceApiService {
     };
 
     return this.http.post<PersonalInfo>(requestUrl, JSON.stringify(body), { headers });
+  }
+
+  updateAddresses(
+    accessToken: string,
+    version: number,
+    currentUser: CustomerInfo,
+    addresses: (Address & { key: string; type: 'billing' | 'shipping'; default: boolean })[],
+  ) {
+    const requestUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me`;
+    const currentAddresses = currentUser.addresses;
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    const requestActions: object[] = [];
+    const addIdActions: object[] = [];
+
+    addresses.forEach((address) => {
+      const { city, country, postalCode, streetNumber } = address;
+      const addressInfo = { city, country, postalCode, streetNumber };
+      if (currentAddresses.find((a) => a.id === address.id)) {
+        requestActions.push({
+          action: 'changeAddress',
+          addressId: address.id,
+          address: addressInfo,
+        });
+
+        if (address.default && address.type === 'billing') {
+          requestActions.push({
+            action: 'setDefaultBillingAddress',
+            addressId: address.id,
+          });
+        } else if (address.default && address.type === 'shipping') {
+          requestActions.push({
+            action: 'setDefaultShippingAddress',
+            addressId: address.id,
+          });
+        }
+      } else {
+        requestActions.push({
+          action: 'addAddress',
+          address,
+        });
+        if (address.type === 'billing') {
+          addIdActions.push({
+            action: 'addBillingAddressId',
+            addressKey: address.key,
+          });
+
+          if (address.default) {
+            addIdActions.push({
+              action: 'setDefaultBillingAddress',
+              addressKey: address.key,
+            });
+          }
+        } else {
+          addIdActions.push({
+            action: 'addShippingAddressId',
+            addressKey: address.key,
+          });
+
+          if (address.default) {
+            addIdActions.push({
+              action: 'setDefaultShippingAddress',
+              addressKey: address.key,
+            });
+          }
+        }
+      }
+    });
+
+    currentAddresses.forEach((address) => {
+      if (!addresses.find((a) => a.id === address.id)) {
+        requestActions.push({
+          action: 'removeAddress',
+          addressId: address.id,
+        });
+      }
+    });
+
+    const body = {
+      version,
+      actions: requestActions,
+    };
+
+    return this.http.post<CustomerInfo>(requestUrl, JSON.stringify(body), { headers }).pipe(
+      mergeMap((res) => {
+        return this.http.post<PersonalInfo>(
+          requestUrl,
+          JSON.stringify({ version: res.version, actions: addIdActions }),
+          {
+            headers,
+          },
+        );
+      }),
+    );
   }
 
   updatePassword(accessToken: string, version: number, data: PasswordChange) {
