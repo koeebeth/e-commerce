@@ -9,7 +9,7 @@ import { RouterLink } from '@angular/router';
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
-export class CategoriesComponent {
+export default class CategoriesComponent {
   categories = [
     {
       categoryName: 'ACTION',
