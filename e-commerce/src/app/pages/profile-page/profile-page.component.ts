@@ -44,7 +44,7 @@ export default class ProfilePageComponent {
       .select((state) => state.app.accessToken)
       .subscribe((accessToken) => {
         if (!accessToken) {
-          this.router.navigate(['/main']);
+          this.router.navigate(['/login']);
         }
       });
     this.store
