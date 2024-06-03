@@ -34,6 +34,7 @@ export interface CustomerInfo {
   lastName: string;
   password: string;
   version: number;
+  id: string;
 }
 
 export interface Address {

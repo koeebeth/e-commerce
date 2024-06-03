@@ -18,53 +18,71 @@
 }
 
 .category-list {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   justify-content: space-between;
   width: 100%;
-  gap: 5px;
+  height: 200px;
+  gap: 10px;
 
   @media screen and (max-width: 650px) {
-    flex-wrap: wrap;
-    justify-content: center;
+    grid-template-columns: repeat(4, 200px);
+    overflow: scroll;
   }
+}
+
+.category-link {
+  text-decoration: none;
 }
 
 .category {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  padding: 10px 10px 5px 10px;
-  gap: 12px;
-  background: $color-primary-200;
-  overflow: hidden;
-  cursor: pointer;
-
-  @media screen and (max-width: 650px) {
-    width: 150px;
-  }
-}
-
-.category-title {
-  @include font-heading;
-  font-size: 1.7rem;
-
-  @media screen and (max-width: 425px) {
-    font-size: 1.3rem;
-  }
-}
-
-.category-img {
-  border-radius: 10px;
-  transition: all 0.5s linear;
-  max-width: 370px;
+  height: 100%;
   width: 100%;
+  box-sizing: border-box;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: $color-primary-300;
+  box-shadow: 0px 5px 5px rgba($color: #000000, $alpha: 0.3);
+
+  &:hover {
+    img {
+      transform: scale(105%);
+    }
+    cursor: pointer;
+  }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .category:hover .category-img {
-    transform: scale(1.1);
+.category__image {
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    transition: all 0.3s;
+  }
+}
+
+.category__title {
+  @include font-heading;
+  color: $color-primary-600;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.category-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: $color-primary-500;
+  background-color: $color-primary-200;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: $color-primary-300;
   }
 }

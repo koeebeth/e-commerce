@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import SliderComponent from './slider/slider.component';
 import CatalogComponent from './catalog/catalog.component';
@@ -9,7 +10,7 @@ import * as actions from '../../store/actions';
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [SliderComponent, CommonModule, CatalogComponent],
+  imports: [SliderComponent, CommonModule, CatalogComponent, RouterLink],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss',
 })
@@ -25,21 +26,19 @@ export default class MainComponent {
       categoryName: 'ACTION',
       image: '../../../assets/eldenring.jpeg',
       alt: 'action',
+      query: 'action',
     },
     {
       categoryName: 'RPG',
       image: '../../../assets/conan.jpeg',
       alt: 'rpg',
+      query: 'rpg',
     },
     {
       categoryName: 'STRATEGY',
       image: '../../../assets/stellaris.jpeg',
       alt: 'strategy',
-    },
-    {
-      categoryName: 'SIMULATION',
-      image: '../../../assets/FC24.jpeg',
-      alt: 'simulation',
+      query: 'strategy',
     },
   ];
 }

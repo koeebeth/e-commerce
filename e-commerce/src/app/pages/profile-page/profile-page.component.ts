@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AppState } from '../../store/store';
 import { CustomerInfo } from '../../shared/services/commercetoolsApi/apitypes';
@@ -28,6 +28,7 @@ export default class ProfilePageComponent {
     version: 0,
     defaultBillingAddressId: '',
     defaultShippingAddressId: '',
+    id: '',
   };
 
   formatDate = formatDate;
@@ -37,21 +38,29 @@ export default class ProfilePageComponent {
   constructor(
     private store: Store<AppState>,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) {}
 
   ngOnInit() {
     this.store
       .select((state) => state.app.accessToken)
       .subscribe((accessToken) => {
-        if (!accessToken) {
-          this.router.navigate(['/main']);
+        const authRefresh = localStorage.getItem('AuthRefresh');
+        if (!accessToken && !authRefresh) {
+          this.router.navigate(['/login']);
         }
       });
+
     this.store
       .select((state) => state.app.userInfo)
       .subscribe((userInfo) => {
         if (userInfo) {
           this.userInfo = userInfo;
+          this.activatedRoute.queryParams.subscribe((params) => {
+            if (params['id'] !== userInfo.id) {
+              this.router.navigate(['profile'], { queryParams: { id: this.userInfo.id } });
+            }
+          });
         }
       });
   }

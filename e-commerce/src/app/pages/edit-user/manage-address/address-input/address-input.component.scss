@@ -19,5 +19,9 @@
     font-size: 0.8rem;
     display: flex;
     align-items: center;
+
+    input:disabled:checked {
+      color: $color-primary-300;
+    }
   }
 }

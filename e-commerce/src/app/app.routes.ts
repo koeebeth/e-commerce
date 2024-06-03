@@ -6,6 +6,7 @@ import NotFoundComponent from './pages/not-found/not-found.component';
 import ProfilePageComponent from './pages/profile-page/profile-page.component';
 import CatalogPageComponent from './pages/catalog-page/catalog-page.component';
 import ProductComponent from './pages/product/product.component';
+import CategoriesComponent from './pages/categories/categories.component';
 
 const routes: Routes = [
   { path: 'main', title: 'CyberVault', component: MainComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'registration', component: RegistrationComponent },
   { path: 'profile', component: ProfilePageComponent },
   { path: 'catalog', component: CatalogPageComponent },
+  { path: 'categories', component: CategoriesComponent },
   { path: 'catalog/:category/:id', component: ProductComponent },
   { path: '404', component: NotFoundComponent },
   { path: '', redirectTo: '/main', pathMatch: 'full' },
