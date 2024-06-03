@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import SliderComponent from './slider/slider.component';
 import { AppState } from '../../store/store';
-import { Product, ProductPagedQueryResponse } from '../../shared/services/products/productTypes';
+import { Product, CategoriesArray } from '../../shared/services/products/productTypes';
 import * as actions from '../../store/actions';
 
 @Component({
@@ -19,7 +19,7 @@ import * as actions from '../../store/actions';
 export default class ProductComponent {
   productObjects$!: Observable<Product | null>;
 
-  productResponse!: ProductPagedQueryResponse;
+  categoryObjects$!: Observable<CategoriesArray | null>;
 
   product!: Product | undefined;
 
@@ -49,6 +49,12 @@ export default class ProductComponent {
 
   productID: string = '';
 
+  categoryID: string = '';
+
+  category: string | undefined = '';
+
+  categoryRouter: string = '';
+
   constructor(
     private route: ActivatedRoute,
     private store: Store<AppState>,
@@ -75,6 +81,19 @@ export default class ProductComponent {
         this.getDiscuntedPrice();
         this.formatPrice();
         this.getDiscountProcentage();
+        this.getCategory();
+      }
+    });
+  }
+
+  getCategory() {
+    this.store.dispatch(actions.loadCategories({ offset: 0, limit: 10 }));
+    this.categoryObjects$ = this.store.select((state) => state.app.categories);
+    this.categoryObjects$.subscribe((categories) => {
+      if (this.product?.masterData?.current?.categories) {
+        this.categoryID = this.product?.masterData?.current?.categories[0].id;
+        const category = categories?.results.find((c) => c.id === this.categoryID);
+        this.category = category?.name['en-US'];
       }
     });
   }

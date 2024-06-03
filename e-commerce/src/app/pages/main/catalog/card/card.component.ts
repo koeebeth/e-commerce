@@ -3,8 +3,9 @@ import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
-import { Product, ProductPagedQueryResponse } from '../../../../shared/services/products/productTypes';
+import { Product, ProductsArray, CategoriesArray } from '../../../../shared/services/products/productTypes';
 import { AppState } from '../../../../store/store';
+import * as actions from '../../../../store/actions';
 
 @Component({
   selector: 'app-card',
@@ -16,7 +17,9 @@ import { AppState } from '../../../../store/store';
 export default class CardComponent {
   @Input() card!: Product;
 
-  productObjects$!: Observable<ProductPagedQueryResponse>;
+  productObjects$!: Observable<ProductsArray>;
+
+  categoryObjects$!: Observable<CategoriesArray | null>;
 
   mainImage: string = '';
 
@@ -42,6 +45,10 @@ export default class CardComponent {
 
   currency!: string;
 
+  categoryID: string = '';
+
+  category: string | undefined = '';
+
   constructor(
     private store: Store<AppState>,
     private router: Router,
@@ -56,10 +63,15 @@ export default class CardComponent {
     this.formatPrice();
     this.getDiscountProcentage();
     this.addMainGif();
+    this.getCategory();
   }
 
   addMainGif(): void {
     const gifPath = '/assets/gif/';
+    if (this.card?.masterData?.current?.key) {
+      const gifName = `${gifPath}${this.card?.masterData?.current?.key}.gif`;
+      this.mainGif = gifName;
+    }
     if (this.card?.key) {
       const gifName = `${gifPath}${this.card?.key}.gif`;
       this.mainGif = gifName;
@@ -108,12 +120,24 @@ export default class CardComponent {
   }
 
   onCardClick() {
-    this.router.navigate(['/products', this.card.id]);
+    this.router.navigate(['/catalog', this.category, this.card.id]);
   }
 
   originalPriceStyles() {
     return {
       'justify-content': this.discountPercnt > 0 ? 'space-between' : 'flex-end',
     };
+  }
+
+  getCategory() {
+    this.store.dispatch(actions.loadCategories({ offset: 0, limit: 10 }));
+    this.categoryObjects$ = this.store.select((state) => state.app.categories);
+    this.categoryObjects$.subscribe((categories) => {
+      if (this.card?.masterData?.current?.categories) {
+        this.categoryID = this.card?.masterData?.current?.categories[0].id;
+        const category = categories?.results.find((c) => c.id === this.categoryID);
+        this.category = category?.name['en-US'].toLowerCase();
+      }
+    });
   }
 }

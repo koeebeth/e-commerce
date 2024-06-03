@@ -1,9 +1,13 @@
 <section class="catalog-container">
+  <div class="catalog-settings">
+    <app-searching></app-searching>
+    <app-filter></app-filter>
+    <app-sorting></app-sorting>
+  </div>
   <div class="cards-container">
     <div class="cards-list">
       <div *ngFor="let card of (productObjects$ | async)?.results">
         <app-card [card]="card"></app-card>
-        <!-- <app-card [card]="card"></app-card> -->
       </div>
     </div>
   </div>
