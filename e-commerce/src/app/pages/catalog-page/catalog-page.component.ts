@@ -7,18 +7,21 @@ import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
 import { ProductPagedQueryResponse } from '../../shared/services/products/productTypes';
 import SearchingComponent from './searching/searching.component';
+import { ProductsArray } from '../../shared/services/products/productTypes';
+import FilterComponent from './filter/filter.component';
+import SortingComponent from './sorting/sorting.component';
 
 @Component({
   selector: 'app-catalog-page',
   standalone: true,
-  imports: [CommonModule, CardComponent, SearchingComponent],
+  imports: [CommonModule, CardComponent, FilterComponent, SortingComponent, SearchingComponent],
   templateUrl: './catalog-page.component.html',
   styleUrl: './catalog-page.component.scss',
 })
 export default class CatalogPageComponent {
-  productObjects$!: Observable<ProductPagedQueryResponse | null>;
+  productObjects$!: Observable<ProductsArray | null>;
 
-  productResponse!: ProductPagedQueryResponse;
+  productResponse!: ProductsArray;
 
   currentPage: number = 1;
 

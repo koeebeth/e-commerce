@@ -1,0 +1,41 @@
+@import '../../../../styles.scss';
+
+.sort-container {
+  display: flex;
+  align-items: center;
+
+  .sort-label {
+    margin-right: 0.5rem;
+    font-weight: 500;
+  }
+
+  .sort-select {
+    @include font-heading;
+    padding: 4px 10px;
+    border: 1px solid #ccc;
+    color: white;
+    border-radius: 5px;
+    background-color: $color-primary-200;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+
+    @media screen and (max-width: 480px) {
+      padding: 7px 15px;
+      font-size: 0.8rem;
+    }
+
+    &:focus {
+      outline: none;
+    }
+
+    &:hover {
+      outline: none;
+      border-radius: 5px;
+    }
+
+    option[disabled][hidden] {
+      display: none;
+    }
+  }
+}

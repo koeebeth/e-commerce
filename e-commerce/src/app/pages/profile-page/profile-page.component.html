@@ -18,6 +18,7 @@
           <h4>Shipping</h4>
           <ul>
             <li *ngFor="let address of listShippingAddresses()">
+              <p *ngIf="userInfo.defaultShippingAddressId === address.id">Default</p>
               {{ address.streetNumber }},{{ address.city }}, {{ address.country }}, {{ address.postalCode }}
             </li>
           </ul>
@@ -26,6 +27,7 @@
           <h4>Billing</h4>
           <ul>
             <li *ngFor="let address of listBillingAddresses()">
+              <p *ngIf="userInfo.defaultBillingAddressId === address.id">Default</p>
               {{ address.streetNumber }},{{ address.city }}, {{ address.country }}, {{ address.postalCode }}
             </li>
           </ul>

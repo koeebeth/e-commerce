@@ -1,0 +1,33 @@
+<div class="manage-address">
+  <h2>Manage Addresses</h2>
+  <form [formGroup]="addressForm" class="address-form">
+    <fieldset>
+      <legend>Shipping</legend>
+      <app-address-input
+        *ngFor="let address of shippingAddresses.controls; let i = index"
+        [defaultValue]="address.value"
+        [form]="address"
+        (delete)="deleteShippingAddress(i)"
+        (setDefault)="onSelectDefault('shipping', i)"
+        [isDefault]="defaultShippingIndex === i"
+      ></app-address-input>
+      <app-button btnType="link" content="+ Add address" (clickHandler)="addAddress('shipping')"></app-button>
+    </fieldset>
+    <fieldset>
+      <legend>Billing</legend>
+      <app-address-input
+        *ngFor="let address of billingAddresses.controls; let i = index"
+        [form]="address"
+        [defaultValue]="address.value"
+        (delete)="deleteBillingAddress(i)"
+        (setDefault)="onSelectDefault('billing', i)"
+        [isDefault]="defaultBillingIndex === i"
+      ></app-address-input>
+      <app-button btnType="link" content="+ Add address" (clickHandler)="addAddress('billing')"></app-button>
+    </fieldset>
+    <div class="buttons">
+      <app-button [isDisabled]="!addressForm.valid" content="Save Changes" (clickHandler)="onSubmit()"></app-button>
+      <app-button btnType="link" content="Cancel" (clickHandler)="onClose()"></app-button>
+    </div>
+  </form>
+</div>

@@ -12,9 +12,7 @@
         <div *ngIf="discountPercnt > 0" class="discount">{{ discountPercnt }}%</div>
         <div class="prices-variant">
           <div class="original-price" *ngIf="discountPercnt > 0">{{ originalPrice | currency }}</div>
-          <div class="discounted-price">
-            {{ discountPercnt > 0 ? (discuntedPrice | currency) : (originalPrice | currency) }}
-          </div>
+          <div class="discounted-price">{{ discountPercnt > 0 ? discuntedPrice : (originalPrice | currency) }}</div>
         </div>
       </div>
     </div>

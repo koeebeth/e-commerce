@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
+import { Product, ProductsArray } from '../../../../shared/services/products/productTypes';
 import { Router } from '@angular/router';
-import { Product, ProductPagedQueryResponse } from '../../../../shared/services/products/productTypes';
 import { AppState } from '../../../../store/store';
 
 @Component({
@@ -16,7 +16,7 @@ import { AppState } from '../../../../store/store';
 export default class CardComponent {
   @Input() card!: Product;
 
-  productObjects$!: Observable<ProductPagedQueryResponse>;
+  productObjects$!: Observable<ProductsArray>;
 
   mainImage: string = '';
 
@@ -60,6 +60,10 @@ export default class CardComponent {
 
   addMainGif(): void {
     const gifPath = '/assets/gif/';
+    if (this.card?.masterData?.current?.key) {
+      const gifName = `${gifPath}${this.card?.masterData?.current?.key}.gif`;
+      this.mainGif = gifName;
+    }
     if (this.card?.key) {
       const gifName = `${gifPath}${this.card?.key}.gif`;
       this.mainGif = gifName;

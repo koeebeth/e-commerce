@@ -15,5 +15,6 @@
   <div class="modal__form">
     <app-edit-profile *ngIf="editMode === 'personal-info'" (closeHandler)="onClose()"></app-edit-profile>
     <app-change-password *ngIf="editMode === 'password'" (closeHandler)="onClose()"></app-change-password>
+    <app-manage-address *ngIf="editMode === 'address'" (closeHandler)="onClose()"></app-manage-address>
   </div>
 </div>

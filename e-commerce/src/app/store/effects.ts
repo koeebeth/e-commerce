@@ -11,7 +11,12 @@ import { AppState } from './store';
 import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
 import ProductsService from '../shared/services/products/products.service';
-import { Product, ProductPagedQueryResponse } from '../shared/services/products/productTypes';
+import {
+  CategoriesArray,
+  Product,
+  ProductProjectionArray,
+  ProductsArray,
+} from '../shared/services/products/productTypes';
 
 @Injectable()
 export default class EcommerceEffects {
@@ -215,6 +220,25 @@ export default class EcommerceEffects {
     ),
   );
 
+  loadUpdateUserAddress$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadUpdateUserAddresses),
+      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))), // Assuming accessToken is stored in the auth state
+      filter(([, accessToken]) => !!accessToken), // Filter out if access token is not present
+      switchMap(([action, accessToken]) =>
+        this.ecommerceApiService
+          .updateAddresses(accessToken, action.userInfo.version, action.userInfo, action.addresses)
+          .pipe(
+            map((response) => {
+              this.notificationService.showNotification('success', 'Successfully updated addresses');
+              return actions.loadUpdateUserAddressesSuccess({ userInfo: <CustomerInfo>response });
+            }),
+            catchError((error) => of(actions.loadUpdateUserAddressesFailure({ error }))),
+          ),
+      ),
+    ),
+  );
+
   loadUpdateUserPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadUpdateUserPassword),
@@ -273,7 +297,7 @@ export default class EcommerceEffects {
           take(1),
           switchMap(([anonToken, accessToken]) =>
             this.productsService.getProducts(accessToken || anonToken, action.offset, action.limit).pipe(
-              map((products: ProductPagedQueryResponse) =>
+              map((products: ProductsArray) =>
                 actions.loadProductsSuccess({
                   products,
                 }),
@@ -321,29 +345,63 @@ export default class EcommerceEffects {
     ),
   );
 
-  loadSearchProducts$ = createEffect(() =>
+  loadCategories$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(actions.searchProducts),
+      ofType(actions.loadCategories),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.productsService.getCategories(accessToken || anonToken, action.offset, action.limit).pipe(
+              map((categories: CategoriesArray) => actions.loadCategoriesSuccess({ categories })),
+              catchError((error) => of(actions.loadCategoriesFailure({ error: error.message }))),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  prepareProducts(products: ProductProjectionArray): ProductsArray {
+    if (products) {
+      const productsArray: ProductsArray = {
+        limit: products.limit,
+        count: products.count,
+        total: products.total,
+        offset: products.offset,
+        results: [],
+      };
+
+      products.results.forEach((card) => {
+        productsArray.results.push({
+          id: card.id,
+          masterData: {
+            current: card,
+          },
+        });
+      });
+
+      return productsArray;
+    }
+    return products;
+  }
+
+  loadFilter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadFilter),
       switchMap((action) =>
         combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
           filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
           take(1),
           switchMap(([anonToken, accessToken]) =>
             this.productsService
-              .searchProducts(action.searchText, accessToken || anonToken, action.offset, action.limit)
+              .filterProducts(accessToken || anonToken, action.filters, action.sort, action.offset, action.limit)
               .pipe(
-                map((products: ProductPagedQueryResponse) =>
-                  actions.searchProductsSuccess({
-                    products,
-                  }),
+                map((products: ProductProjectionArray) =>
+                  actions.loadFilterSuccess({ products: this.prepareProducts(products) }),
                 ),
-                catchError((error) =>
-                  of(
-                    actions.searchProductsFailure({
-                      error: error.message,
-                    }),
-                  ),
-                ),
+                catchError((error) => of(actions.loadFilterFailure({ error: error.message }))),
               ),
           ),
         ),

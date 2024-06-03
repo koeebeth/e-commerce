@@ -34,7 +34,11 @@
       ></app-input>
     </fieldset>
     <div class="buttons">
-      <app-button [isDisabled]="!editForm.valid" content="Save Changes" (clickHandler)="onSubmit()"></app-button>
+      <app-button
+        [isDisabled]="!editForm.valid || !editForm.dirty"
+        content="Save Changes"
+        (clickHandler)="onSubmit()"
+      ></app-button>
       <app-button btnType="link" content="Cancel" (clickHandler)="onClose()"></app-button>
     </div>
   </form>
