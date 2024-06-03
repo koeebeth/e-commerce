@@ -117,7 +117,7 @@ export const loadCategoriesFailure = createAction('[Product] Load Categories Fai
 ///
 export const loadFilter = createAction(
   '[Filter] Load Filter',
-  props<{ offset: number; limit: number; filters?: { [key: string]: string[] }; sort?: string }>(),
+  props<{ offset: number; limit: number; searchText?: string; filters?: { [key: string]: string[] }; sort?: string }>(),
 );
 export const loadFilterSuccess = createAction('[Filter] Load Filter Success', props<{ products: ProductsArray }>());
 export const loadFilterFailure = createAction('[Filter] Load Filter Failure', props<{ error: string }>());

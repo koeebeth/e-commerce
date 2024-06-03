@@ -49,6 +49,7 @@ export default class ProductsService {
 
   filterProducts(
     token: string,
+    searchText?: string,
     filters?: { [key: string]: string[] },
     sort?: string,
     offset: number = 0,
@@ -72,6 +73,10 @@ export default class ProductsService {
           params = params.append('filter', `${key}:${filterValue}`);
         });
       });
+    }
+
+    if (searchText) {
+      params = params.append('text.en-US', searchText).set('fuzzy', 'true');
     }
 
     const headers = new HttpHeaders({

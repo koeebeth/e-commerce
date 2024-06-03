@@ -1,0 +1,28 @@
+@import '../../../../styles.scss';
+
+.search-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+
+  input {
+    border-radius: 5px;
+  }
+  button {
+    @include font-heading;
+    font-size: 1rem;
+    color: white;
+    background-color: $color-primary-200;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    border-radius: 5px;
+    padding: 5px;
+  }
+
+  :disabled {
+    background-color: rgba($color-primary-200, 0.6);
+    color: rgba(255, 255, 255, 0.524);
+    cursor: default;
+  }
+}
