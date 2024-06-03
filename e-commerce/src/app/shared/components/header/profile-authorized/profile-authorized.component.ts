@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { State, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { RouterLink } from '@angular/router';
 import * as actions from '../../../../store/actions';
 import { AppState } from '../../../../store/store';
