@@ -1,7 +1,7 @@
 <div class="user-profile">
   <img src="/assets/profile-icon.svg" alt="Profile" class="user-icon" />
   <div class="profile-options">
-    <a routerLink="/profile">My Profile</a>
+    <a routerLink="/profile" [queryParams]="{ id: userId }">My Profile</a>
     <button (click)="onLogout()">Logout</button>
   </div>
 </div>

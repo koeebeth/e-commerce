@@ -28,6 +28,7 @@ export default class ProfilePageComponent {
     version: 0,
     defaultBillingAddressId: '',
     defaultShippingAddressId: '',
+    id: '',
   };
 
   formatDate = formatDate;
@@ -43,15 +44,18 @@ export default class ProfilePageComponent {
     this.store
       .select((state) => state.app.accessToken)
       .subscribe((accessToken) => {
+        console.log(accessToken);
         if (!accessToken) {
-          this.router.navigate(['/login']);
+          this.router.navigateByUrl('/login');
         }
       });
+
     this.store
       .select((state) => state.app.userInfo)
       .subscribe((userInfo) => {
         if (userInfo) {
           this.userInfo = userInfo;
+          console.log(userInfo);
         }
       });
   }
