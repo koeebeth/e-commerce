@@ -44,6 +44,9 @@ export default class CatalogPageComponent {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    this.store.dispatch(actions.loadCategories({ offset: 0, limit: 100 }));
+    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 10 }));
     this.filters$ = this.store.select(selecFilters);
     this.sort$ = this.store.select(selecSort);
     this.filters$.subscribe((filters) => {
@@ -53,7 +56,6 @@ export default class CatalogPageComponent {
       this.sort = sort;
     });
 
-    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 10 }));
     this.productObjects$ = this.store.select((state) => state.app.products);
     this.productObjects$.subscribe((products) => {
       if (products) {
@@ -110,7 +112,6 @@ export default class CatalogPageComponent {
 
   updateProducts(): void {
     const offset = (this.currentPage - 1) * this.productResponse.limit;
-    console.log('filters', this.filters);
     const isFilterChecked = this.filters && Object.keys(this.filters).some((key) => this.filters[key].length > 0);
     if (this.sort || isFilterChecked) {
       this.store.dispatch(

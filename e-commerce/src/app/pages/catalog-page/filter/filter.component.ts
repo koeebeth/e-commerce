@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AppState } from '../../../store/store';
 import * as actions from '../../../store/actions';
 
@@ -47,14 +48,33 @@ export default class FilterComponent {
     },
   ];
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
     this.getCategories();
+    this.route.queryParams.subscribe((params) => {
+      if (params['category']) {
+        this.setCategoryFilter(params['category']);
+        this.applyFilters();
+        this.toggleFilterMenu();
+      }
+    });
+  }
+
+  setCategoryFilter(categoryId: string) {
+    const categoryGroup = this.filterGroups.find((group) => group.name === 'Category');
+    if (categoryGroup) {
+      categoryGroup.filters.forEach((filter) => {
+        filter.checked = filter.id === categoryId;
+      });
+    }
   }
 
   getCategories() {
-    this.store.dispatch(actions.loadCategories({ offset: 0, limit: 100 }));
     this.store
       .select((state) => state.app.categories)
       .subscribe((categories) => {
@@ -135,13 +155,21 @@ export default class FilterComponent {
   applyFilters() {
     const appliedFilters: { [key: string]: string[] } = {};
 
+    this.updateQueryParams(appliedFilters);
     this.addCategoryFilters(appliedFilters);
     this.addPriceFilters(appliedFilters);
     this.addDiscountFilters(appliedFilters);
-
     this.store.dispatch(actions.saveFilter({ filters: appliedFilters }));
     this.store.dispatch(actions.loadFilter({ filters: appliedFilters, offset: 0, limit: 10 }));
     this.toggleFilterMenu();
+  }
+
+  updateQueryParams(appliedFilters: { [key: string]: string[] }) {
+    const queryParams: { [key: string]: string[] } = {};
+
+    if (appliedFilters['categories.id']) {
+      queryParams['categories'] = appliedFilters['categories.id'];
+    }
   }
 
   resetFilters() {
