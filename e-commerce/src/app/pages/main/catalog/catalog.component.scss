@@ -10,6 +10,9 @@
   gap: 15px;
   padding: 10px 100px;
 
+  @media screen and (min-width: 1600px) {
+    margin-top: 80px;
+  }
   @media screen and (max-width: 715px) {
     padding: 10px 50px;
   }
@@ -60,12 +63,13 @@
     color: $color-primary-700;
     border-radius: 10px;
     border: 0px;
+    box-shadow: inset 0px 6px 10px 4px rgb(47 29 118 / 58%);
     background-color: #001c3070;
     transition: 0.3s;
     cursor: pointer;
 
     &:hover {
-      box-shadow: inset 0px 6px 10px 4px rgba(1, 26, 41, 0.65);
+      transform: scale(1.06);
     }
     &:active {
       transform: scale(0.95);

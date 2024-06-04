@@ -70,7 +70,8 @@ a {
 
 .category__title {
   @include font-heading;
-  color: $color-primary-600;
+  color: $color-primary-700;
+  box-shadow: inset 1px 1px 17px 0px $color-shadow;
   text-align: center;
   padding: 10px;
 }

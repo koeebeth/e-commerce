@@ -15,7 +15,8 @@
     border: 1px solid #ccc;
     color: white;
     border-radius: 5px;
-    background-color: $color-primary-200;
+    background-color: $color-primary-300;
+    box-shadow: 0px 3px 9px 2px $color-shadow;
     font-size: 1rem;
     border: none;
     cursor: pointer;
