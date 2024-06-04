@@ -30,15 +30,15 @@ export default class FilterComponent {
       isOpen: false,
       filters: [],
     },
-    {
-      name: 'Discount',
-      icon: '🤩',
-      isOpen: false,
-      filters: [
-        { name: 'With', checked: false, id: '1' },
-        { name: 'Without', checked: false, id: '2' },
-      ],
-    },
+    // {
+    //   name: 'Discount',
+    //   icon: '🤩',
+    //   isOpen: false,
+    //   filters: [
+    //     { name: 'With', checked: false, id: '1' },
+    //     { name: 'Without', checked: false, id: '2' },
+    //   ],
+    // },
     {
       name: 'Price',
       icon: '🤑',
@@ -77,6 +77,20 @@ export default class FilterComponent {
     const group = this.filterGroups.find((g) => g.name === groupName);
     if (group) {
       group.isOpen = !group.isOpen;
+    }
+  }
+
+  onSingleSelect(filter: { name: string; id: string; checked: boolean }, groupName: string) {
+    if (groupName === 'Discount') {
+      this.filterGroups.forEach((group) => {
+        if (group.name === 'Discount') {
+          group.filters.forEach((disc) => {
+            if (disc.id !== filter.id) {
+              disc.checked = false;
+            }
+          });
+        }
+      });
     }
   }
 
@@ -125,6 +139,7 @@ export default class FilterComponent {
     this.addPriceFilters(appliedFilters);
     this.addDiscountFilters(appliedFilters);
 
+    this.store.dispatch(actions.saveFilter({ filters: appliedFilters }));
     this.store.dispatch(actions.loadFilter({ filters: appliedFilters, offset: 0, limit: 10 }));
     this.toggleFilterMenu();
   }

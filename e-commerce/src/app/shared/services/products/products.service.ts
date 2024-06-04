@@ -60,7 +60,7 @@ export default class ProductsService {
     let params = new HttpParams().set('limit', limit.toString()).set('offset', offset.toString());
 
     if (sort) {
-      params = params.set('sort:', sort);
+      params = params.set('sort', sort);
     }
 
     if (filters) {

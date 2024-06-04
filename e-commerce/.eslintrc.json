@@ -39,7 +39,9 @@
         "no-console": 0,
         "class-methods-use-this": "off",
         "@typescript-eslint/no-explicit-any": "error",
-        "no-useless-escape": "off"
+        "no-useless-escape": "off",
+        "no-param-reassign": "off",
+        "no-nested-ternary": "off"
       }
     },
     {

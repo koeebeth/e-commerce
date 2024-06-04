@@ -117,13 +117,16 @@ export default class EcommerceEffects {
               accessToken: accessData.access_token,
             }),
           ),
-          catchError((error) =>
-            of(
+          catchError((error) => {
+            if (error.error.error_description === 'The refresh token was not found. It may have expired.') {
+              this.notificationService.showNotification('error', 'Refresh token expired');
+            }
+            return of(
               actions.loadAccsessTokenFailure({
                 error: error.message,
               }),
-            ),
-          ),
+            );
+          }),
         );
       }),
     ),
@@ -206,8 +209,8 @@ export default class EcommerceEffects {
   loadUpdateUserData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadUpdateUserInfo),
-      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))), // Assuming accessToken is stored in the auth state
-      filter(([, accessToken]) => !!accessToken), // Filter out if access token is not present
+      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))),
+      filter(([, accessToken]) => !!accessToken),
       switchMap(([action, accessToken]) =>
         this.ecommerceApiService.updatePersonalInfo(accessToken, action.userInfo.version, action.userInfo).pipe(
           map((response) => {
@@ -223,8 +226,8 @@ export default class EcommerceEffects {
   loadUpdateUserAddress$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadUpdateUserAddresses),
-      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))), // Assuming accessToken is stored in the auth state
-      filter(([, accessToken]) => !!accessToken), // Filter out if access token is not present
+      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))),
+      filter(([, accessToken]) => !!accessToken),
       switchMap(([action, accessToken]) =>
         this.ecommerceApiService
           .updateAddresses(accessToken, action.userInfo.version, action.userInfo, action.addresses)
@@ -242,8 +245,8 @@ export default class EcommerceEffects {
   loadUpdateUserPassword$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadUpdateUserPassword),
-      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))), // Assuming accessToken is stored in the auth state
-      filter(([, accessToken]) => !!accessToken), // Filter out if access token is not present
+      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))),
+      filter(([, accessToken]) => !!accessToken),
       switchMap(([action, accessToken]) =>
         this.ecommerceApiService.updatePassword(accessToken, action.version, action.passwordData).pipe(
           map((response) => {
@@ -267,7 +270,7 @@ export default class EcommerceEffects {
 
   loadUserData$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(actions.loadAccsessTokenSuccess), // Trigger loading user data only after successful authentication
+      ofType(actions.loadAccsessTokenSuccess),
       switchMap((action) =>
         this.ecommerceApiService.getUserInfo(action.accessToken).pipe(
           map((userInfo) => actions.loadUserInfoSuccess({ userInfo })),

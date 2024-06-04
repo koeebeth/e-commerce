@@ -9,6 +9,7 @@ import { ProductsArray } from '../../shared/services/products/productTypes';
 import FilterComponent from './filter/filter.component';
 import SortingComponent from './sorting/sorting.component';
 import SearchingComponent from './searching/searching.component';
+import { selecFilters, selecSort } from '../../store/selectors';
 
 @Component({
   selector: 'app-catalog-page',
@@ -19,6 +20,14 @@ import SearchingComponent from './searching/searching.component';
 })
 export default class CatalogPageComponent {
   productObjects$!: Observable<ProductsArray | null>;
+
+  filters$!: Observable<{ [key: string]: string[] }>;
+
+  sort$!: Observable<string>;
+
+  filters!: { [key: string]: string[] };
+
+  sort!: string;
 
   productResponse!: ProductsArray;
 
@@ -35,6 +44,15 @@ export default class CatalogPageComponent {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    this.filters$ = this.store.select(selecFilters);
+    this.sort$ = this.store.select(selecSort);
+    this.filters$.subscribe((filters) => {
+      this.filters = filters;
+    });
+    this.sort$.subscribe((sort) => {
+      this.sort = sort;
+    });
+
     this.store.dispatch(actions.loadProducts({ offset: 0, limit: 10 }));
     this.productObjects$ = this.store.select((state) => state.app.products);
     this.productObjects$.subscribe((products) => {
@@ -73,6 +91,7 @@ export default class CatalogPageComponent {
   goToPage(page: number): void {
     this.currentPage = page;
     this.updateProducts();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   prevPage(): void {
@@ -91,7 +110,20 @@ export default class CatalogPageComponent {
 
   updateProducts(): void {
     const offset = (this.currentPage - 1) * this.productResponse.limit;
-    console.log('offset', offset);
-    this.store.dispatch(actions.loadProducts({ offset, limit: this.productResponse.limit }));
+    console.log('filters', this.filters);
+    const isFilterChecked = this.filters && Object.keys(this.filters).some((key) => this.filters[key].length > 0);
+    if (this.sort || isFilterChecked) {
+      this.store.dispatch(
+        actions.loadFilter({ sort: this.sort, filters: this.filters, offset, limit: this.productResponse.limit }),
+      );
+    } else {
+      this.store.dispatch(actions.loadProducts({ offset, limit: this.productResponse.limit }));
+    }
+  }
+
+  showEmptyFilterResult() {
+    return {
+      display: 'flex',
+    };
   }
 }
