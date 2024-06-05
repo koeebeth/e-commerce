@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import CardComponent from '../main/catalog/card/card.component';
 import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
@@ -41,18 +41,23 @@ export default class CatalogPageComponent {
 
   showDots: boolean = false;
 
+  private unsubscribe$ = new Subject<void>();
+
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    this.store.dispatch(actions.loadCategories({ offset: 0, limit: 100 }));
-    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 10 }));
     this.filters$ = this.store.select(selecFilters);
     this.sort$ = this.store.select(selecSort);
-    this.filters$.subscribe((filters) => {
+    this.filters$.pipe(takeUntil(this.unsubscribe$)).subscribe((filters) => {
       this.filters = filters;
+      if (Object.keys(filters).length === 0) {
+        this.store.dispatch(actions.loadProducts({ offset: 0, limit: 10 }));
+      } else {
+        this.store.dispatch(actions.loadFilter({ filters, offset: 0, limit: 10 }));
+      }
     });
-    this.sort$.subscribe((sort) => {
+    this.sort$.pipe(takeUntil(this.unsubscribe$)).subscribe((sort) => {
       this.sort = sort;
     });
 
@@ -126,5 +131,10 @@ export default class CatalogPageComponent {
     return {
       display: 'flex',
     };
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

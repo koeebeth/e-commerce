@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject, filter, take, takeUntil } from 'rxjs';
 import SliderComponent from './slider/slider.component';
 import CatalogComponent from './catalog/catalog.component';
 import { AppState } from '../../store/store';
@@ -40,17 +40,21 @@ export default class MainComponent {
     },
   ];
 
+  private unsubscribe$ = new Subject<void>();
+
   constructor(
     private store: Store<AppState>,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
-    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 5 }));
+    this.store.dispatch(actions.resetFilter());
     this.store.dispatch(actions.loadCategories({ offset: 0, limit: 10 }));
-    this.categories$ = this.store.select((state) => state.app.categories);
 
-    this.categories$.subscribe((categories) => {
+    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 5 }));
+    this.categories$ = this.store.select((state) => state.app.categories);
+    this.categories$.pipe(takeUntil(this.unsubscribe$)).subscribe((categories) => {
       categories?.results.forEach((category) => {
         const nameMatch = this.categories.find(
           (categoryName) => categoryName.query === category.name['en-US'].toLowerCase(),
@@ -62,10 +66,16 @@ export default class MainComponent {
     });
   }
 
-  updateQueryParams(categoryId: string) {
+  navigateToCategory(categoryId: string) {
+    this.store.dispatch(actions.saveFilter({ filters: { ['categories.id']: [categoryId] } }));
     this.router.navigate(['/catalog'], {
       queryParams: { category: categoryId },
       queryParamsHandling: 'merge',
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

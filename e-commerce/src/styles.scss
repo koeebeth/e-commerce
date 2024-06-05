@@ -41,12 +41,12 @@
 }
 
 /* colors */
-$color-shadow: #040b24;
-$color-glass: #1115408c;
-$color-primary-100: #070f2b;
-$color-primary-300: #1b1a55;
+$color-shadow: #100424;
+$color-glass: #1f11408c;
+$color-primary-100: #14072b;
+$color-primary-300: #231a55;
 $color-primary-500: #5e6192;
-$color-primary-700: #cacad2;
+$color-primary-700: #cdcad2;
 $color-primary-200: color.mix($color-primary-100, $color-primary-300);
 $color-primary-400: color.mix($color-primary-300, $color-primary-500);
 $color-primary-600: color.mix($color-primary-500, $color-primary-700);

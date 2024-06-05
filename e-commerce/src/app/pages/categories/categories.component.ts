@@ -56,8 +56,6 @@ export default class CategoriesComponent {
   ) {}
 
   ngOnInit() {
-    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 5 }));
-    this.store.dispatch(actions.loadCategories({ offset: 0, limit: 10 }));
     this.categories$ = this.store.select((state) => state.app.categories);
 
     this.categories$.subscribe((categories) => {
@@ -72,7 +70,8 @@ export default class CategoriesComponent {
     });
   }
 
-  updateQueryParams(categoryId: string) {
+  navigateToCategory(categoryId: string) {
+    this.store.dispatch(actions.saveFilter({ filters: { ['categories.id']: [categoryId] } }));
     this.router.navigate(['/catalog'], {
       queryParams: { category: categoryId },
       queryParamsHandling: 'merge',

@@ -102,6 +102,8 @@ export const ecommerceReducer = createReducer(
   on(actions.loadFilterSuccess, (state, { products }) => {
     return { ...state, products, loading: false };
   }),
+  on(actions.resetFilter, (state) => ({ ...state, filters: {}, sort: '' })),
+  on(actions.loadFilterFailure, (state, { error }) => ({ ...state, error, loading: false })),
   on(actions.loadFilterFailure, (state, { error }) => ({ ...state, error, loading: false })),
   ///
 );
