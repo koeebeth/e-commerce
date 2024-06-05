@@ -215,7 +215,7 @@ export default class CommerceApiService {
 
     return this.http.post<CustomerInfo>(requestUrl, JSON.stringify(body), { headers }).pipe(
       mergeMap((res) => {
-        return this.http.post<PersonalInfo>(
+        return this.http.post<CustomerInfo>(
           requestUrl,
           JSON.stringify({ version: res.version, actions: addIdActions }),
           {

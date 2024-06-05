@@ -1,6 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { mergeMap, map, catchError, of, take, combineLatest, switchMap, filter, tap, withLatestFrom } from 'rxjs';
+import {
+  mergeMap,
+  map,
+  catchError,
+  of,
+  take,
+  combineLatest,
+  switchMap,
+  filter,
+  tap,
+  withLatestFrom,
+  exhaustMap,
+} from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
 import CommerceApiService from '../shared/services/commercetoolsApi/commercetoolsapi.service';
@@ -226,9 +238,9 @@ export default class EcommerceEffects {
   loadUpdateUserAddress$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadUpdateUserAddresses),
-      withLatestFrom(this.store.pipe(select((state) => state.app.accessToken))),
+      withLatestFrom(this.store.select((state) => state.app.accessToken)),
       filter(([, accessToken]) => !!accessToken),
-      switchMap(([action, accessToken]) =>
+      exhaustMap(([action, accessToken]) =>
         this.ecommerceApiService
           .updateAddresses(accessToken, action.userInfo.version, action.userInfo, action.addresses)
           .pipe(
@@ -236,6 +248,7 @@ export default class EcommerceEffects {
               this.notificationService.showNotification('success', 'Successfully updated addresses');
               return actions.loadUpdateUserAddressesSuccess({ userInfo: <CustomerInfo>response });
             }),
+
             catchError((error) => of(actions.loadUpdateUserAddressesFailure({ error }))),
           ),
       ),
