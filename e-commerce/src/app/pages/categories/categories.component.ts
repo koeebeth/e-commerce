@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { AppState } from '../../store/store';
-import * as actions from '../../store/actions';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { AppState } from '../../store/store';
+import * as actions from '../../store/actions';
 import { CategoriesArray } from '../../shared/services/products/productTypes';
 
 @Component({
@@ -71,7 +71,7 @@ export default class CategoriesComponent {
   }
 
   navigateToCategory(categoryId: string) {
-    this.store.dispatch(actions.saveFilter({ filters: { ['categories.id']: [categoryId] } }));
+    this.store.dispatch(actions.saveFilter({ filters: { 'categories.id': [categoryId] } }));
     this.router.navigate(['/catalog'], {
       queryParams: { category: categoryId },
       queryParamsHandling: 'merge',

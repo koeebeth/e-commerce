@@ -2,10 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AppState } from '../../../store/store';
 import * as actions from '../../../store/actions';
-import { Observable } from 'rxjs';
 
 interface FilterGroup {
   icon: string;
@@ -62,7 +62,7 @@ export default class FilterComponent {
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.getCategories(() => {
-        if (params.hasOwnProperty('category')) {
+        if (params['category']) {
           this.setCategoryFilter(params['category']);
           this.applyFiltersFromUrl();
         }
@@ -115,7 +115,7 @@ export default class FilterComponent {
     }
   }
 
-  //For discount button
+  // For discount button
   // onSingleSelect(filter: { name: string; id: string; checked: boolean }, groupName: string) {
   //   if (groupName === 'Discount') {
   //     this.filterGroups.forEach((group) => {

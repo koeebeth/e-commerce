@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, filter, take, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import SliderComponent from './slider/slider.component';
 import CatalogComponent from './catalog/catalog.component';
 import { AppState } from '../../store/store';
@@ -67,7 +67,7 @@ export default class MainComponent {
   }
 
   navigateToCategory(categoryId: string) {
-    this.store.dispatch(actions.saveFilter({ filters: { ['categories.id']: [categoryId] } }));
+    this.store.dispatch(actions.saveFilter({ filters: { 'categories.id': [categoryId] } }));
     this.router.navigate(['/catalog'], {
       queryParams: { category: categoryId },
       queryParamsHandling: 'merge',
