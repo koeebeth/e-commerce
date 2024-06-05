@@ -20,7 +20,13 @@
         </div>
         <div *ngIf="group.name !== 'Price'" class="groups-container">
           <label *ngFor="let filter of group.filters" [for]="'filter-' + filter.id">
-            <input type="checkbox" [id]="'filter-' + filter.id" [value]="filter.id" [(ngModel)]="filter.checked" />
+            <input
+              type="checkbox"
+              [id]="'filter-' + filter.id"
+              [value]="filter.id"
+              [(ngModel)]="filter.checked"
+              (click)="onSingleSelect(filter, group.name)"
+            />
             {{ filter.name }}
           </label>
         </div>

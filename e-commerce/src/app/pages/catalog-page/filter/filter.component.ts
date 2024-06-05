@@ -115,21 +115,19 @@ export default class FilterComponent {
     }
   }
 
-  // For discount button
-  // onSingleSelect(filter: { name: string; id: string; checked: boolean }, groupName: string) {
-  //   if (groupName === 'Discount') {
-  //     this.filterGroups.forEach((group) => {
-  //       if (group.name === 'Discount') {
-  //         group.filters.forEach((disc) => {
-  //           if (disc.id !== filter.id) {
-  //             disc.checked = false;
-  //           }
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
-
+  onSingleSelect(filter: { name: string; id: string; checked: boolean }, groupName: string) {
+    if (groupName === 'Category') {
+      this.filterGroups.forEach((group) => {
+        if (group.name === 'Category') {
+          group.filters.forEach((disc) => {
+            if (disc.id !== filter.id) {
+              disc.checked = false;
+            }
+          });
+        }
+      });
+    }
+  }
 
   getCheckedFilters(groupName: string): { name: string; checked: boolean; id: string }[] {
     const group = this.filterGroups.find((g) => g.name === groupName);
