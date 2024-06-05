@@ -66,7 +66,8 @@
   width: 250px;
   top: 3rem;
   left: -100%;
-  background-color: $color-primary-200;
+  background-color: $color-glass;
+  backdrop-filter: blur(10px);
   transition: all 0.5s ease-out;
   padding: 20px;
   z-index: 2;
@@ -74,14 +75,17 @@
   section {
     display: flex;
     flex-direction: column;
-    align-items: start;
-    gap: 15px;
+    align-items: center;
+    gap: 25px;
+    font-size: 1.5rem;
+    position: relative;
   }
   @media screen and (max-width: 425px) {
     width: 100%;
 
     section {
-      align-items: center;
+      top: 30%;
+      font-size: 1.5rem;
     }
   }
 

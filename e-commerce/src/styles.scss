@@ -41,16 +41,19 @@
 }
 
 /* colors */
-$color-primary-100: #001c30;
-$color-primary-300: #176b87;
-$color-primary-500: #64ccc5;
-$color-primary-700: #dafffb;
+$color-shadow: #100424;
+$color-glass: #1f11408c;
+$color-primary-100: #14072b;
+$color-primary-300: #231a55;
+$color-primary-500: #5e6192;
+$color-primary-700: #cdcad2;
 $color-primary-200: color.mix($color-primary-100, $color-primary-300);
 $color-primary-400: color.mix($color-primary-300, $color-primary-500);
 $color-primary-600: color.mix($color-primary-500, $color-primary-700);
 $color-secondary: #cf0529;
 
-$background-gradient: linear-gradient($color-primary-100, $color-primary-200 150%);
+$background-gradient: linear-gradient($color-primary-300 55%, $color-primary-100 84%);
+// $background-gradient: linear-gradient($color-primary-100, $color-primary-200 150%);
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126

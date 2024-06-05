@@ -5,7 +5,7 @@
     <a
       class="category-link"
       routerLink="/catalog"
-      [queryParams]="{ category: category.query }"
+      (click)="navigateToCategory(category.query)"
       *ngFor="let category of categories"
     >
       <div class="category">
@@ -16,7 +16,7 @@
       </div>
     </a>
     <a routerLink="/categories" class="category-link">
-      <div class="category category-more">See More ></div>
+      <div class="category category-more">SEE MORE ></div>
     </a>
   </div>
 </div>

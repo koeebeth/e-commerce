@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import CardComponent from '../main/catalog/card/card.component';
 import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
@@ -41,19 +41,26 @@ export default class CatalogPageComponent {
 
   showDots: boolean = false;
 
+  private unsubscribe$ = new Subject<void>();
+
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.filters$ = this.store.select(selecFilters);
     this.sort$ = this.store.select(selecSort);
-    this.filters$.subscribe((filters) => {
+    this.filters$.pipe(takeUntil(this.unsubscribe$)).subscribe((filters) => {
       this.filters = filters;
+      if (Object.keys(filters).length === 0) {
+        this.store.dispatch(actions.loadProducts({ offset: 0, limit: 10 }));
+      } else {
+        this.store.dispatch(actions.loadFilter({ filters, offset: 0, limit: 10 }));
+      }
     });
-    this.sort$.subscribe((sort) => {
+    this.sort$.pipe(takeUntil(this.unsubscribe$)).subscribe((sort) => {
       this.sort = sort;
     });
 
-    this.store.dispatch(actions.loadProducts({ offset: 0, limit: 10 }));
     this.productObjects$ = this.store.select((state) => state.app.products);
     this.productObjects$.subscribe((products) => {
       if (products) {
@@ -110,7 +117,6 @@ export default class CatalogPageComponent {
 
   updateProducts(): void {
     const offset = (this.currentPage - 1) * this.productResponse.limit;
-    console.log('filters', this.filters);
     const isFilterChecked = this.filters && Object.keys(this.filters).some((key) => this.filters[key].length > 0);
     if (this.sort || isFilterChecked) {
       this.store.dispatch(
@@ -125,5 +131,10 @@ export default class CatalogPageComponent {
     return {
       display: 'flex',
     };
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

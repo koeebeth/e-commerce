@@ -7,6 +7,7 @@ import CardComponent from './card/card.component';
 import { AppState } from '../../../store/store';
 import { ProductsArray } from '../../../shared/services/products/productTypes';
 import ButtonComponent from '../../../shared/components/button/button.component';
+import * as actions from '../../../store/actions';
 
 @Component({
   selector: 'app-catalog',
@@ -45,8 +46,7 @@ export default class CatalogComponent {
   }
 
   onSeeMore() {
-    this.router.navigate(['/catalog']).then(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    this.router.navigate(['/catalog']);
+    this.store.dispatch(actions.resetFilter());
   }
 }

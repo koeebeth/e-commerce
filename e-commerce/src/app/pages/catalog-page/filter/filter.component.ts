@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AppState } from '../../../store/store';
 import * as actions from '../../../store/actions';
 
@@ -22,6 +24,10 @@ export default class FilterComponent {
   isFilterMenuOpen: boolean = false;
 
   priceRange: { from: number | null; to: number | null } = { from: null, to: null };
+
+  filters$!: Observable<{ [key: string]: string[] }>;
+
+  filters!: { [key: string]: string[] };
 
   filterGroups: FilterGroup[] = [
     {
@@ -47,13 +53,39 @@ export default class FilterComponent {
     },
   ];
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit(): void {
-    this.getCategories();
+    this.route.queryParams.subscribe((params) => {
+      this.getCategories(() => {
+        if (params['category']) {
+          this.setCategoryFilter(params['category']);
+          this.applyFiltersFromUrl();
+        }
+      });
+    });
   }
 
-  getCategories() {
+  applyFiltersFromUrl() {
+    const appliedFilters: { [key: string]: string[] } = {};
+    this.addCategoryFilters(appliedFilters);
+  }
+
+  setCategoryFilter(categoryId: string) {
+    const categoryGroup = this.filterGroups.find((group) => group.name === 'Category');
+    if (categoryGroup) {
+      categoryGroup.filters.forEach((filter) => {
+        filter.checked = filter.id === categoryId;
+      });
+    }
+    this.toggleFilterMenu();
+  }
+
+  getCategories(callback?: () => void) {
     this.store.dispatch(actions.loadCategories({ offset: 0, limit: 100 }));
     this.store
       .select((state) => state.app.categories)
@@ -65,6 +97,9 @@ export default class FilterComponent {
             checked: false,
           }));
           this.filterGroups[0].filters = categoryFilters;
+          if (callback) {
+            callback();
+          }
         }
       });
   }
@@ -80,19 +115,21 @@ export default class FilterComponent {
     }
   }
 
-  onSingleSelect(filter: { name: string; id: string; checked: boolean }, groupName: string) {
-    if (groupName === 'Discount') {
-      this.filterGroups.forEach((group) => {
-        if (group.name === 'Discount') {
-          group.filters.forEach((disc) => {
-            if (disc.id !== filter.id) {
-              disc.checked = false;
-            }
-          });
-        }
-      });
-    }
-  }
+  // For discount button
+  // onSingleSelect(filter: { name: string; id: string; checked: boolean }, groupName: string) {
+  //   if (groupName === 'Discount') {
+  //     this.filterGroups.forEach((group) => {
+  //       if (group.name === 'Discount') {
+  //         group.filters.forEach((disc) => {
+  //           if (disc.id !== filter.id) {
+  //             disc.checked = false;
+  //           }
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
+
 
   getCheckedFilters(groupName: string): { name: string; checked: boolean; id: string }[] {
     const group = this.filterGroups.find((g) => g.name === groupName);
@@ -134,13 +171,10 @@ export default class FilterComponent {
 
   applyFilters() {
     const appliedFilters: { [key: string]: string[] } = {};
-
     this.addCategoryFilters(appliedFilters);
     this.addPriceFilters(appliedFilters);
     this.addDiscountFilters(appliedFilters);
-
     this.store.dispatch(actions.saveFilter({ filters: appliedFilters }));
-    this.store.dispatch(actions.loadFilter({ filters: appliedFilters, offset: 0, limit: 10 }));
     this.toggleFilterMenu();
   }
 
