@@ -130,6 +130,7 @@ export default class FilterComponent {
   //   }
   // }
 
+
   getCheckedFilters(groupName: string): { name: string; checked: boolean; id: string }[] {
     const group = this.filterGroups.find((g) => g.name === groupName);
     if (group) {

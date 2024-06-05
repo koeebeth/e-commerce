@@ -17,6 +17,7 @@ import { CategoriesArray } from '../../shared/services/products/productTypes';
   styleUrl: './main.component.scss',
 })
 export default class MainComponent {
+
   categories$!: Observable<CategoriesArray | null>;
 
   categories = [
