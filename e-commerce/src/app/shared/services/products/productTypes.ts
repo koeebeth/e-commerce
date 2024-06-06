@@ -172,6 +172,7 @@ export interface CategoriesArray {
 
 export interface Category {
   id: string;
+  key: string;
   version: number;
   createdAt: string;
   lastModifiedAt: string;

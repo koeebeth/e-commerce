@@ -7,7 +7,8 @@ import SliderComponent from './slider/slider.component';
 import CatalogComponent from './catalog/catalog.component';
 import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
-import { CategoriesArray } from '../../shared/services/products/productTypes';
+import { CategoriesArray, Category } from '../../shared/services/products/productTypes';
+import { selecCategories } from '../../store/selectors';
 
 @Component({
   selector: 'app-main',
@@ -18,27 +19,9 @@ import { CategoriesArray } from '../../shared/services/products/productTypes';
 })
 export default class MainComponent {
   categories$!: Observable<CategoriesArray | null>;
-
-  categories = [
-    {
-      categoryName: 'ACTION',
-      image: '../../../assets/eldenring.jpeg',
-      alt: 'action',
-      query: 'action',
-    },
-    {
-      categoryName: 'RPG',
-      image: '../../../assets/conan.jpeg',
-      alt: 'rpg',
-      query: 'rpg',
-    },
-    {
-      categoryName: 'STRATEGY',
-      image: '../../../assets/stellaris.jpeg',
-      alt: 'strategy',
-      query: 'strategy',
-    },
-  ];
+  categories!: CategoriesArray;
+  category!: Category;
+  categoryImgPath: string = '';
 
   private unsubscribe$ = new Subject<void>();
 
@@ -50,19 +33,14 @@ export default class MainComponent {
 
   ngOnInit() {
     this.store.dispatch(actions.resetFilter());
-    this.store.dispatch(actions.loadCategories({ offset: 0, limit: 10 }));
-
+    this.store.dispatch(actions.loadCategories({ offset: 0, limit: 3 }));
+    this.categoryImgPath = '/assets/';
     this.store.dispatch(actions.loadProducts({ offset: 0, limit: 5 }));
-    this.categories$ = this.store.select((state) => state.app.categories);
-    this.categories$.pipe(takeUntil(this.unsubscribe$)).subscribe((categories) => {
-      categories?.results.forEach((category) => {
-        const nameMatch = this.categories.find(
-          (categoryName) => categoryName.query === category.name['en-US'].toLowerCase(),
-        );
-        if (nameMatch) {
-          nameMatch.query = `${category.id}`;
-        }
-      });
+    this.categories$ = this.store.select(selecCategories);
+    this.categories$.subscribe((categories) => {
+      if (categories) {
+        this.categories = categories;
+      }
     });
   }
 

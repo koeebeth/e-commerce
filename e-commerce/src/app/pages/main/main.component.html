@@ -5,13 +5,13 @@
     <a
       class="category-link"
       routerLink="/catalog"
-      (click)="navigateToCategory(category.query)"
-      *ngFor="let category of categories"
+      (click)="navigateToCategory(category.id)"
+      *ngFor="let category of (categories$ | async)?.results"
     >
       <div class="category">
-        <h3 class="category__title">{{ category.categoryName }}</h3>
+        <h3 class="category__title">{{ category.name['en-US'] }}</h3>
         <div class="category__image">
-          <img [src]="category.image" [alt]="category.alt" />
+          <img [src]="categoryImgPath + category.key + '.jpg'" [alt]="category.key" />
         </div>
       </div>
     </a>
