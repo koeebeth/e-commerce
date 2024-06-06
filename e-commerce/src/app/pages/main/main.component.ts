@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import SliderComponent from './slider/slider.component';
 import CatalogComponent from './catalog/catalog.component';
 import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
-import { CategoriesArray, Category } from '../../shared/services/products/productTypes';
+import { CategoriesArray, ProductsArray } from '../../shared/services/products/productTypes';
 import { selecCategories } from '../../store/selectors';
 
 @Component({
@@ -19,8 +19,13 @@ import { selecCategories } from '../../store/selectors';
 })
 export default class MainComponent {
   categories$!: Observable<CategoriesArray | null>;
+
+  products$!: Observable<ProductsArray | null>;
+
+  products!: ProductsArray;
+
   categories!: CategoriesArray;
-  category!: Category;
+
   categoryImgPath: string = '';
 
   private unsubscribe$ = new Subject<void>();
@@ -34,7 +39,6 @@ export default class MainComponent {
   ngOnInit() {
     this.store.dispatch(actions.resetFilter());
     this.store.dispatch(actions.loadCategories({ offset: 0, limit: 3 }));
-    this.categoryImgPath = '/assets/';
     this.store.dispatch(actions.loadProducts({ offset: 0, limit: 5 }));
     this.categories$ = this.store.select(selecCategories);
     this.categories$.subscribe((categories) => {
@@ -42,12 +46,14 @@ export default class MainComponent {
         this.categories = categories;
       }
     });
+    this.categoryImgPath = '/assets/';
+    this.clearQueryParams();
   }
 
-  navigateToCategory(categoryId: string) {
-    this.store.dispatch(actions.saveFilter({ filters: { 'categories.id': [categoryId] } }));
+  navigateToCategory(categoryKey: string) {
+    this.store.dispatch(actions.saveFilter({ filters: { 'categories.name': [categoryKey] } }));
     this.router.navigate(['/catalog'], {
-      queryParams: { category: categoryId },
+      queryParams: { category: categoryKey },
       queryParamsHandling: 'merge',
     });
   }
@@ -55,5 +61,13 @@ export default class MainComponent {
   ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  clearQueryParams() {
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+      queryParamsHandling: 'merge',
+    });
   }
 }

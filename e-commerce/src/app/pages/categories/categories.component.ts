@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../store/store';
 import * as actions from '../../store/actions';
@@ -17,7 +17,9 @@ import { selecCategories } from '../../store/selectors';
 })
 export default class CategoriesComponent {
   category!: Category;
+
   categories$!: Observable<CategoriesArray | null>;
+
   categories!: CategoriesArray;
 
   categoryImgPath: string = '';
@@ -38,10 +40,10 @@ export default class CategoriesComponent {
     });
   }
 
-  navigateToCategory(categoryId: string) {
-    this.store.dispatch(actions.saveFilter({ filters: { 'categories.id': [categoryId] } }));
+  navigateToCategory(categoryKey: string) {
+    this.store.dispatch(actions.saveFilter({ filters: { 'categories.name': [categoryKey] } }));
     this.router.navigate(['/catalog'], {
-      queryParams: { category: categoryId },
+      queryParams: { category: categoryKey },
       queryParamsHandling: 'merge',
     });
   }

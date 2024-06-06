@@ -5,7 +5,7 @@
     <a
       class="category-link"
       routerLink="/catalog"
-      (click)="navigateToCategory(category.id)"
+      (click)="navigateToCategory(category.key)"
       *ngFor="let category of (categories$ | async)?.results"
     >
       <div class="category">

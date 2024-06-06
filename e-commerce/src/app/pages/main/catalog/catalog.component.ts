@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Router, RouterLink } from '@angular/router';
 import CardComponent from './card/card.component';
 import { AppState } from '../../../store/store';
@@ -31,6 +31,8 @@ export default class CatalogComponent {
 
   showDots: boolean = false;
 
+  private unsubscribe$ = new Subject<void>();
+
   constructor(
     private store: Store<AppState>,
     private router: Router,
@@ -38,7 +40,7 @@ export default class CatalogComponent {
 
   ngOnInit(): void {
     this.productObjects$ = this.store.select((state) => state.app.products);
-    this.productObjects$.subscribe((products) => {
+    this.productObjects$.pipe(takeUntil(this.unsubscribe$)).subscribe((products) => {
       if (products) {
         this.productResponse = products;
       }

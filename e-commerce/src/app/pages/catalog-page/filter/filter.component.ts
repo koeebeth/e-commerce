@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, Subject, combineLatest, takeUntil } from 'rxjs';
 import { AppState } from '../../../store/store';
 import * as actions from '../../../store/actions';
+import { selecCategories } from '../../../store/selectors';
 
 interface FilterGroup {
   icon: string;
@@ -38,15 +39,6 @@ export default class FilterComponent {
       isOpen: false,
       filters: [],
     },
-    // {
-    //   name: 'Discount',
-    //   icon: '🤩',
-    //   isOpen: false,
-    //   filters: [
-    //     { name: 'With', checked: false, id: '1' },
-    //     { name: 'Without', checked: false, id: '2' },
-    //   ],
-    // },
     {
       name: 'Price',
       icon: '🤑',
@@ -55,55 +47,58 @@ export default class FilterComponent {
     },
   ];
 
+  private unsubscribe$ = new Subject<void>();
+
   constructor(
     private store: Store<AppState>,
-    private router: Router,
     private route: ActivatedRoute,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      this.getCategories(() => {
-        if (params['category']) {
-          this.setCategoryFilter(params['category']);
-          this.applyFiltersFromUrl();
-        }
-      });
+    this.getCategories();
+
+    combineLatest(
+      this.route.queryParams,
+      this.store.select(selecCategories).pipe(takeUntil(this.unsubscribe$)),
+    ).subscribe(([params, categories]) => {
+      if (categories) {
+        const categoryFilters = categories.results.map((category) => ({
+          name: category?.name['en-US'] || '',
+          id: category?.id || '',
+          checked: false,
+        }));
+        this.filterGroups[0].filters = categoryFilters;
+      }
+
+      if (this.router.url.includes('/catalog') && params['category']) {
+        this.setCategoryFilter(params['category']);
+        this.applyFilterFromUrl();
+      }
     });
   }
 
-  applyFiltersFromUrl() {
-    const appliedFilters: { [key: string]: string[] } = {};
-    this.addCategoryFilters(appliedFilters);
+  applyFilterFromUrl() {
+    const categoryFilters = this.getCategoryFilters();
+    const appliedFilters = { ...categoryFilters };
+
+    this.store.dispatch(actions.loadFilter({ filters: appliedFilters, offset: 0, limit: 10 }));
   }
 
   setCategoryFilter(categoryId: string) {
-    const categoryGroup = this.filterGroups.find((group) => group.name === 'Category');
+    const categoryGroup = this.filterGroups[0];
     if (categoryGroup) {
       categoryGroup.filters.forEach((filter) => {
-        filter.checked = filter.id === categoryId;
+        if (filter.name.toLowerCase() === categoryId) {
+          filter.checked = true;
+        }
       });
     }
     this.toggleFilterMenu();
   }
 
-  getCategories(callback?: () => void) {
+  getCategories() {
     this.store.dispatch(actions.loadCategories({ offset: 0, limit: 100 }));
-    this.store
-      .select((state) => state.app.categories)
-      .subscribe((categories) => {
-        if (categories) {
-          const categoryFilters = categories.results.map((category) => ({
-            name: category?.name['en-US'] || '',
-            id: category?.id || '',
-            checked: false,
-          }));
-          this.filterGroups[0].filters = categoryFilters;
-          if (callback) {
-            callback();
-          }
-        }
-      });
   }
 
   toggleFilterMenu() {
@@ -139,41 +134,33 @@ export default class FilterComponent {
     return [];
   }
 
-  addCategoryFilters(appliedFilters: { [key: string]: string[] }) {
+  getCategoryFilters() {
+    const appliedFilters: { [key: string]: string[] } = {};
     const categoryFilters = this.getCheckedFilters('Category');
     const categoryIds = categoryFilters.map((filter) => filter.id);
     appliedFilters['categories.id'] = categoryIds;
+    return appliedFilters;
   }
 
   parseToCents(value: number): number {
     return value * 100;
   }
 
-  addPriceFilters(appliedFilters: { [key: string]: string[] }) {
-    const priceRangeFrom = this.priceRange.from !== null ? this.parseToCents(this.priceRange.from) : null;
-    const priceRangeTo = this.priceRange.to !== null ? this.parseToCents(this.priceRange.to) : null;
+  getPriceFilters() {
+    const appliedFilters: { [key: string]: string[] } = {};
+    const priceRangeFrom = this.priceRange.from !== null ? this.parseToCents(this.priceRange.from) : 0;
+    const priceRangeTo = this.priceRange.to !== null ? this.parseToCents(this.priceRange.to) : 1000;
 
-    if (priceRangeFrom !== null && priceRangeTo !== null) {
-      appliedFilters['variants.prices.value.centAmount'] = [`range(${priceRangeFrom} to ${priceRangeTo})`];
-    }
-  }
-
-  addDiscountFilters(appliedFilters: { [key: string]: string[] }) {
-    const discountedFilters = this.getCheckedFilters('Discount');
-    const discountedWith = discountedFilters.find((filter) => filter.name === 'With')?.checked || false;
-    const discountedWithout = discountedFilters.find((filter) => filter.name === 'Without')?.checked || false;
-    const discounted = discountedWith ? true : discountedWithout ? false : null;
-
-    if (discounted !== null) {
-      appliedFilters['variants.scopedPriceDiscounted'] = [discounted.toString()];
-    }
+    appliedFilters['variants.prices.value.centAmount'] = [`range(${priceRangeFrom} to ${priceRangeTo})`];
+    return appliedFilters;
   }
 
   applyFilters() {
-    const appliedFilters: { [key: string]: string[] } = {};
-    this.addCategoryFilters(appliedFilters);
-    this.addPriceFilters(appliedFilters);
-    this.addDiscountFilters(appliedFilters);
+    const categoryFilters = this.getCategoryFilters();
+    const priceFilters = this.getPriceFilters();
+
+    const appliedFilters = { ...categoryFilters, ...priceFilters };
+
     this.store.dispatch(actions.saveFilter({ filters: appliedFilters }));
     this.toggleFilterMenu();
   }
@@ -188,5 +175,10 @@ export default class FilterComponent {
 
     this.applyFilters();
     this.toggleFilterMenu();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

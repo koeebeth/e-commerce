@@ -34,7 +34,7 @@
   width: 100%;
   text-align: center;
   background-color: $color-primary-300;
-  color: $color-primary-500;
+  color: $color-primary-600;
   border-radius: 10px 10px 0 0;
   padding: 5px;
   &.active {
@@ -49,7 +49,7 @@
   @include font-primary;
   cursor: pointer;
   height: 100%;
-  color: $color-primary-400;
+  color: $color-primary-600;
   vertical-align: middle;
   background-color: transparent;
   border: none;

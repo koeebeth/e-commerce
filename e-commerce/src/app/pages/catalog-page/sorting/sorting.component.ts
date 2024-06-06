@@ -31,7 +31,6 @@ export default class SortingComponent {
 
   applySort(sortValue: string) {
     let sortParam = '';
-    console.log('sortValue', sortValue);
     switch (sortValue) {
       case 'name-asc':
         sortParam = 'name.en-US asc';

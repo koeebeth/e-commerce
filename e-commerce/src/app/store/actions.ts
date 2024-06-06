@@ -108,12 +108,12 @@ export const loadProductId = createAction('[Product] Load ProductID', props<{ id
 export const loadProductIdSuccess = createAction('[Product] Load ProductID Success', props<{ product: Product }>());
 export const loadProductIdFailure = createAction('[Product] Load ProductID Failure', props<{ error: string }>());
 ///
-export const loadCategories = createAction('[Product] Load Categories', props<{ offset: number; limit: number }>());
+export const loadCategories = createAction('[Categories] Load Categories', props<{ offset: number; limit: number }>());
 export const loadCategoriesSuccess = createAction(
-  '[Product] Load Categories Success',
+  '[Categories] Load Categories Success',
   props<{ categories: CategoriesArray }>(),
 );
-export const loadCategoriesFailure = createAction('[Product] Load Categories Failure', props<{ error: string }>());
+export const loadCategoriesFailure = createAction('[Categories] Load Categories Failure', props<{ error: string }>());
 ///
 export const loadFilter = createAction(
   '[Filter] Load Filter',
@@ -121,7 +121,7 @@ export const loadFilter = createAction(
 );
 
 export const resetFilter = createAction('[Filter] Reset Filter');
-export const saveFilter = createAction('[Filter] Load Filter', props<{ filters?: { [key: string]: string[] } }>());
-export const saveSort = createAction('[Filter] Load Filter', props<{ sort?: string }>());
+export const saveFilter = createAction('[Filter] Save Filter', props<{ filters?: { [key: string]: string[] } }>());
+export const saveSort = createAction('[Filter] Save Sort', props<{ sort?: string }>());
 export const loadFilterSuccess = createAction('[Filter] Load Filter Success', props<{ products: ProductsArray }>());
 export const loadFilterFailure = createAction('[Filter] Load Filter Failure', props<{ error: string }>());
