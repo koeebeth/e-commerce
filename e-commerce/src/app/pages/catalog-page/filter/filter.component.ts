@@ -23,7 +23,9 @@ interface FilterGroup {
 export default class FilterComponent {
   isFilterMenuOpen: boolean = false;
 
-  priceRange: { from: number | null; to: number | null } = { from: null, to: null };
+  defaultNumValue: number = 0;
+
+  priceRange: { from: number | null; to: number | null } = { from: 0, to: 100 };
 
   filters$!: Observable<{ [key: string]: string[] }>;
 
