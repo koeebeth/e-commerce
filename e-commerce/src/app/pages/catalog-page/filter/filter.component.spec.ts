@@ -11,10 +11,8 @@ import TokenStorageService from '../../../shared/services/tokenStorage/tokenstor
 describe('FilterComponent', () => {
   let component: FilterComponent;
   let fixture: ComponentFixture<FilterComponent>;
-  let mockActivatedRoute: ActivatedRoute;
-  let mockRouter: Router;
   let unsubscribe$: Subject<void>;
-  let storeMock: MockStore;
+  let store: MockStore;
   let tokenStorageServiceMock: jasmine.SpyObj<TokenStorageService>;
 
   beforeEach(async () => {
@@ -42,9 +40,7 @@ describe('FilterComponent', () => {
 
     fixture = TestBed.createComponent(FilterComponent);
     component = fixture.componentInstance;
-    mockActivatedRoute = TestBed.inject(ActivatedRoute);
-    mockRouter = TestBed.inject(Router);
-    storeMock = TestBed.inject(Store) as MockStore;
+    store = TestBed.inject(Store) as MockStore;
     unsubscribe$ = new Subject<void>();
 
     fixture.detectChanges();
@@ -65,9 +61,12 @@ describe('FilterComponent', () => {
 
     const mockCategoryFilters = { category1: ['value1'], category2: ['value2'] };
     spyOn(component, 'getCategoryFilters').and.returnValue(mockCategoryFilters);
+    const dispatchSpy = spyOn(store, 'dispatch');
+
     component.applyFilterFromUrl();
+
     expect(component.getCategoryFilters).toHaveBeenCalled();
-    expect(storeMock.dispatch).toHaveBeenCalledWith(
+    expect(dispatchSpy).toHaveBeenCalledWith(
       actions.loadFilter({
         filters: mockCategoryFilters,
         offset: 0,
@@ -120,9 +119,12 @@ describe('FilterComponent', () => {
     it('should dispatch the loadCategories action', () => {
       tokenStorageServiceMock.getAuthToken.and.returnValue(null);
       tokenStorageServiceMock.getAnonymousToken.and.returnValue(null);
+
+      const dispatchSpy = spyOn(store, 'dispatch');
+
       component.getCategories();
 
-      expect(storeMock.dispatch).toHaveBeenCalledWith(actions.loadCategories({ offset: 0, limit: 100 }));
+      expect(dispatchSpy).toHaveBeenCalledWith(actions.loadCategories({ offset: 0, limit: 100 }));
     });
   });
 
