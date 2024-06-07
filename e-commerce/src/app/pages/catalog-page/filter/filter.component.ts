@@ -47,10 +47,10 @@ export default class FilterComponent {
     },
   ];
 
-  private unsubscribe$ = new Subject<void>();
+  unsubscribe$ = new Subject<void>();
 
   constructor(
-    private store: Store<AppState>,
+    public store: Store<AppState>,
     private route: ActivatedRoute,
     private router: Router,
   ) {}
