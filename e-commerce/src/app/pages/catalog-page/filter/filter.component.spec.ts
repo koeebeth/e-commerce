@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Subject, of } from 'rxjs';
-import FilterComponent from './filter.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { provideMockStore, MockStore } from '@ngrx/store/testing';
+import FilterComponent from './filter.component';
 import * as actions from '../../../store/actions';
 import { selecCategories } from '../../../store/selectors';
 import TokenStorageService from '../../../shared/services/tokenStorage/tokenstorage.service';

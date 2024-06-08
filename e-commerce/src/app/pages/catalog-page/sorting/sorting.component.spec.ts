@@ -2,9 +2,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { CommonModule } from '@angular/common';
 import SortingComponent from './sorting.component';
 import * as actions from '../../../store/actions';
-import { CommonModule } from '@angular/common';
 import TokenStorageService from '../../../shared/services/tokenStorage/tokenstorage.service';
 
 describe('SortingComponent', () => {

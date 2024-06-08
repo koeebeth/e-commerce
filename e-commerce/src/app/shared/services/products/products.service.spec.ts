@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import ProductsService from './products.service';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import ProductsService from './products.service';
 import { CategoriesArray, ProductsArray } from './productTypes';
 
 describe('ProductsService', () => {
@@ -148,11 +148,13 @@ describe('ProductsService', () => {
 
   it('should include filter parameters if provided', () => {
     const mockToken = 'mockToken';
+    const mockSearchText = '';
     const mockFilters = { 'categories.id': ['1', '2'], price: ['10', '20'] };
+    const mockSort = '';
     const mockOffset = 0;
     const mockLimit = 10;
 
-    service.filterProducts(mockToken, undefined, mockFilters, undefined, mockOffset, mockLimit).subscribe();
+    service.filterProducts(mockToken, mockSearchText, mockFilters, mockSort, mockOffset, mockLimit).subscribe();
 
     const req = httpTestingController.expectOne((request) => {
       const filterParams = request.params.getAll('filter');
