@@ -25,7 +25,7 @@ export interface Product {
   variants?: ProductVariant[];
   createdAt?: string;
   lastModifiedAt?: string;
-  masterData: MasterData;
+  masterData?: MasterData;
   productType?: Reference;
   taxCategory?: Reference;
   state?: Reference;
@@ -173,15 +173,15 @@ export interface CategoriesArray {
 export interface Category {
   id: string;
   key: string;
-  version: number;
-  createdAt: string;
-  lastModifiedAt: string;
+  version?: number;
+  createdAt?: string;
+  lastModifiedAt?: string;
   name: LocalizedString;
-  slug: LocalizedString;
+  slug?: LocalizedString;
   description?: LocalizedString;
-  ancestors: Reference[];
+  ancestors?: Reference[];
   parent?: Reference;
-  orderHint: string;
+  orderHint?: string;
   externalId?: string;
   metaTitle?: LocalizedString;
   metaDescription?: LocalizedString;
