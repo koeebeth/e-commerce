@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ManageAddressComponent } from './manage-address.component';
+import ManageAddressComponent from './manage-address.component';
 
 describe('ManageAddressComponent', () => {
   let component: ManageAddressComponent;
