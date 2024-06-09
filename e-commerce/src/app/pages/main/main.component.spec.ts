@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { provideStore } from '@ngrx/store';
 import { ActivatedRoute } from '@angular/router';
 import MainComponent from './main.component';
