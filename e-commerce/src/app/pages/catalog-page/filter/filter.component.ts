@@ -171,10 +171,10 @@ export default class FilterComponent {
         filter.checked = false;
       });
     });
-    this.priceRange = { from: null, to: null };
+    this.priceRange = { from: 0, to: 100 };
 
     this.applyFilters();
-    this.toggleFilterMenu();
+    this.router.navigate(['/catalog']);
   }
 
   ngOnDestroy(): void {
