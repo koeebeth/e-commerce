@@ -1,0 +1,148 @@
+@import '../../../styles.scss';
+
+.product-container {
+  @include font-primary;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
+  padding: 1% 3% 3% 3%;
+  height: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.images-container {
+  width: 70%;
+  overflow: hidden;
+}
+
+.product-information {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  border-radius: 10px;
+  width: 30%;
+  background: $color-primary-200;
+  border: 1px solid rgba($color-primary-300, 0.6);
+}
+
+.description-container,
+.price-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+h1 {
+  @include font-heading;
+  font-size: 2rem;
+}
+
+.category {
+  background: $color-primary-300;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba($color-primary-400, 0.6);
+  cursor: pointer;
+}
+
+.description {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+.prices {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: lightgrey;
+}
+
+.discount {
+  background: $color-primary-300;
+  padding: 2px 4px;
+  border-radius: 10px;
+  border: 1px solid rgba($color-primary-400, 0.6);
+}
+
+.discounted-price {
+  font-size: 1.7rem;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+}
+
+button {
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-size: 1.2rem;
+  color: white;
+  cursor: pointer;
+  background: $color-primary-400;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 1px solid rgba($color-primary-500, 0.6);
+}
+
+.back-btn {
+  @include font-primary;
+  display: flex;
+  align-items: center;
+  color: white;
+  padding: 3% 0 0 3%;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1200px) {
+  h1,
+  .discounted-price,
+  .discounted-price {
+    font-size: 1.5rem;
+  }
+
+  .description,
+  button {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .product-container {
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: stretch;
+  }
+
+  .images-container {
+    width: 80%;
+  }
+
+  .product-information {
+    width: 70%;
+  }
+
+  .description {
+    margin: 0;
+  }
+}

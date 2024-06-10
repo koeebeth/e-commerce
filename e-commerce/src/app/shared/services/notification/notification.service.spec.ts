@@ -18,7 +18,7 @@ describe('NotificationService', () => {
     const type = 'invalidType';
     const message = 'Test invalid message';
     service.showNotification(type, message);
-    expect(service['notificationsQueue'].length).toBe(0);
+    expect(service.notificationsQueue.length).toBe(0);
     expect(service.showNextNotification).not.toHaveBeenCalled();
   });
 
@@ -30,10 +30,10 @@ describe('NotificationService', () => {
     service.showNotification(type1, message1);
     service.showNotification(type2, message2);
     service.closeNotification();
-    expect(service['isShowNextNotification']).toBeFalse();
+    expect(service.isShowNextNotification).toBeFalse();
     setTimeout(() => {
-      expect(service['isShowNextNotification']).toBeTrue();
-      expect(service['notificationSource'].value).toEqual({ type: type2, message: message2 });
+      expect(service.isShowNextNotification).toBeTrue();
+      expect(service.notificationSource.value).toEqual({ type: type2, message: message2 });
       done();
     }, 200);
   });
@@ -41,9 +41,9 @@ describe('NotificationService', () => {
   it('should close the current notification and not show any new notifications if the queue is empty', () => {
     service.showNotification('success', 'Test message');
     service.closeNotification();
-    expect(service['isShowNextNotification']).toBeFalse();
+    expect(service.isShowNextNotification).toBeFalse();
     setTimeout(() => {
-      expect(service['isShowNextNotification']).toBeFalse();
+      expect(service.isShowNextNotification).toBeFalse();
     }, 200);
   });
 });

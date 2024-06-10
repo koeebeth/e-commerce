@@ -1,5 +1,13 @@
 import { createAction, props } from '@ngrx/store';
-import { CartBase, CustomerDraft, CustomerSignin } from '../shared/services/commercetoolsApi/apitypes';
+import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
+import {
+  CartBase,
+  CustomerDraft,
+  CustomerInfo,
+  CustomerSignin,
+  PasswordChange,
+  Address,
+} from '../shared/services/commercetoolsApi/apitypes';
 
 export const loadAccsessToken = createAction('[Auth] Load Access Token', props<{ accessData: CustomerSignin }>());
 export const refreshAccsessToken = createAction(
@@ -39,11 +47,81 @@ export const loadAnonymousTokenFailure = createAction(
   props<{ error: string }>(),
 );
 
+export const loadUserInfo = createAction('[Auth] Load User Info');
+export const loadUserInfoSuccess = createAction('[Auth] Load User Success', props<{ userInfo: CustomerInfo }>());
+export const loadUserInfoFailure = createAction('[Auth] Load User Failure', props<{ error: string }>());
+
+export const loadUpdateUserInfo = createAction('[User] Load Updating User Info', props<{ userInfo: CustomerInfo }>());
+export const loadUpdateUserInfoSuccess = createAction(
+  '[User] Load Updating User Success',
+  props<{ userInfo: CustomerInfo }>(),
+);
+export const loadUpdateUserInfoFailure = createAction('[User] Load Updating User Failure', props<{ error: string }>());
+
+export const loadUpdateUserPassword = createAction(
+  '[User] Load Updating User Password',
+  props<{ version: number; passwordData: PasswordChange }>(),
+);
+export const loadUpdateUserPasswordSuccess = createAction(
+  '[User] Load Updating User Password Success',
+  props<{ userInfo: CustomerInfo }>(),
+);
+export const loadUpdateUserPasswordFailure = createAction(
+  '[User] Load Updating User Password Failure',
+  props<{ error: string }>(),
+);
+
+export const loadUpdateUserAddresses = createAction(
+  '[User] Load Updating User Addresses',
+  props<{
+    version: number;
+    addresses: (Address & { key: string; type: 'billing' | 'shipping'; default: boolean })[];
+    userInfo: CustomerInfo;
+  }>(),
+);
+export const loadUpdateUserAddressesSuccess = createAction(
+  '[User] Load Updating User Addresses',
+  props<{ userInfo: CustomerInfo }>(),
+);
+export const loadUpdateUserAddressesFailure = createAction(
+  '[User] Load Updating User Addresses',
+  props<{ error: string }>(),
+);
+
 export const loadAnonymousCartSuccess = createAction(
   '[Cart] Cart Anonymous Id Success',
   props<{ cartBase: CartBase }>(),
 );
 export const loadAnonymousCartFailure = createAction('[Cart] Cart Anonymous Id Failure', props<{ error: string }>());
-
+///
 export const logout = createAction('[Auth] Logout');
 export const logoutSuccess = createAction('[Auth] Logout Success');
+///
+export const loadProducts = createAction('[Products] Load Products', props<{ offset: number; limit: number }>());
+export const loadProductsSuccess = createAction(
+  '[Products] Load Products Success',
+  props<{ products: ProductsArray }>(),
+);
+export const loadProductsFailure = createAction('[Products] Load Products Failure', props<{ error: string }>());
+///
+export const loadProductId = createAction('[Product] Load ProductID', props<{ id: string }>());
+export const loadProductIdSuccess = createAction('[Product] Load ProductID Success', props<{ product: Product }>());
+export const loadProductIdFailure = createAction('[Product] Load ProductID Failure', props<{ error: string }>());
+///
+export const loadCategories = createAction('[Categories] Load Categories', props<{ offset: number; limit: number }>());
+export const loadCategoriesSuccess = createAction(
+  '[Categories] Load Categories Success',
+  props<{ categories: CategoriesArray }>(),
+);
+export const loadCategoriesFailure = createAction('[Categories] Load Categories Failure', props<{ error: string }>());
+///
+export const loadFilter = createAction(
+  '[Filter] Load Filter',
+  props<{ offset: number; limit: number; searchText?: string; filters?: { [key: string]: string[] }; sort?: string }>(),
+);
+
+export const resetFilter = createAction('[Filter] Reset Filter');
+export const saveFilter = createAction('[Filter] Save Filter', props<{ filters?: { [key: string]: string[] } }>());
+export const saveSort = createAction('[Filter] Save Sort', props<{ sort?: string }>());
+export const loadFilterSuccess = createAction('[Filter] Load Filter Success', props<{ products: ProductsArray }>());
+export const loadFilterFailure = createAction('[Filter] Load Filter Failure', props<{ error: string }>());

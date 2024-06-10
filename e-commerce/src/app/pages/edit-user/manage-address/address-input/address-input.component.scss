@@ -1,0 +1,27 @@
+@import '../../../../../styles.scss';
+
+.address-input-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 10px;
+  box-sizing: border-box;
+  padding-block: 20px;
+
+  @media screen and (max-width: 760px) {
+    grid-template-columns: 1fr;
+  }
+
+  .default-check {
+    @include font-primary;
+    color: $color-primary-300;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+
+    input:disabled:checked {
+      color: $color-primary-300;
+    }
+  }
+}

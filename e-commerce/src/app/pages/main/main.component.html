@@ -2,9 +2,22 @@
 <div class="category-container">
   <h1 class="category-title">Category</h1>
   <div class="category-list">
-    <div class="category" *ngFor="let category of categories">
-      <p class="category-name">{{ category.categoryName }}</p>
-      <img [src]="category.image" [alt]="category.alt" class="category-img" />
-    </div>
+    <a
+      class="category-link"
+      routerLink="/catalog"
+      (click)="navigateToCategory(category.key)"
+      *ngFor="let category of (categories$ | async)?.results"
+    >
+      <div class="category">
+        <h3 class="category__title">{{ category.name['en-US'] }}</h3>
+        <div class="category__image">
+          <img [src]="categoryImgPath + category.key + '.jpg'" [alt]="category.key" />
+        </div>
+      </div>
+    </a>
+    <a routerLink="/categories" class="category-link">
+      <div class="category category-more">SEE MORE ></div>
+    </a>
   </div>
 </div>
+<app-catalog></app-catalog>

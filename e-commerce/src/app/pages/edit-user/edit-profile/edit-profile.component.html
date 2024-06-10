@@ -1,0 +1,45 @@
+<div class="edit-profile">
+  <h2>Edit Profile</h2>
+  <form [formGroup]="editForm" class="edit-form" *ngIf="userInfo">
+    <fieldset>
+      <legend>Personal Info</legend>
+      <app-input
+        [validation]="nameValidation"
+        name="firstName"
+        label="First Name"
+        [defaultValue]="userInfo.firstName"
+        [form]="editForm"
+      ></app-input>
+      <app-input
+        [validation]="nameValidation"
+        [defaultValue]="userInfo.lastName"
+        name="lastName"
+        label="Last Name"
+        [form]="editForm"
+      ></app-input>
+      <app-input
+        [validation]="emailValidation"
+        name="email"
+        label="E-mail"
+        [form]="editForm"
+        [defaultValue]="userInfo.email"
+      ></app-input>
+      <app-input
+        type="date"
+        name="dateOfBirth"
+        label="Date of Birth"
+        [form]="editForm"
+        [defaultValue]="userInfo.dateOfBirth"
+        [validation]="ageValidation"
+      ></app-input>
+    </fieldset>
+    <div class="buttons">
+      <app-button
+        [isDisabled]="!editForm.valid || !editForm.dirty"
+        content="Save Changes"
+        (clickHandler)="onSubmit()"
+      ></app-button>
+      <app-button btnType="link" content="Cancel" (clickHandler)="onClose()"></app-button>
+    </div>
+  </form>
+</div>

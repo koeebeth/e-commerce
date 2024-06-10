@@ -1,0 +1,158 @@
+@import '../../../../../styles.scss';
+
+.card {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  cursor: pointer;
+  margin-bottom: 20px;
+
+  .card-content-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 9px 3px rgb($color-shadow, 100%);
+    padding: 0 0 13px 0;
+
+    .card-image__wrapper {
+      width: 100%;
+      height: 350px;
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+      transition: transform 0.3s ease-in-out;
+
+      @media screen and (min-width: 1600px) {
+        height: 400px;
+      }
+      @media screen and (max-width: 860px) {
+        height: 300px;
+      }
+      @media screen and (max-width: 500px) {
+        height: 270px;
+      }
+      @media screen and (max-width: 400px) {
+        height: 230px;
+      }
+
+      .card-image,
+      .card-image__hover {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: opacity 0.4s ease-in-out;
+      }
+
+      .card-image__hover {
+        opacity: 0;
+      }
+
+      .card-image {
+        opacity: 1;
+      }
+    }
+
+    &:hover {
+      .card-image__wrapper {
+        .card-image__hover {
+          opacity: 1;
+        }
+
+        .card-image {
+          opacity: 0;
+        }
+      }
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      row-gap: 15px;
+      font-weight: 200;
+      padding: 0 10px;
+      height: 60px;
+
+      .game-name {
+        font-weight: 700;
+        font-size: 1rem;
+
+        @media screen and (max-width: 460px) {
+          font-size: 0.9rem;
+          height: 50px;
+        }
+      }
+
+      .price-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        column-gap: 10px;
+        height: 20px;
+        align-items: center;
+
+        .discount {
+          background: $color-primary-300;
+          padding: 3px 10px;
+          border-radius: 5px;
+          border: 2px solid rgba($color-primary-400, 0.6);
+
+          @media screen and (max-width: 460px) {
+            font-size: 0.8rem;
+            padding: 5px 7px;
+          }
+        }
+
+        .prices-variant {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-around;
+          column-gap: 20px;
+
+          @media screen and (max-width: 820px) {
+            flex-direction: column;
+            row-gap: 5px;
+          }
+          @media screen and (max-width: 460px) {
+            column-gap: 5px;
+          }
+
+          .original-price {
+            text-decoration: line-through;
+            color: rgb(190, 190, 190);
+            font-weight: 500;
+            font-size: 1.1rem;
+
+            @media screen and (max-width: 460px) {
+              font-size: 0.9rem;
+            }
+          }
+
+          .discounted-price {
+            font-size: 1.2rem;
+            font-weight: 600;
+
+            @media screen and (max-width: 460px) {
+              font-size: 0.9rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (hover: none) {
+  .card .card-image__wrapper .card-image__hover {
+    opacity: 0 !important;
+  }
+
+  .card .card-image__wrapper .card-image {
+    opacity: 1 !important;
+  }
+}

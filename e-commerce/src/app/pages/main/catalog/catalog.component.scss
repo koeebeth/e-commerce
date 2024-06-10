@@ -1,0 +1,78 @@
+@import '../../../../styles.scss';
+
+.catalog-container {
+  margin-top: 20px;
+  position: relative;
+  @include font-heading;
+  display: flex;
+  flex-direction: column;
+  color: $color-primary-700;
+  gap: 15px;
+  padding: 10px 100px;
+
+  @media screen and (min-width: 1600px) {
+    margin-top: 80px;
+  }
+  @media screen and (max-width: 715px) {
+    padding: 10px 50px;
+  }
+  @media screen and (max-width: 510px) {
+    padding: 10px 25px;
+  }
+
+  .catalog-title {
+    font-family: 'Manrope', sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+    font-style: normal;
+    font-size: 1.7rem;
+  }
+
+  .cards-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    column-gap: 15px;
+    row-gap: 30px;
+    justify-content: space-between;
+    align-content: center;
+
+    @media screen and (max-width: 1115px) {
+      grid-template-columns: repeat(3, 1fr);
+      column-gap: 10px;
+    }
+    @media screen and (max-width: 915px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    @media screen and (max-width: 700px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .see-more_container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .see-more_btn {
+    @include font-primary;
+    font-weight: 700;
+    padding: 10px 40px;
+    text-align: center;
+    text-transform: uppercase;
+    color: $color-primary-700;
+    border-radius: 10px;
+    border: 0px;
+    box-shadow: inset 0px 6px 10px 4px rgb(47 29 118 / 58%);
+    background-color: #001c3070;
+    transition: 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.06);
+    }
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+}

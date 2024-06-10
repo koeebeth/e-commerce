@@ -1,0 +1,60 @@
+@import '../../../styles.scss';
+
+.modal {
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 600px;
+  position: absolute;
+  top: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.4);
+  border-radius: 10px;
+}
+
+.mode {
+  ul {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.modal__form {
+  position: relative;
+  overflow: scroll;
+  background-color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 0 0 10px 10px;
+}
+
+.mode__option {
+  width: 100%;
+  text-align: center;
+  background-color: $color-primary-300;
+  color: $color-primary-600;
+  border-radius: 10px 10px 0 0;
+  padding: 5px;
+  &.active {
+    .mode__button {
+      color: $color-primary-700;
+    }
+    background-color: $color-primary-400;
+  }
+}
+
+.mode__button {
+  @include font-primary;
+  cursor: pointer;
+  height: 100%;
+  color: $color-primary-600;
+  vertical-align: middle;
+  background-color: transparent;
+  border: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

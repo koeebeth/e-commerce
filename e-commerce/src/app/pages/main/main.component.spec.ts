@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideStore } from '@ngrx/store';
+import { ActivatedRoute } from '@angular/router';
 import MainComponent from './main.component';
 
 describe('MainComponent', () => {
@@ -9,6 +11,13 @@ describe('MainComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MainComponent],
+      providers: [
+        provideStore(),
+        {
+          provide: ActivatedRoute,
+          useValue: {},
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MainComponent);
@@ -23,16 +32,16 @@ describe('MainComponent', () => {
   it('should display categories', () => {
     const compiled = fixture.debugElement.nativeElement;
     const categoryElements = compiled.querySelectorAll('.category-name');
-    expect(categoryElements.length).toBe(component.categories.length);
-    component.categories.forEach((category, index) => {
-      expect(categoryElements[index].textContent).toContain(category.categoryName);
+    expect(categoryElements.length).toBe(component.categories.results.length);
+    component.categories.results.forEach((category, index) => {
+      expect(categoryElements[index].textContent).toContain(category.name);
     });
   });
 
   it('should display category images with correct alt tags', () => {
     const imgElements = fixture.debugElement.queryAll(By.css('.category-img'));
     imgElements.forEach((img, index) => {
-      expect(img.properties['alt']).toBe(component.categories[index].alt);
+      expect(img.properties['alt']).toBe(component.categories.results[index].key);
     });
   });
 });

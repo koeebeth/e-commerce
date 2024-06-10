@@ -1,0 +1,13 @@
+<section class="catalog-container">
+  <h2 class="catalog-title">Store</h2>
+  <div class="cards-container">
+    <div class="cards-list">
+      <div *ngFor="let card of (productObjects$ | async)?.results">
+        <app-card [card]="card"></app-card>
+      </div>
+    </div>
+  </div>
+  <div class="see-more_container">
+    <button class="see-more_btn" (click)="onSeeMore()">See more</button>
+  </div>
+</section>
