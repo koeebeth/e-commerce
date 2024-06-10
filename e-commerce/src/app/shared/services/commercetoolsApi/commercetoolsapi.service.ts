@@ -49,6 +49,31 @@ export default class CommerceApiService {
     return this.http.post<CartBase>(apiUrl, body, { headers });
   }
 
+  updateAnonymousCart(accessToken: string, idCart: string, version: number, productId: string): Observable<CartBase> {
+    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/carts/${idCart}`;
+
+    const body = {
+      version,
+      actions: [
+        {
+          action: 'setCountry',
+          country: 'US',
+        },
+        {
+          action: 'addLineItem',
+          productId,
+          quantity: 1,
+        },
+      ],
+    };
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    return this.http.post<CartBase>(apiUrl, body, { headers });
+  }
+
   registration(customerDraft: CustomerDraft, anonToken: string, anonymousId: string = ''): Observable<CustomerDraft> {
     const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/customers`;
     const body = {

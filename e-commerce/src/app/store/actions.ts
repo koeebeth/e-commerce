@@ -87,7 +87,22 @@ export const loadUpdateUserAddressesFailure = createAction(
   '[User] Load Updating User Addresses',
   props<{ error: string }>(),
 );
-
+export const loadUpdateAnonymousCart = createAction(
+  '[Cart] Load Updating Cart Anonymous',
+  props<{
+    productId: string;
+    cartBase: CartBase;
+  }>(),
+);
+export const loadUpdateAnonymousCartSuccess = createAction(
+  '[Cart] Load Updating Cart Anonymous Success',
+  props<{ cartBase: CartBase }>(),
+);
+export const loadUpdateAnonymousCartFailure = createAction(
+  '[Cart] Load Updating Cart Anonymous Failure',
+  props<{ error: string }>(),
+);
+///
 export const loadAnonymousCartSuccess = createAction(
   '[Cart] Cart Anonymous Id Success',
   props<{ cartBase: CartBase }>(),

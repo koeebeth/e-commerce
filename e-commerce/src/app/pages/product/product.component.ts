@@ -8,6 +8,7 @@ import SliderComponent from './slider/slider.component';
 import { AppState } from '../../store/store';
 import { Product, CategoriesArray } from '../../shared/services/products/productTypes';
 import * as actions from '../../store/actions';
+import { CartBase } from '../../shared/services/commercetoolsApi/apitypes';
 
 @Component({
   selector: 'app-product',
@@ -17,6 +18,8 @@ import * as actions from '../../store/actions';
   styleUrl: './product.component.scss',
 })
 export default class ProductComponent {
+  cartBase!: CartBase;
+
   productObjects$!: Observable<Product | null>;
 
   categoryObjects$!: Observable<CategoriesArray | null>;
@@ -84,6 +87,17 @@ export default class ProductComponent {
         this.getCategory();
       }
     });
+    this.store
+      .select((state) => state.app.cartBase)
+      .subscribe((cartBase) => {
+        if (cartBase) {
+          this.cartBase = cartBase;
+        }
+      });
+  }
+
+  addToCart() {
+    this.store.dispatch(actions.loadUpdateAnonymousCart({ productId: this.productID, cartBase: this.cartBase }));
   }
 
   getCategory() {

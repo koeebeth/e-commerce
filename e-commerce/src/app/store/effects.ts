@@ -118,6 +118,41 @@ export default class EcommerceEffects {
     ),
   );
 
+  updateAnonymousCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadUpdateAnonymousCart),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.ecommerceApiService
+              .updateAnonymousCart(
+                accessToken || anonToken,
+                action.cartBase.id,
+                action.cartBase.version,
+                action.productId,
+              )
+              .pipe(
+                map((cartBase: CartBase) =>
+                  actions.loadUpdateAnonymousCartSuccess({
+                    cartBase,
+                  }),
+                ),
+                catchError((error) =>
+                  of(
+                    actions.loadUpdateAnonymousCartFailure({
+                      error: error.message,
+                    }),
+                  ),
+                ),
+              ),
+          ),
+        ),
+      ),
+    ),
+  );
+
   refreshAccsessToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.refreshAccsessToken),
