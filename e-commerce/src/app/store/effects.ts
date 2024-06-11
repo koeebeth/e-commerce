@@ -20,7 +20,7 @@ import { AuthData, CartBase, CustomerInfo } from '../shared/services/commercetoo
 import * as actions from './actions';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
 import { AppState } from './store';
-import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
+import { selectAccessToken, selectAnonymousToken, selectCartAnonId, selectUserInfo } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
 import ProductsService from '../shared/services/products/products.service';
 import {
@@ -122,8 +122,8 @@ export default class EcommerceEffects {
     this.actions$.pipe(
       ofType(actions.loadUserInfoSuccess),
       withLatestFrom(
-        this.store.pipe(select((state) => state.app.accessToken)), // Select access token from store
-        this.store.pipe(select((state) => state.app.userInfo)), // Select user info from store
+        this.store.pipe(select(selectAccessToken)), // Select access token from store
+        this.store.pipe(select(selectUserInfo)), // Select user info from store
       ),
       switchMap(([, accessToken, userInfo]) =>
         this.ecommerceApiService.checkUserCart(accessToken, userInfo!.id).pipe(
