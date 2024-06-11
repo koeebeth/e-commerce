@@ -118,6 +118,32 @@ export default class EcommerceEffects {
     ),
   );
 
+  getUserCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadUserInfoSuccess),
+      withLatestFrom(
+        this.store.pipe(select((state) => state.app.accessToken)), // Select access token from store
+        this.store.pipe(select((state) => state.app.userInfo)), // Select user info from store
+      ),
+      switchMap(([, accessToken, userInfo]) =>
+        this.ecommerceApiService.checkUserCart(accessToken, userInfo!.id).pipe(
+          switchMap((response) => {
+            if (response.status === 200) {
+              return this.ecommerceApiService.getUserCart(accessToken, userInfo!.id).pipe(
+                map((cartBase) => actions.loadUserCartSuccess({ cartBase })),
+                catchError((error) => of(actions.loadUserCartFailure({ error }))),
+              );
+            }
+            return this.ecommerceApiService.createUserCart(accessToken).pipe(
+              map((cartBase) => actions.loadUserCartSuccess({ cartBase })),
+              catchError((error) => of(actions.loadUserCartFailure({ error }))),
+            );
+          }),
+        ),
+      ),
+    ),
+  );
+
   refreshAccsessToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.refreshAccsessToken),

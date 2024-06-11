@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, mergeMap } from 'rxjs';
+import { Observable, map, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
 import { Address, AuthData, CartBase, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';
@@ -63,12 +63,22 @@ export default class CommerceApiService {
     return this.http.post<CartBase>(apiUrl, body, { headers });
   }
 
+  checkUserCart(accessToken: string, userId: string): Observable<{ status: number }> {
+    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/carts/customer-id=${userId}`;
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
+    return this.http.head<{ ok: boolean }>(apiUrl, { headers, observe: 'response' }).pipe(
+      map((res) => ({
+        status: +res.status,
+      })),
+    );
+  }
+
   getUserCart(accessToken: string, userId: string): Observable<CartBase> {
     const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/carts/customer-id=${userId}`;
 
-    const headers = new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${accessToken}`);
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
     return this.http.get<CartBase>(apiUrl, { headers });
   }

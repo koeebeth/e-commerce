@@ -53,6 +53,9 @@ export const ecommerceReducer = createReducer(
   on(actions.loadAnonymousCartSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),
   on(actions.loadAnonymousCartFailure, (state, { error }) => ({ ...state, error, loading: false })),
   ///
+  on(actions.loadUserCartSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),
+  on(actions.loadUserCartFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
   on(actions.loadRegistration, (state) => ({ ...state, loading: true })),
   on(actions.loadRegistrationSuccess, (state) => ({ ...state, loading: false })),
   on(actions.loadRegistrationFailure, (state, { error }) => ({ ...state, error, loading: false })),
