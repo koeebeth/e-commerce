@@ -23,6 +23,7 @@ import { AppState } from './store';
 import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
 import ProductsService from '../shared/services/products/products.service';
+import CartService from '../shared/services/cart/cart.service';
 import {
   CategoriesArray,
   Product,
@@ -36,6 +37,7 @@ export default class EcommerceEffects {
     private actions$: Actions,
     private ecommerceApiService: CommerceApiService,
     private productsService: ProductsService,
+    private cartService: CartService,
     private tokenStorageService: TokenStorageService,
     private notificationService: NotificationService,
     private store: Store<AppState>,
@@ -100,7 +102,7 @@ export default class EcommerceEffects {
     this.actions$.pipe(
       ofType(actions.loadAnonymousTokenSuccess),
       mergeMap((action) => {
-        return this.ecommerceApiService.createAnonymousCart(action.anonymousToken).pipe(
+        return this.cartService.createAnonymousCart(action.anonymousToken).pipe(
           map((cartBase: CartBase) =>
             actions.loadAnonymousCartSuccess({
               cartBase,
@@ -126,7 +128,7 @@ export default class EcommerceEffects {
           filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
           take(1),
           switchMap(([anonToken, accessToken]) =>
-            this.ecommerceApiService
+            this.cartService
               .updateAnonymousCart(
                 accessToken || anonToken,
                 action.cartBase.id,
