@@ -133,7 +133,9 @@ export default class EcommerceEffects {
                 accessToken || anonToken,
                 action.cartBase.id,
                 action.cartBase.version,
+                action.action,
                 action.productId,
+                action.lineItemId,
               )
               .pipe(
                 map((cartBase: CartBase) =>

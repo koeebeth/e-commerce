@@ -52,6 +52,8 @@ export default class ProductComponent {
 
   productID: string = '';
 
+  lineItemId: string = '';
+
   categoryID: string = '';
 
   category: string | undefined = '';
@@ -97,7 +99,19 @@ export default class ProductComponent {
   }
 
   addToCart() {
-    this.store.dispatch(actions.loadUpdateAnonymousCart({ productId: this.productID, cartBase: this.cartBase }));
+    this.store.dispatch(
+      actions.loadUpdateAnonymousCart({ action: 'add', productId: this.productID, cartBase: this.cartBase }),
+    );
+  }
+
+  removeFromCart() {
+    const lineItem = this.cartBase.lineItems.find((item) => item.productId === this.productID);
+    if (lineItem) {
+      this.lineItemId = lineItem.id;
+      this.store.dispatch(
+        actions.loadUpdateAnonymousCart({ action: 'remove', lineItemId: this.lineItemId, cartBase: this.cartBase }),
+      );
+    }
   }
 
   getCategory() {
