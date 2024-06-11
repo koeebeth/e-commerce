@@ -8,7 +8,7 @@ import SliderComponent from './slider/slider.component';
 import { AppState } from '../../store/store';
 import { Product, CategoriesArray } from '../../shared/services/products/productTypes';
 import * as actions from '../../store/actions';
-import { CartBase } from '../../shared/services/commercetoolsApi/apitypes';
+import { CartBase, LineItem } from '../../shared/services/commercetoolsApi/apitypes';
 
 @Component({
   selector: 'app-product',
@@ -52,6 +52,8 @@ export default class ProductComponent {
 
   productID: string = '';
 
+  lineItem: LineItem | undefined;
+
   lineItemId: string = '';
 
   categoryID: string = '';
@@ -94,6 +96,7 @@ export default class ProductComponent {
       .subscribe((cartBase) => {
         if (cartBase) {
           this.cartBase = cartBase;
+          this.lineItem = this.cartBase.lineItems.find((item) => item.productId === this.productID);
         }
       });
   }
@@ -105,9 +108,8 @@ export default class ProductComponent {
   }
 
   removeFromCart() {
-    const lineItem = this.cartBase.lineItems.find((item) => item.productId === this.productID);
-    if (lineItem) {
-      this.lineItemId = lineItem.id;
+    if (this.lineItem) {
+      this.lineItemId = this.lineItem.id;
       this.store.dispatch(
         actions.loadUpdateAnonymousCart({ action: 'remove', lineItemId: this.lineItemId, cartBase: this.cartBase }),
       );
