@@ -138,11 +138,15 @@ export default class EcommerceEffects {
                 action.lineItemId,
               )
               .pipe(
-                map((cartBase: CartBase) =>
-                  actions.loadUpdateAnonymousCartSuccess({
+                map((cartBase: CartBase) => {
+                  this.notificationService.showNotification(
+                    'success',
+                    `${action.action === 'add' ? 'Added to the Cart' : 'Removed from the Cart'}`,
+                  );
+                  return actions.loadUpdateAnonymousCartSuccess({
                     cartBase,
-                  }),
-                ),
+                  });
+                }),
                 catchError((error) =>
                   of(
                     actions.loadUpdateAnonymousCartFailure({
