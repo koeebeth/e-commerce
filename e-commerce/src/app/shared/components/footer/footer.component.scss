@@ -41,6 +41,11 @@
     width: 100%;
     gap: 4rem;
 
+    @media screen and (max-width: 650px) {
+      gap: 2rem;
+      flex-direction: column;
+    }
+
     .site_links__container,
     .git_links__container {
       @include font-primary;
