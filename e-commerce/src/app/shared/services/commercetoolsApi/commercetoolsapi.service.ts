@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, map, mergeMap } from 'rxjs';
+import { Observable, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
 import { Address, AuthData, CartBase, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';

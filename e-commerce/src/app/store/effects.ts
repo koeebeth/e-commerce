@@ -20,7 +20,7 @@ import { AuthData, CartBase, CustomerInfo } from '../shared/services/commercetoo
 import * as actions from './actions';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
 import { AppState } from './store';
-import { selectAccessToken, selectAnonymousToken, selectCartAnonId, selectUserInfo } from './selectors';
+import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
 import ProductsService from '../shared/services/products/products.service';
 import {
