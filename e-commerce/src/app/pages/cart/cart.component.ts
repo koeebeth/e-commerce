@@ -7,4 +7,22 @@ import { Component } from '@angular/core';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
-export class CartComponent {}
+export class CartComponent {
+  products = [
+    {
+      name: 'Game',
+      price: '1.00',
+      quantity: '1',
+    },
+    {
+      name: 'Game',
+      price: '1.00',
+      quantity: '1',
+    },
+    {
+      name: 'Game',
+      price: '1.00',
+      quantity: '1',
+    },
+  ];
+}
