@@ -128,10 +128,8 @@ export default class EcommerceEffects {
         this.ecommerceApiService.getUserCart(accessToken).pipe(
           switchMap((response) => {
             if (response.status === 200) {
-              return this.ecommerceApiService.getUserCart(accessToken).pipe(
-                map((response) => actions.loadUserCartSuccess({ cartBase: response.body! })),
-                catchError((error) => of(actions.loadUserCartFailure({ error }))),
-              );
+              const cart = response.body; // Assuming response.body contains the body of the response
+              return of(actions.loadUserCartSuccess({ cartBase: cart! }));
             }
             return this.ecommerceApiService.createUserCart(accessToken).pipe(
               map((cartBase) => actions.loadUserCartSuccess({ cartBase })),
