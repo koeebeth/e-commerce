@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, map, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
@@ -50,7 +50,7 @@ export default class CommerceApiService {
   }
 
   createUserCart(accessToken: string): Observable<CartBase> {
-    const apiUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/carts`;
+    const apiUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/carts`;
 
     const body = {
       currency: 'USD',
@@ -60,27 +60,15 @@ export default class CommerceApiService {
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${accessToken}`);
 
-    return this.http.post<CartBase>(apiUrl, body, { headers });
+    return this.http.post<CartBase>(apiUrl, JSON.stringify(body), { headers });
   }
 
-  checkUserCart(accessToken: string, userId: string): Observable<{ status: number }> {
-    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/carts/customer-id=${userId}`;
+  getUserCart(accessToken: string): Observable<HttpResponse<CartBase>> {
+    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/active-cart`;
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
-    return this.http.head<{ ok: boolean }>(apiUrl, { headers, observe: 'response' }).pipe(
-      map((res) => ({
-        status: +res.status,
-      })),
-    );
-  }
-
-  getUserCart(accessToken: string, userId: string): Observable<CartBase> {
-    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/carts/customer-id=${userId}`;
-
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
-
-    return this.http.get<CartBase>(apiUrl, { headers });
+    return this.http.get<CartBase>(apiUrl, { headers, observe: 'response' });
   }
 
   registration(customerDraft: CustomerDraft, anonToken: string, anonymousId: string = ''): Observable<CustomerDraft> {
