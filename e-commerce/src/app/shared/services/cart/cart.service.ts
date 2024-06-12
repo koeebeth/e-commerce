@@ -28,12 +28,20 @@ export default class CartService {
     return this.http.post<CartBase>(apiUrl, body, { headers });
   }
 
-  updateAnonymousCart(accessToken: string, idCart: string, version: number, productId: string): Observable<CartBase> {
+  updateAnonymousCart(
+    accessToken: string,
+    idCart: string,
+    version: number,
+    action: 'add' | 'remove',
+    productId?: string,
+    lineItemId?: string,
+  ): Observable<CartBase> {
     const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/carts/${idCart}`;
 
-    const body = {
-      version,
-      actions: [
+    const requestActions: object[] = [];
+
+    if (action === 'add') {
+      requestActions.push(
         {
           action: 'setCountry',
           country: 'US',
@@ -43,7 +51,19 @@ export default class CartService {
           productId,
           quantity: 1,
         },
-      ],
+      );
+    }
+
+    if (action === 'remove') {
+      requestActions.push({
+        action: 'removeLineItem',
+        lineItemId,
+      });
+    }
+
+    const body = {
+      version,
+      actions: requestActions,
     };
 
     const headers = new HttpHeaders()

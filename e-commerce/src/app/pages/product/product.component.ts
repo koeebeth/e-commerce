@@ -8,7 +8,7 @@ import SliderComponent from './slider/slider.component';
 import { AppState } from '../../store/store';
 import { Product, CategoriesArray } from '../../shared/services/products/productTypes';
 import * as actions from '../../store/actions';
-import { CartBase } from '../../shared/services/commercetoolsApi/apitypes';
+import { CartBase, LineItem } from '../../shared/services/commercetoolsApi/apitypes';
 
 @Component({
   selector: 'app-product',
@@ -52,6 +52,10 @@ export default class ProductComponent {
 
   productID: string = '';
 
+  lineItem: LineItem | undefined;
+
+  lineItemId: string = '';
+
   categoryID: string = '';
 
   category: string | undefined = '';
@@ -92,12 +96,24 @@ export default class ProductComponent {
       .subscribe((cartBase) => {
         if (cartBase) {
           this.cartBase = cartBase;
+          this.lineItem = this.cartBase.lineItems.find((item) => item.productId === this.productID);
         }
       });
   }
 
   addToCart() {
-    this.store.dispatch(actions.loadUpdateAnonymousCart({ productId: this.productID, cartBase: this.cartBase }));
+    this.store.dispatch(
+      actions.loadUpdateAnonymousCart({ action: 'add', productId: this.productID, cartBase: this.cartBase }),
+    );
+  }
+
+  removeFromCart() {
+    if (this.lineItem) {
+      this.lineItemId = this.lineItem.id;
+      this.store.dispatch(
+        actions.loadUpdateAnonymousCart({ action: 'remove', lineItemId: this.lineItemId, cartBase: this.cartBase }),
+      );
+    }
   }
 
   getCategory() {

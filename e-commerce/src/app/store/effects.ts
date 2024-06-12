@@ -133,14 +133,20 @@ export default class EcommerceEffects {
                 accessToken || anonToken,
                 action.cartBase.id,
                 action.cartBase.version,
+                action.action,
                 action.productId,
+                action.lineItemId,
               )
               .pipe(
-                map((cartBase: CartBase) =>
-                  actions.loadUpdateAnonymousCartSuccess({
+                map((cartBase: CartBase) => {
+                  this.notificationService.showNotification(
+                    'success',
+                    `${action.action === 'add' ? 'Added to the Cart' : 'Removed from the Cart'}`,
+                  );
+                  return actions.loadUpdateAnonymousCartSuccess({
                     cartBase,
-                  }),
-                ),
+                  });
+                }),
                 catchError((error) =>
                   of(
                     actions.loadUpdateAnonymousCartFailure({

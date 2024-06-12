@@ -90,7 +90,9 @@ export const loadUpdateUserAddressesFailure = createAction(
 export const loadUpdateAnonymousCart = createAction(
   '[Cart] Load Updating Cart Anonymous',
   props<{
-    productId: string;
+    action: 'add' | 'remove';
+    lineItemId?: string;
+    productId?: string;
     cartBase: CartBase;
   }>(),
 );
