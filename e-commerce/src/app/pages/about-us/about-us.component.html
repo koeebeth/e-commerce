@@ -5,13 +5,14 @@
       <div *ngFor="let dev of devsInfo" class="about_block">
         <div class="about_content__container">
           <div class="about_image__container">
-            <img class="about_image" [src]="dev.photo" alt="" />
+            <img class="about_image photoAI" [src]="dev.photoAI" alt="AI Photo" />
+            <img class="about_image photoOrig" [src]="dev.photoOrig" alt="Original Photo" />
           </div>
           <div class="about_text__container">
             <h3 class="dev_name">{{ dev.name }} {{ dev.icon }}</h3>
             <div class="link_container">
               <img [src]="dev.gitLogo" alt="" />
-              <a class="dev_title" [href]="dev.link">{{ dev.role }}</a>
+              <a class="dev_title" target="_blank" [href]="dev.link">{{ dev.role }}</a>
             </div>
             <div class="dev_description">{{ dev.text }}</div>
           </div>
