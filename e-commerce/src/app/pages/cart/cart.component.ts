@@ -1,4 +1,5 @@
 import { Store } from '@ngrx/store';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
@@ -10,7 +11,7 @@ import { LineItem, CartBase } from '../../shared/services/commercetoolsApi/apity
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonComponent],
+  imports: [CommonModule, RouterLink, ButtonComponent, ReactiveFormsModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
@@ -18,6 +19,10 @@ export default class CartComponent {
   cart: CartBase | null = null;
 
   products: LineItem[] = [];
+
+  promoCodeForm = new FormGroup({
+    code: new FormControl(''),
+  });
 
   constructor(private store: Store<AppState>) {}
 
@@ -30,13 +35,10 @@ export default class CartComponent {
     });
   }
 
-  calcTotal(sale: boolean = false): string {
-    let total;
-    if (sale) {
-      total = this.products.reduce((prev, cur) => prev + cur.price.value.centAmount, 0);
-    } else {
-      total = this.cart!.totalPrice.centAmount;
-    }
+  calcTotal(): string {
+    const total = this.cart!.totalPrice.centAmount;
     return (total / 100).toFixed(2);
   }
+
+  onApplyPromo() {}
 }

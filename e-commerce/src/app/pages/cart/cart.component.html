@@ -6,7 +6,11 @@
       <p class="cart__total">
         Total: <span>{{ calcTotal() }} $</span>
       </p>
-      <app-button class="cart__checkout" content="Checkout"></app-button>
+      <form class="cart__promo" [formGroup]="promoCodeForm">
+        <input type="text" placeholder="Promo Code" formControlName="code" />
+        <app-button content="Apply" (clickHandler)="onApplyPromo()"></app-button>
+      </form>
+      <app-button content="Checkout"></app-button>
     </div>
   </div>
 </div>
