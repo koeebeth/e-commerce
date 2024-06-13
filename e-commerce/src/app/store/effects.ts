@@ -120,6 +120,26 @@ export default class EcommerceEffects {
     ),
   );
 
+
+  getUserCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadAccsessTokenSuccess),
+      withLatestFrom(
+        this.store.pipe(select(selectAccessToken)), // Select access token from store
+      ),
+      switchMap(([, accessToken]) =>
+        this.ecommerceApiService.getUserCart(accessToken).pipe(
+          switchMap((response) => {
+            if (response.status === 200) {
+              const cart = response.body; // Assuming response.body contains the body of the response
+              return of(actions.loadUserCartSuccess({ cartBase: cart! }));
+            }
+            return this.ecommerceApiService.createUserCart(accessToken).pipe(
+              map((cartBase) => actions.loadUserCartSuccess({ cartBase })),
+              catchError((error) => of(actions.loadUserCartFailure({ error }))),
+            );
+          }),
+
   updateAnonymousCart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadUpdateAnonymousCart),
