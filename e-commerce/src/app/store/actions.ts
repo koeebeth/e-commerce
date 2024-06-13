@@ -51,6 +51,10 @@ export const loadUserInfo = createAction('[Auth] Load User Info');
 export const loadUserInfoSuccess = createAction('[Auth] Load User Success', props<{ userInfo: CustomerInfo }>());
 export const loadUserInfoFailure = createAction('[Auth] Load User Failure', props<{ error: string }>());
 
+export const loadUserCart = createAction('[Cart] Load User Cart');
+export const loadUserCartSuccess = createAction('[Cart] Load User Cart Success', props<{ cartBase: CartBase }>());
+export const loadUserCartFailure = createAction('[Cart] Load User Cart Failure', props<{ error: string }>());
+
 export const loadUpdateUserInfo = createAction('[User] Load Updating User Info', props<{ userInfo: CustomerInfo }>());
 export const loadUpdateUserInfoSuccess = createAction(
   '[User] Load Updating User Success',
@@ -90,7 +94,9 @@ export const loadUpdateUserAddressesFailure = createAction(
 export const loadUpdateAnonymousCart = createAction(
   '[Cart] Load Updating Cart Anonymous',
   props<{
-    productId: string;
+    action: 'add' | 'remove';
+    lineItemId?: string;
+    productId?: string;
     cartBase: CartBase;
   }>(),
 );
