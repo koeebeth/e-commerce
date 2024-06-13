@@ -7,7 +7,7 @@ import ProfilePageComponent from './pages/profile-page/profile-page.component';
 import CatalogPageComponent from './pages/catalog-page/catalog-page.component';
 import ProductComponent from './pages/product/product.component';
 import CategoriesComponent from './pages/categories/categories.component';
-import { CartComponent } from './pages/cart/cart.component';
+import CartComponent from './pages/cart/cart.component';
 
 const routes: Routes = [
   { path: 'main', title: 'CyberVault', component: MainComponent },
