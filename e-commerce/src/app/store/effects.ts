@@ -23,6 +23,7 @@ import { AppState } from './store';
 import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
 import ProductsService from '../shared/services/products/products.service';
+import CartService from '../shared/services/cart/cart.service';
 import {
   CategoriesArray,
   Product,
@@ -36,6 +37,7 @@ export default class EcommerceEffects {
     private actions$: Actions,
     private ecommerceApiService: CommerceApiService,
     private productsService: ProductsService,
+    private cartService: CartService,
     private tokenStorageService: TokenStorageService,
     private notificationService: NotificationService,
     private store: Store<AppState>,
@@ -100,7 +102,7 @@ export default class EcommerceEffects {
     this.actions$.pipe(
       ofType(actions.loadAnonymousTokenSuccess),
       mergeMap((action) => {
-        return this.ecommerceApiService.createAnonymousCart(action.anonymousToken).pipe(
+        return this.cartService.createAnonymousCart(action.anonymousToken).pipe(
           map((cartBase: CartBase) =>
             actions.loadAnonymousCartSuccess({
               cartBase,
@@ -117,6 +119,7 @@ export default class EcommerceEffects {
       }),
     ),
   );
+
 
   getUserCart$ = createEffect(() =>
     this.actions$.pipe(
@@ -136,6 +139,43 @@ export default class EcommerceEffects {
               catchError((error) => of(actions.loadUserCartFailure({ error }))),
             );
           }),
+
+  updateAnonymousCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadUpdateAnonymousCart),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.cartService
+              .updateAnonymousCart(
+                accessToken || anonToken,
+                action.cartBase.id,
+                action.cartBase.version,
+                action.action,
+                action.productId,
+                action.lineItemId,
+              )
+              .pipe(
+                map((cartBase: CartBase) => {
+                  this.notificationService.showNotification(
+                    'success',
+                    `${action.action === 'add' ? 'Added to the Cart' : 'Removed from the Cart'}`,
+                  );
+                  return actions.loadUpdateAnonymousCartSuccess({
+                    cartBase,
+                  });
+                }),
+                catchError((error) =>
+                  of(
+                    actions.loadUpdateAnonymousCartFailure({
+                      error: error.message,
+                    }),
+                  ),
+                ),
+              ),
+          ),
         ),
       ),
     ),

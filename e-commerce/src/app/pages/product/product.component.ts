@@ -8,6 +8,7 @@ import SliderComponent from './slider/slider.component';
 import { AppState } from '../../store/store';
 import { Product, CategoriesArray } from '../../shared/services/products/productTypes';
 import * as actions from '../../store/actions';
+import { CartBase, LineItem } from '../../shared/services/commercetoolsApi/apitypes';
 
 @Component({
   selector: 'app-product',
@@ -17,6 +18,8 @@ import * as actions from '../../store/actions';
   styleUrl: './product.component.scss',
 })
 export default class ProductComponent {
+  cartBase!: CartBase;
+
   productObjects$!: Observable<Product | null>;
 
   categoryObjects$!: Observable<CategoriesArray | null>;
@@ -48,6 +51,10 @@ export default class ProductComponent {
   imageUrls: string[] | undefined;
 
   productID: string = '';
+
+  lineItem: LineItem | undefined;
+
+  lineItemId: string = '';
 
   categoryID: string = '';
 
@@ -84,6 +91,29 @@ export default class ProductComponent {
         this.getCategory();
       }
     });
+    this.store
+      .select((state) => state.app.cartBase)
+      .subscribe((cartBase) => {
+        if (cartBase) {
+          this.cartBase = cartBase;
+          this.lineItem = this.cartBase.lineItems.find((item) => item.productId === this.productID);
+        }
+      });
+  }
+
+  addToCart() {
+    this.store.dispatch(
+      actions.loadUpdateAnonymousCart({ action: 'add', productId: this.productID, cartBase: this.cartBase }),
+    );
+  }
+
+  removeFromCart() {
+    if (this.lineItem) {
+      this.lineItemId = this.lineItem.id;
+      this.store.dispatch(
+        actions.loadUpdateAnonymousCart({ action: 'remove', lineItemId: this.lineItemId, cartBase: this.cartBase }),
+      );
+    }
   }
 
   getCategory() {
