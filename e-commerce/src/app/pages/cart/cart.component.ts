@@ -55,7 +55,7 @@ export default class CartComponent {
                 this.productsInfo = [];
                 this.products.forEach((product) => {
                   const id = product.productId;
-                  this.productService.getProductById(id, token).subscribe((productInfo) => {
+                  this.productService.getProductById(id, anonToken).subscribe((productInfo) => {
                     const combinedProduct = { ...productInfo, ...product };
                     this.productsInfo.push(combinedProduct);
                   });
