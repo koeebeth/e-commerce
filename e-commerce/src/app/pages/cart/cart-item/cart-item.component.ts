@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { Product } from '../../../shared/services/products/productTypes';
 import { LineItem } from '../../../shared/services/commercetoolsApi/apitypes';
+import ButtonComponent from '../../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-cart-item',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonComponent],
   templateUrl: './cart-item.component.html',
   styleUrl: './cart-item.component.scss',
 })
