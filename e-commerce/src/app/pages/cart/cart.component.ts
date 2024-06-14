@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import ButtonComponent from '../../shared/components/button/button.component';
 import { AppState } from '../../store/store';
-import { selectAccessToken, selectCart } from '../../store/selectors';
+import { selectAccessToken, selectAnonymousToken, selectCart } from '../../store/selectors';
 import { LineItem, CartBase } from '../../shared/services/commercetoolsApi/apitypes';
 import { Product } from '../../shared/services/products/productTypes';
 import ProductsService from '../../shared/services/products/products.service';
@@ -37,10 +37,20 @@ export default class CartComponent {
   ngOnInit() {
     this.store.select(selectCart).subscribe((cart) => {
       if (cart) {
-        console.log(cart);
         this.cart = cart;
         this.products = cart.lineItems;
         this.store.select(selectAccessToken).subscribe((token) => {
+          if (token) {
+            this.products.forEach((product) => {
+              const id = product.productId;
+              this.productService.getProductById(id, token).subscribe((productInfo) => {
+                const combinedProduct = { ...productInfo, ...product };
+                this.productsInfo.push(combinedProduct);
+              });
+            });
+          }
+        });
+        this.store.select(selectAnonymousToken).subscribe((token) => {
           if (token) {
             this.products.forEach((product) => {
               const id = product.productId;
