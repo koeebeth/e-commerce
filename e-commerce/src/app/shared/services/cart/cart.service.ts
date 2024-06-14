@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { unauthVisitorAPI } from '../../../../environment';
+import { unauthVisitorAPI, authVisitorAPI } from '../../../../environment';
 import { CartBase } from '../commercetoolsApi/apitypes';
 
 @Injectable({
@@ -26,6 +26,28 @@ export default class CartService {
       .set('Authorization', `Bearer ${accessToken}`);
 
     return this.http.post<CartBase>(apiUrl, body, { headers });
+  }
+
+  createUserCart(accessToken: string): Observable<CartBase> {
+    const apiUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/carts`;
+
+    const body = {
+      currency: 'USD',
+    };
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    return this.http.post<CartBase>(apiUrl, JSON.stringify(body), { headers });
+  }
+
+  getUserCart(accessToken: string): Observable<HttpResponse<CartBase>> {
+    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/active-cart`;
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
+    return this.http.get<CartBase>(apiUrl, { headers, observe: 'response' });
   }
 
   updateAnonymousCart(
