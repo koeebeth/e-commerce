@@ -41,6 +41,7 @@ export default class CartComponent {
         this.products = cart.lineItems;
         this.store.select(selectAccessToken).subscribe((token) => {
           if (token) {
+            this.productsInfo = [];
             this.products.forEach((product) => {
               const id = product.productId;
               this.productService.getProductById(id, token).subscribe((productInfo) => {
@@ -48,16 +49,18 @@ export default class CartComponent {
                 this.productsInfo.push(combinedProduct);
               });
             });
-          }
-        });
-        this.store.select(selectAnonymousToken).subscribe((token) => {
-          if (token) {
-            this.products.forEach((product) => {
-              const id = product.productId;
-              this.productService.getProductById(id, token).subscribe((productInfo) => {
-                const combinedProduct = { ...productInfo, ...product };
-                this.productsInfo.push(combinedProduct);
-              });
+          } else {
+            this.store.select(selectAnonymousToken).subscribe((anonToken) => {
+              if (anonToken) {
+                this.productsInfo = [];
+                this.products.forEach((product) => {
+                  const id = product.productId;
+                  this.productService.getProductById(id, token).subscribe((productInfo) => {
+                    const combinedProduct = { ...productInfo, ...product };
+                    this.productsInfo.push(combinedProduct);
+                  });
+                });
+              }
             });
           }
         });
