@@ -5,13 +5,16 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import ButtonComponent from '../../shared/components/button/button.component';
 import { AppState } from '../../store/store';
-import { selectCart } from '../../store/selectors';
+import { selectAccessToken, selectCart } from '../../store/selectors';
 import { LineItem, CartBase } from '../../shared/services/commercetoolsApi/apitypes';
+import { Product } from '../../shared/services/products/productTypes';
+import ProductsService from '../../shared/services/products/products.service';
+import CartItemComponent from './cart-item/cart-item.component';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterLink, ButtonComponent, ReactiveFormsModule],
+  imports: [CommonModule, RouterLink, ButtonComponent, ReactiveFormsModule, CartItemComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
 })
@@ -20,17 +23,34 @@ export default class CartComponent {
 
   products: LineItem[] = [];
 
+  productsInfo: (Product & LineItem)[] = [];
+
   promoCodeForm = new FormGroup({
     code: new FormControl(''),
   });
 
-  constructor(private store: Store<AppState>) {}
+  constructor(
+    private store: Store<AppState>,
+    private productService: ProductsService,
+  ) {}
 
   ngOnInit() {
     this.store.select(selectCart).subscribe((cart) => {
       if (cart) {
+        console.log(cart);
         this.cart = cart;
         this.products = cart.lineItems;
+        this.store.select(selectAccessToken).subscribe((token) => {
+          if (token) {
+            this.products.forEach((product) => {
+              const id = product.productId;
+              this.productService.getProductById(id, token).subscribe((productInfo) => {
+                const combinedProduct = { ...productInfo, ...product };
+                this.productsInfo.push(combinedProduct);
+              });
+            });
+          }
+        });
       }
     });
   }
