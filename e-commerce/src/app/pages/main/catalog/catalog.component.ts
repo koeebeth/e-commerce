@@ -8,16 +8,20 @@ import { AppState } from '../../../store/store';
 import { ProductsArray } from '../../../shared/services/products/productTypes';
 import ButtonComponent from '../../../shared/components/button/button.component';
 import * as actions from '../../../store/actions';
+import LoadingComponent from '../../../shared/components/loading/loading.component';
+import { selectLoading } from '../../../store/selectors';
 
 @Component({
   selector: 'app-catalog',
   standalone: true,
-  imports: [CommonModule, CardComponent, ButtonComponent, RouterLink],
+  imports: [CommonModule, CardComponent, ButtonComponent, RouterLink, LoadingComponent],
   templateUrl: './catalog.component.html',
   styleUrl: './catalog.component.scss',
 })
 export default class CatalogComponent {
   productObjects$!: Observable<ProductsArray | null>;
+
+  isLoading$!: Observable<boolean>;
 
   productResponse!: ProductsArray;
 
@@ -45,6 +49,7 @@ export default class CatalogComponent {
         this.productResponse = products;
       }
     });
+    this.isLoading$ = this.store.select(selectLoading);
   }
 
   onSeeMore() {

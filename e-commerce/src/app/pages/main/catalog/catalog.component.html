@@ -11,3 +11,4 @@
     <button class="see-more_btn" (click)="onSeeMore()">See more</button>
   </div>
 </section>
+<app-loading *ngIf="isLoading$ | async"></app-loading>
