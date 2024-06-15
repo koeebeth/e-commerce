@@ -159,13 +159,25 @@ export default class EcommerceEffects {
                 action.action,
                 action.productId,
                 action.lineItemId,
+                action.quantity,
               )
               .pipe(
                 map((cartBase: CartBase) => {
-                  this.notificationService.showNotification(
-                    'success',
-                    `${action.action === 'add' ? 'Added to the Cart' : 'Removed from the Cart'}`,
-                  );
+                  let notificationMessage = '';
+                  switch (action.action) {
+                    case 'add':
+                      notificationMessage = 'Added to the Cart';
+                      break;
+                    case 'remove':
+                      notificationMessage = 'Removed from the Cart';
+                      break;
+                    case 'change-quantity':
+                      notificationMessage = 'Changed quantity of the Cart Item';
+                      break;
+                    default:
+                      break;
+                  }
+                  this.notificationService.showNotification('success', notificationMessage);
                   return actions.loadUpdateAnonymousCartSuccess({
                     cartBase,
                   });

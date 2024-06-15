@@ -2,7 +2,7 @@
   <div class="cart">
     <p *ngIf="products.length === 0" class="cart__empty">Nothing here :( <a routerLink="/catalog">Go to store</a></p>
     <div class="cart__items" *ngIf="products.length > 0">
-      <app-cart-item *ngFor="let product of productsInfo" [product]="product"></app-cart-item>
+      <app-cart-item *ngFor="let product of productsInfo" [product]="product" [cartBase]="cart"></app-cart-item>
     </div>
     <div class="cart__checkout" *ngIf="products.length > 0">
       <p class="cart__total">

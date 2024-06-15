@@ -43,7 +43,7 @@ export default class CartService {
   }
 
   getUserCart(accessToken: string): Observable<HttpResponse<CartBase>> {
-    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/active-cart`;
+    const apiUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/active-cart`;
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
 
@@ -54,9 +54,10 @@ export default class CartService {
     accessToken: string,
     idCart: string,
     version: number,
-    action: 'add' | 'remove',
+    action: 'add' | 'remove' | 'change-quantity',
     productId?: string,
     lineItemId?: string,
+    quantity?: number,
   ): Observable<CartBase> {
     const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/carts/${idCart}`;
 
@@ -80,6 +81,14 @@ export default class CartService {
       requestActions.push({
         action: 'removeLineItem',
         lineItemId,
+      });
+    }
+
+    if (action === 'change-quantity') {
+      requestActions.push({
+        action: 'changeLineItemQuantity',
+        lineItemId,
+        quantity,
       });
     }
 
