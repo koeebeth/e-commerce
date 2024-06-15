@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { Address, AuthData, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';
+import { Address, AuthData, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo, CartBase } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 import * as actions from '../../../store/actions';
 import { AppState } from '../../../store/store';

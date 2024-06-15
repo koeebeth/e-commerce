@@ -120,7 +120,6 @@ export default class EcommerceEffects {
     ),
   );
 
-
   getUserCart$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.loadAccsessTokenSuccess),
@@ -139,6 +138,10 @@ export default class EcommerceEffects {
               catchError((error) => of(actions.loadUserCartFailure({ error }))),
             );
           }),
+        ),
+      ),
+    ),
+  );
 
   updateAnonymousCart$ = createEffect(() =>
     this.actions$.pipe(

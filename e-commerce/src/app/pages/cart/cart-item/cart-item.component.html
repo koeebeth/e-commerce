@@ -1,0 +1,24 @@
+<div class="cart-item">
+  <div class="cart-item__image">
+    <img [src]="imageUrl" [alt]="name" />
+  </div>
+  <div class="cart-item__name">
+    {{ name }}
+  </div>
+  <div class="cart-item__total">
+    <p *ngIf="discountedPrice" class="cart-item__total-discounted">{{ originalTotal }}$</p>
+    <p class="cart-item__total-price">{{ totalPrice }}$</p>
+    <span *ngIf="discountedPrice" class="cart-item__discount-percent">-{{ discountPercent }}%</span>
+  </div>
+  <div class="cart-item__controls">
+    <app-button btnType="link" content="Remove" class="cart-item__remove"></app-button>
+    <div class="cart-item__buttons">
+      <button>+</button>
+      <p class="cart-item__quantity">{{ quantity }}</p>
+      <button>-</button>
+    </div>
+    <div class="cart-item__quantity-price">
+      {{ discountedPrice ? discountedPrice : quantityPrice }} x {{ quantity }}
+    </div>
+  </div>
+</div>

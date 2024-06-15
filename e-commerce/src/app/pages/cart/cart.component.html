@@ -1,0 +1,19 @@
+<div class="cart-page">
+  <div class="cart">
+    <p *ngIf="products.length === 0" class="cart__empty">Nothing here :( <a routerLink="/catalog">Go to store</a></p>
+    <div class="cart__items" *ngIf="products.length > 0">
+      <app-cart-item *ngFor="let product of productsInfo" [product]="product"></app-cart-item>
+    </div>
+    <div class="cart__checkout" *ngIf="products.length > 0">
+      <p class="cart__total">
+        Total: <span>{{ calcTotal() }} $</span>
+      </p>
+      <form class="cart__promo" [formGroup]="promoCodeForm">
+        <input type="text" placeholder="Promo Code" formControlName="code" />
+        <app-button content="Apply" (clickHandler)="onApplyPromo()"></app-button>
+      </form>
+      <app-button btnType="link" content="Clear Cart">Clear</app-button>
+      <app-button content="Checkout"></app-button>
+    </div>
+  </div>
+</div>

@@ -85,7 +85,9 @@ export interface LineItem {
   id: string;
   productId: string;
   quantity: number;
-  price: Money;
+  price: {
+    value: Money;
+  };
   totalPrice: Money;
 }
 

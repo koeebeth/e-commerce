@@ -4,7 +4,7 @@
   </button>
   <nav [class]="isOpen ? 'burger-menu active' : 'burger-menu'">
     <section>
-      <a>Cart</a>
+      <a routerLink="/cart" (click)="onClick()">Cart</a>
       <a routerLink="/catalog" (click)="onClick()">Store</a>
       <a routerLink="/categories" (click)="onClick()">Category</a>
       <a routerLink="/about" (click)="onClick()">About us</a>

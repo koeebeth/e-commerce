@@ -1,0 +1,135 @@
+@import '../../../../styles.scss';
+
+.cart-item {
+  height: 150px;
+  padding: 10px;
+  display: grid;
+  gap: 15px;
+  grid-template-columns: 115px 1fr 140px;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  align-content: center;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.2);
+  position: relative;
+
+  @media screen and (max-width: 620px) {
+    grid-template-columns: 90px 1fr;
+    grid-template-rows: 1fr 1fr 50px;
+  }
+}
+
+.cart-item__image {
+  height: 100%;
+  border-radius: 10px;
+  overflow: hidden;
+  grid-row: 1 / -1;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+    display: inline-block;
+  }
+}
+
+.cart-item__total-discounted {
+  color: $color-primary-700;
+  display: inline-block;
+  text-decoration: line-through;
+  margin-bottom: 5px;
+}
+
+.cart-item__discount-percent {
+  position: absolute;
+  text-decoration: none;
+  display: block;
+  background-color: $color-secondary;
+  color: white;
+  padding: 5px;
+  border-radius: 3px;
+  left: 120%;
+  bottom: 0;
+}
+
+.cart-item__total {
+  position: relative;
+  width: fit-content;
+  align-self: start;
+}
+
+.cart-item__total-price {
+  @include font-heading;
+  display: block;
+  width: fit-content;
+  color: $color-primary-400;
+  font-size: 1.2rem;
+}
+
+.cart-item__name {
+  @include font-heading;
+  color: $color-primary-300;
+  font-size: 1.3rem;
+  align-self: end;
+
+  @media screen and (max-width: 620px) {
+    font-size: 1.1rem;
+  }
+}
+
+.cart-item__remove {
+  display: block;
+  margin-bottom: 3px;
+  @media screen and (max-width: 620px) {
+    position: absolute;
+    left: 115px;
+    bottom: 20px;
+  }
+}
+
+.cart-item__controls {
+  grid-row: 1 / -1;
+  grid-column: -2 / span 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  @media screen and (max-width: 620px) {
+    grid-row: -2 / span 1;
+    justify-self: end;
+    width: fit-content;
+  }
+}
+
+.cart-item__quantity-price {
+  color: gray;
+}
+
+.cart-item__buttons {
+  width: 80px;
+  text-align: center;
+  vertical-align: middle;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border-radius: 3px;
+  border: 1px solid $color-primary-400;
+  overflow: hidden;
+
+  button {
+    @include font-heading;
+    border: none;
+    background-color: $color-primary-400;
+    color: white;
+
+    &:hover {
+      background-color: $color-primary-500;
+      cursor: pointer;
+    }
+  }
+
+  p {
+    padding: 5px;
+  }
+}
