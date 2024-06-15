@@ -11,7 +11,7 @@
     <span *ngIf="discountedPrice" class="cart-item__discount-percent">-{{ discountPercent }}%</span>
   </div>
   <div class="cart-item__controls">
-    <app-button btnType="link" content="Remove" class="cart-item__remove"></app-button>
+    <app-button btnType="link" content="Remove" class="cart-item__remove" (clickHandler)="onRemove()"></app-button>
     <div class="cart-item__buttons">
       <button (click)="onIncrease()">+</button>
       <p class="cart-item__quantity">{{ quantity }}</p>

@@ -15,8 +15,10 @@ import * as actions from '../../../store/actions';
   styleUrl: './cart-item.component.scss',
 })
 export default class CartItemComponent {
-  @Input() product!: Product &
-    LineItem & { price: { discounted?: { value: { centAmount: number } }; value: { centAmount: number } } };
+  @Input() product:
+    | (Product &
+        LineItem & { price: { discounted?: { value: { centAmount: number } }; value: { centAmount: number } } })
+    | null = null;
 
   @Input() cartBase: CartBase | null = null;
 
@@ -41,24 +43,27 @@ export default class CartItemComponent {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit() {
-    this.name = this.product.name?.['en-US'] || '';
-    this.imageUrl =
-      this.product.masterData?.current?.masterVariant?.images.filter((img) => img.label === 'main')[0].url || '';
-    this.quantity = this.product.quantity;
-    this.id = this.product.id;
-    this.totalPrice = (this.product.totalPrice.centAmount / 100).toFixed(2);
-    this.quantityPrice = (this.product.price.value.centAmount / 100).toFixed(2);
+    if (this.product) {
+      this.name = this.product.name?.['en-US'] || '';
+      this.imageUrl =
+        this.product.masterData?.current?.masterVariant?.images.filter((img) => img.label === 'main')[0].url || '';
+      this.quantity = this.product.quantity;
+      this.id = this.product.id;
+      this.totalPrice = (this.product.totalPrice.centAmount / 100).toFixed(2);
+      this.quantityPrice = (this.product.price.value.centAmount / 100).toFixed(2);
 
-    if (this.product.price.discounted) {
-      this.discountedPrice = (this.product.price.discounted.value.centAmount / 100).toFixed(2);
-      this.discountPercent =
-        100 - Math.round((this.product.price.discounted.value.centAmount / this.product.price.value.centAmount) * 100);
-      this.originalTotal = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
+      if (this.product.price.discounted) {
+        this.discountedPrice = (this.product.price.discounted.value.centAmount / 100).toFixed(2);
+        this.discountPercent =
+          100 -
+          Math.round((this.product.price.discounted.value.centAmount / this.product.price.value.centAmount) * 100);
+        this.originalTotal = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
+      }
     }
   }
 
   onIncrease() {
-    if (this.cartBase) {
+    if (this.cartBase && this.product) {
       this.store.dispatch(
         actions.loadUpdateAnonymousCart({
           action: 'change-quantity',
@@ -71,13 +76,25 @@ export default class CartItemComponent {
   }
 
   onDecrease() {
-    if (this.cartBase) {
+    if (this.cartBase && this.product) {
       this.store.dispatch(
         actions.loadUpdateAnonymousCart({
           action: 'change-quantity',
           lineItemId: this.product.id,
           cartBase: this.cartBase,
           quantity: this.product.quantity - 1,
+        }),
+      );
+    }
+  }
+
+  onRemove() {
+    if (this.cartBase && this.product) {
+      this.store.dispatch(
+        actions.loadUpdateAnonymousCart({
+          action: 'remove',
+          lineItemId: this.product.id,
+          cartBase: this.cartBase,
         }),
       );
     }
