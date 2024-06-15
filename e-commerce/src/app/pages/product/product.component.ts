@@ -9,11 +9,13 @@ import { AppState } from '../../store/store';
 import { Product, CategoriesArray } from '../../shared/services/products/productTypes';
 import * as actions from '../../store/actions';
 import { CartBase, LineItem } from '../../shared/services/commercetoolsApi/apitypes';
+import { selectLoading } from '../../store/selectors';
+import LoadingComponent from '../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [SliderComponent, CommonModule, RouterLink],
+  imports: [LoadingComponent, SliderComponent, CommonModule, RouterLink],
   templateUrl: './product.component.html',
   styleUrl: './product.component.scss',
 })
@@ -23,6 +25,8 @@ export default class ProductComponent {
   productObjects$!: Observable<Product | null>;
 
   categoryObjects$!: Observable<CategoriesArray | null>;
+
+  isLoading$!: Observable<boolean>;
 
   product!: Product | undefined;
 
@@ -75,6 +79,7 @@ export default class ProductComponent {
       this.productID = params['id'];
     });
     this.store.dispatch(actions.loadProductId({ id: this.productID }));
+    this.isLoading$ = this.store.select(selectLoading);
     this.productObjects$ = this.store.select((state) => state.app.product);
     this.productObjects$.subscribe((product) => {
       if (product) {
