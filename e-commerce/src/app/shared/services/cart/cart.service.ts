@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { unauthVisitorAPI } from '../../../../environment';
 import { CartBase } from '../commercetoolsApi/apitypes';
+import { switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
