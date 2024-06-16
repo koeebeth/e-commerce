@@ -114,7 +114,12 @@ export const loadDeleteCart = createAction(
     cartBase: CartBase;
   }>(),
 );
-export const loadDeleteCartSuccess = createAction('[Cart] Load Delete Cart Success');
+export const loadDeleteCartSuccess = createAction(
+  '[Cart] Load Delete Cart Success',
+  props<{
+    cartBase: CartBase;
+  }>(),
+);
 export const loadDeleteCartFailure = createAction('[Cart] Load Delete Cart Failure', props<{ error: string }>());
 ///
 export const loadAnonymousCartSuccess = createAction(
