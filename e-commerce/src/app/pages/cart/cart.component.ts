@@ -30,6 +30,8 @@ export default class CartComponent {
     code: new FormControl(''),
   });
 
+  isOpen: boolean = false;
+
   constructor(
     private store: Store<AppState>,
     private productService: ProductsService,
@@ -76,14 +78,18 @@ export default class CartComponent {
 
   onApplyPromo() {}
 
+  clickDeleteCart() {
+    this.isOpen = true;
+  }
+
   deleteCart() {
     if (this.cart) {
       this.store.dispatch(actions.loadDeleteCart({ cartBase: this.cart }));
     }
-    this.store.select(selectCart).subscribe((cart) => {
-      if (cart) {
-        console.log(cart);
-      }
-    });
+    this.isOpen = false;
+  }
+
+  closeConfirmation() {
+    this.isOpen = false;
   }
 }

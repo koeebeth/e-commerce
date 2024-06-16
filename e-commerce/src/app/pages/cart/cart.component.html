@@ -12,8 +12,19 @@
         <input type="text" placeholder="Promo Code" formControlName="code" />
         <app-button content="Apply" (clickHandler)="onApplyPromo()"></app-button>
       </form>
-      <app-button btnType="link" content="Clear Cart" (clickHandler)="deleteCart()">Clear</app-button>
+      <app-button btnType="link" content="Clear Cart" (clickHandler)="clickDeleteCart()">Clear</app-button>
       <app-button content="Checkout"></app-button>
+    </div>
+  </div>
+</div>
+<div class="confirmation" *ngIf="isOpen">
+  <div class="confirmation-container">
+    <div class="title-container">
+      <p>Are you sure?</p>
+    </div>
+    <div class="buttons-container">
+      <app-button content="Cancel" btnClass="primary" (clickHandler)="closeConfirmation()"></app-button>
+      <app-button content="Confirm" btnClass="primary" (clickHandler)="deleteCart()"></app-button>
     </div>
   </div>
 </div>
