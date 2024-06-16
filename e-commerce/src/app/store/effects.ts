@@ -184,6 +184,32 @@ export default class EcommerceEffects {
     ),
   );
 
+  deleteCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadDeleteCart),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.cartService.deleteCart(accessToken || anonToken, action.cartBase.id, action.cartBase.version).pipe(
+              map(() => {
+                return actions.loadDeleteCartSuccess();
+              }),
+              catchError((error) =>
+                of(
+                  actions.loadDeleteCartFailure({
+                    error: error.message,
+                  }),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
+  );
+
   refreshAccsessToken$ = createEffect(() =>
     this.actions$.pipe(
       ofType(actions.refreshAccsessToken),
