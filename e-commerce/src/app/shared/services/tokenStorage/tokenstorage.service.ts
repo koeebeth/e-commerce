@@ -27,4 +27,12 @@ export default class TokenStorageService {
   removeAnonymousToken(): void {
     localStorage.removeItem(`AnonymousRefresh`);
   }
+
+  saveCartId(cartId: string): void {
+    localStorage.setItem('Cart ID', cartId);
+  }
+
+  getCartId(): string | null {
+    return localStorage.getItem('Cart ID');
+  }
 }

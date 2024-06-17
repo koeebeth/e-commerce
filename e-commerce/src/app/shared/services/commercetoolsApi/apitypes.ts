@@ -6,6 +6,10 @@ export interface AuthData {
   refresh_token: string;
 }
 
+export interface CustomerSignInResult {
+  customer: CustomerDraft;
+  cart: CartBase;
+}
 export interface CustomerDraft {
   email: string;
   password: string;
@@ -51,7 +55,7 @@ export interface CustomerSignin {
   email: string;
   password: string;
   anonymousCart?: CartResourceIdentifier;
-  anonymousId?: string;
+  anonymousId: string;
   updateProductData?: boolean;
 }
 

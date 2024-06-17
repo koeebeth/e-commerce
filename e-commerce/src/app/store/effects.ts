@@ -16,7 +16,7 @@ import {
 import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
 import CommerceApiService from '../shared/services/commercetoolsApi/commercetoolsapi.service';
-import { AuthData, CartBase, CustomerInfo } from '../shared/services/commercetoolsApi/apitypes';
+import { AuthData, CartBase, CustomerInfo, CustomerSignInResult } from '../shared/services/commercetoolsApi/apitypes';
 import * as actions from './actions';
 import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
 import { AppState } from './store';
@@ -43,6 +43,35 @@ export default class EcommerceEffects {
     private store: Store<AppState>,
     private router: Router,
   ) {}
+
+  loginUser$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loginUser),
+      withLatestFrom(this.store.pipe(select(selectAnonymousToken))),
+      filter(([action]) => !!action.accessData && !!action.accessData.email && !!action.accessData.password),
+      mergeMap(([action, anonymousId]) => {
+        const { email, password } = action.accessData;
+        return this.ecommerceApiService.login(email, password, anonymousId).pipe(
+          map((customerSignIn: CustomerSignInResult) => {
+            this.store.dispatch(actions.loadAccsessToken(action));
+            return actions.loginUerSuccess({
+              customerSignIn: customerSignIn,
+            });
+          }),
+          catchError((error) => {
+            if (error.error.errors[0].code === 'InvalidCredentials') {
+              this.notificationService.showNotification('error', 'Incorrect email or password');
+            }
+            return of(
+              actions.loginUerFailure({
+                error: error.message,
+              }),
+            );
+          }),
+        );
+      }),
+    ),
+  );
 
   loadAccsessToken$ = createEffect(() =>
     this.actions$.pipe(
@@ -81,7 +110,6 @@ export default class EcommerceEffects {
         return this.ecommerceApiService.getAnonymousSessionToken().pipe(
           map((data: AuthData) => {
             this.tokenStorageService.saveAnonymousToken(data.refresh_token);
-
             return actions.loadAnonymousTokenSuccess({
               anonymousToken: data.access_token,
             });
@@ -103,11 +131,12 @@ export default class EcommerceEffects {
       ofType(actions.loadAnonymousTokenSuccess),
       mergeMap((action) => {
         return this.cartService.createAnonymousCart(action.anonymousToken).pipe(
-          map((cartBase: CartBase) =>
-            actions.loadAnonymousCartSuccess({
+          map((cartBase: CartBase) => {
+            this.tokenStorageService.saveCartId(cartBase.id);
+            return actions.loadAnonymousCartSuccess({
               cartBase,
-            }),
-          ),
+            });
+          }),
           catchError((error) =>
             of(
               actions.loadAnonymousCartFailure({
@@ -130,7 +159,7 @@ export default class EcommerceEffects {
         this.ecommerceApiService.getUserCart(accessToken).pipe(
           switchMap((response) => {
             if (response.status === 200) {
-              const cart = response.body; // Assuming response.body contains the body of the response
+              const cart = response.body;
               return of(actions.loadUserCartSuccess({ cartBase: cart! }));
             }
             return this.ecommerceApiService.createUserCart(accessToken).pipe(
@@ -220,13 +249,12 @@ export default class EcommerceEffects {
               anonymousToken: accessData.access_token,
             }),
           ),
-          catchError((error) =>
-            of(
-              actions.loadAnonymousTokenFailure({
-                error: error.message,
-              }),
-            ),
-          ),
+          catchError((error) => {
+            if (error.status === 400) {
+              this.store.dispatch(actions.loadAnonymousToken());
+            }
+            return of(actions.loadAnonymousTokenFailure({ error }));
+          }),
         );
       }),
     ),
@@ -247,6 +275,7 @@ export default class EcommerceEffects {
                   accessData: {
                     email: action.customerDraft.email,
                     password: action.customerDraft.password,
+                    anonymousId: action.customerDraft.anonymousId ?? '',
                   },
                 });
               }),

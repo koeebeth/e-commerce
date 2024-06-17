@@ -1,9 +1,15 @@
 import { createReducer, on } from '@ngrx/store';
 import * as actions from './actions';
 import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
-import { CartBase, CustomerDraft, CustomerInfo } from '../shared/services/commercetoolsApi/apitypes';
+import {
+  CartBase,
+  CustomerDraft,
+  CustomerInfo,
+  CustomerSignInResult,
+} from '../shared/services/commercetoolsApi/apitypes';
 
 export interface EcommerceState {
+  customerSignIn: CustomerSignInResult | null;
   accessToken: string;
   anonymousToken: string;
   cartBase: CartBase | null;
@@ -22,6 +28,7 @@ export interface EcommerceState {
 }
 
 export const initialState: EcommerceState = {
+  customerSignIn: null,
   accessToken: '',
   anonymousToken: '',
   cartBase: null,
@@ -41,6 +48,10 @@ export const initialState: EcommerceState = {
 
 export const ecommerceReducer = createReducer(
   initialState,
+  ///
+  on(actions.loginUser, (state) => ({ ...state, loading: true })),
+  on(actions.loginUerSuccess, (state, { customerSignIn }) => ({ ...state, customerSignIn, loading: false })),
+  on(actions.loginUerFailure, (state, { error }) => ({ ...state, error, loading: false })),
   ///
   on(actions.loadAccsessToken, (state) => ({ ...state, loading: true })),
   on(actions.loadAccsessTokenSuccess, (state, { accessToken }) => ({ ...state, accessToken, loading: false })),

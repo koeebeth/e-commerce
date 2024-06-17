@@ -22,6 +22,24 @@ export default class CommerceApiService {
     private store: Store<AppState>,
   ) {}
 
+  login(username: string, password: string, anonymousToken: string): Observable<any> {
+    const loginUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/login`;
+    const cartId = this.tokenStorageService.getCartId();
+
+    const body = {
+      email: username,
+      password: password,
+      cartId: cartId,
+      anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${anonymousToken}`);
+
+    return this.http.post<any>(loginUrl, body, { headers });
+  }
+
   getAnonymousSessionToken(): Observable<AuthData> {
     const unAuthUrl = `${unauthVisitorAPI.ctpAuthUrl}/oauth/${unauthVisitorAPI.ctpProjectKey}/anonymous/token`;
     const body = new URLSearchParams();
@@ -85,6 +103,7 @@ export default class CommerceApiService {
       defaultBillingAddress: customerDraft.defaultBillingAddress,
       shippingAddresses: customerDraft.shippingAddresses,
       billingAddresses: customerDraft.billingAddresses,
+      anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
     };
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')

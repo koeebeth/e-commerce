@@ -7,7 +7,15 @@ import {
   CustomerSignin,
   PasswordChange,
   Address,
+  CustomerSignInResult,
 } from '../shared/services/commercetoolsApi/apitypes';
+
+export const loginUser = createAction('[Auth] Login User', props<{ accessData: CustomerSignin }>());
+export const loginUerSuccess = createAction(
+  '[Auth] Login User Success',
+  props<{ customerSignIn: CustomerSignInResult }>(),
+);
+export const loginUerFailure = createAction('[Auth] Load Access Token Failure', props<{ error: string }>());
 
 export const loadAccsessToken = createAction('[Auth] Load Access Token', props<{ accessData: CustomerSignin }>());
 export const refreshAccsessToken = createAction(
