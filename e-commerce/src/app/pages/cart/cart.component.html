@@ -5,12 +5,19 @@
       <app-cart-item *ngFor="let product of productsInfo" [product]="product"></app-cart-item>
     </div>
     <div class="cart__checkout" *ngIf="products.length > 0">
-      <p class="cart__total">
-        Total: <span>{{ calcTotal() }} $</span>
-      </p>
+      <div class="cart__total-container">
+        <p *ngIf="isPromoApplied" class="cart__total_orig">
+          <span>{{ calcTotal() }} $</span>
+        </p>
+        <p class="cart__total">
+          Total: <span>{{ calcTotal() }} $</span>
+        </p>
+      </div>
       <form class="cart__promo" [formGroup]="promoCodeForm">
-        <input type="text" placeholder="Promo Code" formControlName="code" />
-        <app-button content="Apply" (clickHandler)="onApplyPromo()"></app-button>
+        <input *ngIf="!isPromoApplied" type="text" placeholder="Promo Code" formControlName="code" />
+        <input *ngIf="isPromoApplied" readonly type="text" placeholder="CYBERVAULT50" formControlName="code" />
+        <app-button *ngIf="!isPromoApplied" content="Apply" (clickHandler)="onApplyPromo()"></app-button>
+        <app-button *ngIf="isPromoApplied" content="Remove" (clickHandler)="onRemovePromo()"></app-button>
       </form>
       <app-button btnType="link" content="Clear Cart">Clear</app-button>
       <app-button content="Checkout"></app-button>

@@ -63,20 +63,18 @@ export const loadUserCart = createAction('[Cart] Load User Cart');
 export const loadUserCartSuccess = createAction('[Cart] Load User Cart Success', props<{ cartBase: CartBase }>());
 export const loadUserCartFailure = createAction('[Cart] Load User Cart Failure', props<{ error: string }>());
 ///
-export const loadDiscount = createAction(
+export const applyDiscount = createAction(
   '[Discount] Load Discount',
   props<{
     cartId: string;
     action: 'add' | 'remove';
-    discountCodeId: string;
     cartVersion: number;
+    discountCode?: string;
+    discountCodeId?: string;
   }>(),
 );
-export const loadDiscountSuccess = createAction(
-  '[Discount] Load Discount Success',
-  props<{ discountInfo: DiscountCode }>(),
-);
-export const loadDiscountFailure = createAction('[Discount] Load Discount Failure', props<{ error: string }>());
+export const applyDiscountSuccess = createAction('[Discount] Load Discount Success', props<{ cartBase: CartBase }>());
+export const applyDiscountFailure = createAction('[Discount] Load Discount Failure', props<{ error: string }>());
 ///
 export const loadUpdateUserInfo = createAction('[User] Load Updating User Info', props<{ userInfo: CustomerInfo }>());
 export const loadUpdateUserInfoSuccess = createAction(

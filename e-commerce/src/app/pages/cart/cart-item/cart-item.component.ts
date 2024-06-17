@@ -33,6 +33,14 @@ export default class CartItemComponent {
 
   id = '';
 
+  promoPrice = '';
+
+  promoTotal = '';
+
+  originalPrice = '';
+
+  quantityPromoPrice = '';
+
   ngOnInit() {
     this.name = this.product.name?.['en-US'] || '';
     this.imageUrl =
@@ -47,6 +55,16 @@ export default class CartItemComponent {
       this.discountPercent =
         100 - Math.round((this.product.price.discounted.value.centAmount / this.product.price.value.centAmount) * 100);
       this.originalTotal = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
+    }
+
+    if (this.product.discountedPricePerQuantity) {
+      this.originalPrice = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
+      this.product.discountedPricePerQuantity.forEach((promo) => {
+        if (promo.quantity === this.quantity) {
+          this.promoPrice = (promo.discountedPrice.value.centAmount / 100).toFixed(2);
+          this.promoTotal = ((promo.discountedPrice.value.centAmount * this.quantity) / 100).toFixed(2);
+        }
+      });
     }
   }
 }

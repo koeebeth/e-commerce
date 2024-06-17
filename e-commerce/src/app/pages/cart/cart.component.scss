@@ -76,10 +76,23 @@
   }
 }
 
-.cart__total {
-  span {
-    @include font-heading;
-    color: $color-primary-400;
-    font-size: 1.2rem;
+.cart__total-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+
+  .cart__total {
+    span {
+      @include font-heading;
+      color: $color-primary-400;
+      font-size: 1.2rem;
+    }
+  }
+
+  .cart__total_orig {
+    color: $color-primary-600;
+    display: inline-block;
+    text-decoration: line-through;
   }
 }

@@ -88,11 +88,27 @@ export interface CartBase {
 export interface LineItem {
   id: string;
   productId: string;
+  discountedPricePerQuantity: DiscountedLineItemPriceForQuantity[];
   quantity: number;
   price: {
     value: Money;
   };
   totalPrice: Money;
+}
+
+export interface DiscountedLineItemPriceForQuantity {
+  discountedPrice: DiscountedLineItemPrice;
+  quantity: number;
+}
+
+export interface DiscountedLineItemPrice {
+  includedDiscounts: DiscountedLineItemPortion[];
+  value: Money;
+}
+
+export interface DiscountedLineItemPortion {
+  discount: Reference;
+  discountedAmount: Money;
 }
 
 export interface Money {
@@ -129,4 +145,9 @@ export interface PersonalInfo {
 export interface PasswordChange {
   currentPassword: string;
   newPassword: string;
+}
+
+export interface Reference {
+  typeId: string;
+  id: string;
 }

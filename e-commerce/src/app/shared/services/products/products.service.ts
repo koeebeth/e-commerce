@@ -89,19 +89,20 @@ export default class ProductsService {
   }
 
   manageDiscountCode(
+    accessToken: string,
     cartId: string,
     actionType: 'add' | 'remove',
-    discountCodeId: string,
     cartVersion: number,
-    accessToken: string,
-  ): Observable<DiscountCode> {
+    discountCode?: string,
+    discountCodeId?: string,
+  ): Observable<CartBase> {
     const url = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/carts/${cartId}`;
     let actions: object[] = [];
 
     if (actionType === 'add') {
       actions.push({
         action: 'addDiscountCode',
-        code: discountCodeId,
+        code: discountCode,
       });
     } else if (actionType === 'remove') {
       actions.push({
@@ -122,6 +123,13 @@ export default class ProductsService {
       Authorization: `Bearer ${accessToken}`,
     });
 
-    return this.http.post<DiscountCode>(url, body, { headers });
+    return this.http.post<CartBase>(url, body, { headers });
+  }
+
+  getDiscountCode(discountCodeId: string, accessToken: string): Observable<DiscountCode> {
+    const apiUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/discount-codes/${discountCodeId}`;
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
+    return this.http.get<DiscountCode>(apiUrl, { headers });
   }
 }

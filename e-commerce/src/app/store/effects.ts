@@ -12,6 +12,7 @@ import {
   tap,
   withLatestFrom,
   exhaustMap,
+  forkJoin,
 } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -173,9 +174,9 @@ export default class EcommerceEffects {
     ),
   );
 
-  loadDiscount$ = createEffect(() =>
+  applyDiscount$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(actions.loadDiscount),
+      ofType(actions.applyDiscount),
       switchMap((action) =>
         combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
           filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
@@ -183,25 +184,33 @@ export default class EcommerceEffects {
           switchMap(([anonToken, accessToken]) =>
             this.productsService
               .manageDiscountCode(
+                accessToken || anonToken,
                 action.cartId,
                 action.action,
-                action.discountCodeId,
                 action.cartVersion,
-                accessToken || anonToken,
+                action.discountCode,
+                action.discountCodeId,
               )
               .pipe(
-                map((discountInfo: DiscountCode) => {
+                map((cartBase: CartBase) => {
                   this.notificationService.showNotification(
                     'success',
                     `${action.action === 'add' ? 'Promocode applyed' : 'Incorect promocode'}`,
                   );
-                  return actions.loadDiscountSuccess({
-                    discountInfo,
+                  forkJoin(
+                    cartBase.discountCodes.map((code) =>
+                      this.productsService.getDiscountCode(accessToken || anonToken, code.discountCode.id),
+                    ),
+                  ).subscribe((promos) => {
+                    console.log('promocodes', promos);
+                  });
+                  return actions.applyDiscountSuccess({
+                    cartBase,
                   });
                 }),
                 catchError((error) =>
                   of(
-                    actions.loadDiscountFailure({
+                    actions.applyDiscountFailure({
                       error: error.message,
                     }),
                   ),

@@ -7,10 +7,11 @@ import ButtonComponent from '../../shared/components/button/button.component';
 import { AppState } from '../../store/store';
 import { selectAccessToken, selectAnonymousToken, selectCart } from '../../store/selectors';
 import { LineItem, CartBase } from '../../shared/services/commercetoolsApi/apitypes';
-import { Product } from '../../shared/services/products/productTypes';
+import { DiscountCode, Product } from '../../shared/services/products/productTypes';
 import ProductsService from '../../shared/services/products/products.service';
 import CartItemComponent from './cart-item/cart-item.component';
 import * as actions from '../../store/actions';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -25,6 +26,8 @@ export default class CartComponent {
   products: LineItem[] = [];
 
   productsInfo: (Product & LineItem)[] = [];
+
+  isPromoApplied: boolean = false;
 
   promoCodeForm = new FormGroup({
     code: new FormControl(''),
@@ -43,12 +46,14 @@ export default class CartComponent {
         this.store.select(selectAccessToken).subscribe((token) => {
           if (token) {
             this.productsInfo = [];
-            this.products.forEach((product) => {
-              const id = product.productId;
-              this.productService.getProductById(id, token).subscribe((productInfo) => {
-                const combinedProduct = { ...productInfo, ...product };
+            forkJoin(
+              this.products.map((product) => this.productService.getProductById(product.productId, token)),
+            ).subscribe((productsInfo) => {
+              productsInfo.forEach((productInfo, i) => {
+                const combinedProduct = { ...productInfo, ...this.products[i] };
                 this.productsInfo.push(combinedProduct);
               });
+              this.checkPromoApplyed();
             });
           } else {
             this.store.select(selectAnonymousToken).subscribe((anonToken) => {
@@ -76,16 +81,32 @@ export default class CartComponent {
 
   onApplyPromo() {
     const promoCode = this.promoCodeForm.get('code')?.value ?? '';
-    console.log('promoCode', promoCode);
     if (this.cart) {
       this.store.dispatch(
-        actions.loadDiscount({
+        actions.applyDiscount({
           cartId: this.cart.id,
           action: 'add',
-          discountCodeId: promoCode,
+          discountCode: promoCode,
           cartVersion: this.cart.version,
         }),
       );
     }
+  }
+
+  onRemovePromo() {
+    if (this.cart?.lineItems) {
+      this.store.dispatch(
+        actions.applyDiscount({
+          cartId: '',
+          action: 'remove',
+          discountCodeId: '',
+          cartVersion: this.cart.version,
+        }),
+      );
+    }
+  }
+
+  checkPromoApplyed() {
+    this.isPromoApplied = this.cart?.lineItems.some((item) => item.discountedPricePerQuantity) ?? false;
   }
 }
