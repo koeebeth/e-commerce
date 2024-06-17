@@ -192,20 +192,17 @@ export default class EcommerceEffects {
           filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
           take(1),
           switchMap(([anonToken, accessToken]) =>
-            this.cartService
-              .deleteAndCreateCart(accessToken || anonToken, action.cartBase.id, action.cartBase.version)
-              .pipe(
-                map((cartBase: CartBase) => {
-                  return actions.loadDeleteCartSuccess({ cartBase });
-                }),
-                catchError((error) =>
-                  of(
-                    actions.loadDeleteCartFailure({
-                      error: error.message,
-                    }),
-                  ),
+            this.cartService.deleteCart(accessToken || anonToken, action.cartBase.id, action.cartBase.version).pipe(
+              switchMap(() => this.cartService.createAnonymousCart(accessToken || anonToken)),
+              map((cartBase: CartBase) => actions.loadDeleteCartSuccess({ cartBase })),
+              catchError((error) =>
+                of(
+                  actions.loadDeleteCartFailure({
+                    error: error.message,
+                  }),
                 ),
               ),
+            ),
           ),
         ),
       ),

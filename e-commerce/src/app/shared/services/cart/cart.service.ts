@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { unauthVisitorAPI } from '../../../../environment';
 import { CartBase } from '../commercetoolsApi/apitypes';
 
@@ -81,11 +81,5 @@ export default class CartService {
       .set('Authorization', `Bearer ${accessToken}`);
 
     return this.http.delete<CartBase>(apiUrl, { headers });
-  }
-
-  deleteAndCreateCart(accessToken: string, cartId: string, cartVersion: number): Observable<CartBase> {
-    return this.deleteCart(accessToken, cartId, cartVersion).pipe(
-      switchMap(() => this.createAnonymousCart(accessToken)),
-    );
   }
 }
