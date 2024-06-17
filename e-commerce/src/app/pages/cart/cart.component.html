@@ -1,5 +1,8 @@
 <div class="cart-page">
   <div class="cart">
+    <p *ngIf="isPromoApplied" class="promo__notification">
+      Please note that discounts and promo codes cannot be combined.
+    </p>
     <p *ngIf="products.length === 0" class="cart__empty">Nothing here :( <a routerLink="/catalog">Go to store</a></p>
     <div class="cart__items" *ngIf="products.length > 0">
       <app-cart-item *ngFor="let product of productsInfo" [product]="product"></app-cart-item>

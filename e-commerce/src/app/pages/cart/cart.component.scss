@@ -19,6 +19,26 @@
   grid-template-rows: 1fr auto;
 }
 
+.promo__notification {
+  text-align: center;
+  border-radius: 5px;
+  background-color: $color-secondary;
+  color: $color-primary-700;
+  font-size: 0.8rem;
+  height: 20px;
+  width: 100%;
+  padding-top: 5px;
+  position: relative;
+  top: -80px;
+  animation: slideDown 0.3s ease 1s forwards;
+
+  @keyframes slideDown {
+    to {
+      top: 0;
+    }
+  }
+}
+
 .cart__empty {
   text-align: center;
   color: $color-primary-700;

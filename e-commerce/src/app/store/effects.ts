@@ -195,7 +195,7 @@ export default class EcommerceEffects {
                 map((cartBase: CartBase) => {
                   this.notificationService.showNotification(
                     'success',
-                    `${action.action === 'add' ? 'Promocode applyed' : 'Incorect promocode'}`,
+                    `${action.action === 'add' ? 'Promo code applyed' : 'Promo code removed'}`,
                   );
                   return actions.applyDiscountSuccess({
                     cartBase,

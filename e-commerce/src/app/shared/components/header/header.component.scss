@@ -25,3 +25,20 @@ header {
     color: white;
   }
 }
+
+.icon__container {
+  display: flex;
+  gap: 20px;
+
+  .cart_icon,
+  .about_icon {
+    &:hover {
+      transform: scale(1.05);
+    }
+  }
+
+  .cart_icon img,
+  .about_icon img {
+    width: 30px;
+  }
+}
