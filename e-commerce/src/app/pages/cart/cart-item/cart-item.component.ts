@@ -57,7 +57,7 @@ export default class CartItemComponent {
       this.originalTotal = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
     }
 
-    if (this.product.discountedPricePerQuantity) {
+    if (this.product.discountedPricePerQuantity.length > 0) {
       this.originalPrice = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
       this.product.discountedPricePerQuantity.forEach((promo) => {
         if (promo.quantity === this.quantity) {

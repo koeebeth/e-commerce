@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, mergeMap, of } from 'rxjs';
 import { authVisitorAPI } from '../../../../environment';
 import { CategoriesArray, DiscountCode, Product, ProductProjectionArray, ProductsArray } from './productTypes';
 import { CartBase } from '../commercetoolsApi/apitypes';
@@ -108,6 +108,7 @@ export default class ProductsService {
       actions.push({
         action: 'removeDiscountCode',
         discountCode: {
+          typeId: 'discount-code',
           id: discountCodeId,
         },
       });

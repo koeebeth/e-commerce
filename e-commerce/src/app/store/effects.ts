@@ -197,13 +197,6 @@ export default class EcommerceEffects {
                     'success',
                     `${action.action === 'add' ? 'Promocode applyed' : 'Incorect promocode'}`,
                   );
-                  forkJoin(
-                    cartBase.discountCodes.map((code) =>
-                      this.productsService.getDiscountCode(accessToken || anonToken, code.discountCode.id),
-                    ),
-                  ).subscribe((promos) => {
-                    console.log('promocodes', promos);
-                  });
                   return actions.applyDiscountSuccess({
                     cartBase,
                   });

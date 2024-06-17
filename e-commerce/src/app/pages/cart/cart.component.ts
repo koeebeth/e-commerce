@@ -79,6 +79,11 @@ export default class CartComponent {
     return (total / 100).toFixed(2);
   }
 
+  calcOrigTotal(): string {
+    const origTotal = this.cart?.lineItems.reduce((acc, item) => acc + item.price.value.centAmount * item.quantity, 0);
+    return (origTotal! / 100).toFixed(2);
+  }
+
   onApplyPromo() {
     const promoCode = this.promoCodeForm.get('code')?.value ?? '';
     if (this.cart) {
@@ -97,9 +102,9 @@ export default class CartComponent {
     if (this.cart?.lineItems) {
       this.store.dispatch(
         actions.applyDiscount({
-          cartId: '',
+          cartId: this.cart.id,
           action: 'remove',
-          discountCodeId: '',
+          discountCodeId: 'bea3bbc0-333c-4998-b750-adfdc4ddf2c4',
           cartVersion: this.cart.version,
         }),
       );
@@ -107,6 +112,6 @@ export default class CartComponent {
   }
 
   checkPromoApplyed() {
-    this.isPromoApplied = this.cart?.lineItems.some((item) => item.discountedPricePerQuantity) ?? false;
+    this.isPromoApplied = this.cart?.lineItems.some((item) => item.discountedPricePerQuantity.length > 0) ?? false;
   }
 }

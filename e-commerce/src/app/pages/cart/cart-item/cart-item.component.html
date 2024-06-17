@@ -8,6 +8,7 @@
   <div class="cart-item__total">
     <p *ngIf="discountedPrice" class="cart-item__total-discounted">{{ originalTotal }}$</p>
     <p *ngIf="promoPrice" class="cart-item__total-discounted">{{ originalPrice }}$</p>
+
     <p class="cart-item__total-price">{{ totalPrice }}$</p>
     <span *ngIf="discountedPrice" class="cart-item__discount-percent">-{{ discountPercent }}%</span>
     <span *ngIf="promoPrice" class="cart-item__discount-percent">CYBERVAULT50</span>
@@ -20,7 +21,7 @@
       <button>-</button>
     </div>
     <div class="cart-item__quantity-price">
-      {{ discountedPrice ? discountedPrice : quantityPrice }} x {{ quantity }}
+      {{ discountedPrice ? discountedPrice : promoPrice ? totalPrice : quantityPrice }} x {{ quantity }}
     </div>
   </div>
 </div>
