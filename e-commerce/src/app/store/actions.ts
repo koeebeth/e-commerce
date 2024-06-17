@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
+import { CategoriesArray, DiscountCode, Product, ProductsArray } from '../shared/services/products/productTypes';
 import {
   CartBase,
   CustomerDraft,
@@ -58,11 +58,26 @@ export const loadAnonymousTokenFailure = createAction(
 export const loadUserInfo = createAction('[Auth] Load User Info');
 export const loadUserInfoSuccess = createAction('[Auth] Load User Success', props<{ userInfo: CustomerInfo }>());
 export const loadUserInfoFailure = createAction('[Auth] Load User Failure', props<{ error: string }>());
-
+///
 export const loadUserCart = createAction('[Cart] Load User Cart');
 export const loadUserCartSuccess = createAction('[Cart] Load User Cart Success', props<{ cartBase: CartBase }>());
 export const loadUserCartFailure = createAction('[Cart] Load User Cart Failure', props<{ error: string }>());
-
+///
+export const loadDiscount = createAction(
+  '[Discount] Load Discount',
+  props<{
+    cartId: string;
+    action: 'add' | 'remove';
+    discountCodeId: string;
+    cartVersion: number;
+  }>(),
+);
+export const loadDiscountSuccess = createAction(
+  '[Discount] Load Discount Success',
+  props<{ discountInfo: DiscountCode }>(),
+);
+export const loadDiscountFailure = createAction('[Discount] Load Discount Failure', props<{ error: string }>());
+///
 export const loadUpdateUserInfo = createAction('[User] Load Updating User Info', props<{ userInfo: CustomerInfo }>());
 export const loadUpdateUserInfoSuccess = createAction(
   '[User] Load Updating User Success',

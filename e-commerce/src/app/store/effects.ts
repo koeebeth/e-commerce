@@ -26,6 +26,7 @@ import ProductsService from '../shared/services/products/products.service';
 import CartService from '../shared/services/cart/cart.service';
 import {
   CategoriesArray,
+  DiscountCode,
   Product,
   ProductProjectionArray,
   ProductsArray,
@@ -167,6 +168,46 @@ export default class EcommerceEffects {
               catchError((error) => of(actions.loadUserCartFailure({ error }))),
             );
           }),
+        ),
+      ),
+    ),
+  );
+
+  loadDiscount$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadDiscount),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.productsService
+              .manageDiscountCode(
+                action.cartId,
+                action.action,
+                action.discountCodeId,
+                action.cartVersion,
+                accessToken || anonToken,
+              )
+              .pipe(
+                map((discountInfo: DiscountCode) => {
+                  this.notificationService.showNotification(
+                    'success',
+                    `${action.action === 'add' ? 'Promocode applyed' : 'Incorect promocode'}`,
+                  );
+                  return actions.loadDiscountSuccess({
+                    discountInfo,
+                  });
+                }),
+                catchError((error) =>
+                  of(
+                    actions.loadDiscountFailure({
+                      error: error.message,
+                    }),
+                  ),
+                ),
+              ),
+          ),
         ),
       ),
     ),

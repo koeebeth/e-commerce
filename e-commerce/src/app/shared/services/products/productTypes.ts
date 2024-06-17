@@ -61,6 +61,26 @@ export interface ProductData {
   categoryOrderHints?: { [key: string]: string };
 }
 
+export interface DiscountCode {
+  id: string;
+  version: number;
+  createdAt?: string;
+  lastModifiedAt?: string;
+  name?: LocalizedString;
+  description?: LocalizedString;
+  code: string;
+  cartDiscounts: Reference[];
+  cartPredicate?: string;
+  isActive?: boolean;
+  references?: Reference[];
+  maxApplications?: number;
+  maxApplicationsPerCustomer?: number;
+  groups?: string[];
+  validFrom?: string;
+  validUntil?: string;
+  applicationVersion?: number;
+}
+
 export interface ProductVariant {
   id: number;
   sku?: string;
@@ -210,24 +230,4 @@ export interface AssetSource {
     h: number;
   };
   contentType?: string;
-}
-
-export interface DiscountCode {
-  id: string;
-  version: number;
-  createdAt: string;
-  lastModifiedAt: string;
-  name?: LocalizedString;
-  description?: LocalizedString;
-  code: string;
-  cartDiscounts: Reference[];
-  cartPredicate?: string;
-  isActive: boolean;
-  references: Reference[];
-  maxApplications?: number;
-  maxApplicationsPerCustomer?: number;
-  groups: string[];
-  validFrom?: string;
-  validUntil?: string;
-  applicationVersion: number;
 }

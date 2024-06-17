@@ -2,7 +2,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { authVisitorAPI } from '../../../../environment';
-import { CategoriesArray, Product, ProductProjectionArray, ProductsArray } from './productTypes';
+import { CategoriesArray, DiscountCode, Product, ProductProjectionArray, ProductsArray } from './productTypes';
+import { CartBase } from '../commercetoolsApi/apitypes';
 
 @Injectable({
   providedIn: 'root',
@@ -85,5 +86,42 @@ export default class ProductsService {
     });
 
     return this.http.get<ProductProjectionArray>(url, { headers, params });
+  }
+
+  manageDiscountCode(
+    cartId: string,
+    actionType: 'add' | 'remove',
+    discountCodeId: string,
+    cartVersion: number,
+    accessToken: string,
+  ): Observable<DiscountCode> {
+    const url = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/carts/${cartId}`;
+    let actions: object[] = [];
+
+    if (actionType === 'add') {
+      actions.push({
+        action: 'addDiscountCode',
+        code: discountCodeId,
+      });
+    } else if (actionType === 'remove') {
+      actions.push({
+        action: 'removeDiscountCode',
+        discountCode: {
+          id: discountCodeId,
+        },
+      });
+    }
+
+    const body = {
+      version: cartVersion,
+      actions: actions,
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    });
+
+    return this.http.post<DiscountCode>(url, body, { headers });
   }
 }

@@ -10,6 +10,7 @@ import { LineItem, CartBase } from '../../shared/services/commercetoolsApi/apity
 import { Product } from '../../shared/services/products/productTypes';
 import ProductsService from '../../shared/services/products/products.service';
 import CartItemComponent from './cart-item/cart-item.component';
+import * as actions from '../../store/actions';
 
 @Component({
   selector: 'app-cart',
@@ -73,5 +74,18 @@ export default class CartComponent {
     return (total / 100).toFixed(2);
   }
 
-  onApplyPromo() {}
+  onApplyPromo() {
+    const promoCode = this.promoCodeForm.get('code')?.value ?? '';
+    console.log('promoCode', promoCode);
+    if (this.cart) {
+      this.store.dispatch(
+        actions.loadDiscount({
+          cartId: this.cart.id,
+          action: 'add',
+          discountCodeId: promoCode,
+          cartVersion: this.cart.version,
+        }),
+      );
+    }
+  }
 }
