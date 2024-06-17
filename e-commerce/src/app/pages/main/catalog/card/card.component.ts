@@ -6,6 +6,8 @@ import { Router } from '@angular/router';
 import { Product, ProductsArray, CategoriesArray } from '../../../../shared/services/products/productTypes';
 import { AppState } from '../../../../store/store';
 import { selecCategories } from '../../../../store/selectors';
+import { CartBase, LineItem } from '../../../../shared/services/commercetoolsApi/apitypes';
+import * as actions from '../../../../store/actions';
 
 @Component({
   selector: 'app-card',
@@ -16,6 +18,8 @@ import { selecCategories } from '../../../../store/selectors';
 })
 export default class CardComponent {
   @Input() card!: Product;
+
+  cartBase!: CartBase;
 
   productObjects$!: Observable<ProductsArray>;
 
@@ -49,6 +53,8 @@ export default class CardComponent {
 
   category: string | undefined = '';
 
+  lineItem: LineItem | undefined;
+
   constructor(
     private store: Store<AppState>,
     private router: Router,
@@ -57,6 +63,14 @@ export default class CardComponent {
   ngOnInit(): void {
     this.mainImage = this.card?.masterData?.current?.masterVariant?.images[0]?.url || '';
     this.name = this.card?.masterData?.current?.name['en-US'] || '';
+    this.store
+      .select((state) => state.app.cartBase)
+      .subscribe((cartBase) => {
+        if (cartBase) {
+          this.cartBase = cartBase;
+          this.lineItem = this.cartBase.lineItems.find((item) => item.productId === this.card.id);
+        }
+      });
 
     this.getOriginalPrice();
     this.getDiscuntedPrice();
@@ -138,5 +152,12 @@ export default class CardComponent {
         this.category = category?.name['en-US'].toLowerCase();
       }
     });
+  }
+
+  addToCart(event: Event) {
+    event.stopPropagation();
+    this.store.dispatch(
+      actions.loadUpdateAnonymousCart({ action: 'add', productId: this.card.id, cartBase: this.cartBase }),
+    );
   }
 }
