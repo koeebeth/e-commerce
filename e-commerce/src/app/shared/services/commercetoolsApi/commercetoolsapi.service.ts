@@ -3,8 +3,17 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { Address, AuthData, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo, CartBase } from './apitypes';
-import TokenStorageService from '../tokenStorage/tokenstorage.service';
+import {
+  Address,
+  AuthData,
+  CustomerDraft,
+  CustomerInfo,
+  PasswordChange,
+  PersonalInfo,
+  CartBase,
+  CustomerSignInResult,
+} from './apitypes';
+import LocalStorageService from '../localStorage/localstorage.service';
 import * as actions from '../../../store/actions';
 import { AppState } from '../../../store/store';
 
@@ -18,9 +27,27 @@ export default class CommerceApiService {
 
   constructor(
     private http: HttpClient,
-    private tokenStorageService: TokenStorageService,
+    private localStorageService: LocalStorageService,
     private store: Store<AppState>,
   ) {}
+
+  login(username: string, password: string, anonymousToken: string): Observable<CustomerSignInResult> {
+    const loginUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/login`;
+    const cartId = this.localStorageService.getCartId();
+
+    const body = {
+      email: username,
+      password,
+      cartId,
+      anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
+    };
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${anonymousToken}`);
+
+    return this.http.post<CustomerSignInResult>(loginUrl, body, { headers });
+  }
 
   getAnonymousSessionToken(): Observable<AuthData> {
     const unAuthUrl = `${unauthVisitorAPI.ctpAuthUrl}/oauth/${unauthVisitorAPI.ctpProjectKey}/anonymous/token`;
@@ -85,6 +112,7 @@ export default class CommerceApiService {
       defaultBillingAddress: customerDraft.defaultBillingAddress,
       shippingAddresses: customerDraft.shippingAddresses,
       billingAddresses: customerDraft.billingAddresses,
+      anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
     };
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
@@ -264,8 +292,8 @@ export default class CommerceApiService {
   }
 
   checkTokens(): void {
-    const refreshToken = this.tokenStorageService.getAuthToken();
-    const refreshAnonymousToken = this.tokenStorageService.getAnonymousToken();
+    const refreshToken = this.localStorageService.getAuthToken();
+    const refreshAnonymousToken = this.localStorageService.getAnonymousToken();
 
     if (!refreshToken && !refreshAnonymousToken) {
       this.store.dispatch(actions.loadAnonymousToken());

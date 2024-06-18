@@ -9,6 +9,8 @@ export const selectAnonymousToken = createSelector(selectEcommerceState, (state)
 
 export const selectCartBase = createSelector(selectEcommerceState, (state) => state.cartBase);
 
+export const selectDiscounts = createSelector(selectEcommerceState, (state) => state.discountCodesArray);
+
 export const selectCartAnonId = createSelector(selectCartBase, (state) => state?.anonymousId);
 
 export const selectError = createSelector(selectEcommerceState, (state) => state.error);

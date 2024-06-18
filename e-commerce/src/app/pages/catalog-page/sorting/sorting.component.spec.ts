@@ -5,24 +5,24 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { CommonModule } from '@angular/common';
 import SortingComponent from './sorting.component';
 import * as actions from '../../../store/actions';
-import TokenStorageService from '../../../shared/services/tokenStorage/tokenstorage.service';
+import LocalStorageService from '../../../shared/services/localStorage/localstorage.service';
 
 describe('SortingComponent', () => {
   let component: SortingComponent;
   let fixture: ComponentFixture<SortingComponent>;
   let store: MockStore;
-  let tokenStorageServiceMock: jasmine.SpyObj<TokenStorageService>;
+  let localStorageServiceMock: jasmine.SpyObj<LocalStorageService>;
 
   beforeEach(async () => {
-    tokenStorageServiceMock = jasmine.createSpyObj('TokenStorageService', ['getAuthToken', 'getAnonymousToken']);
+    localStorageServiceMock = jasmine.createSpyObj('LocalStorageService', ['getAuthToken', 'getAnonymousToken']);
     await TestBed.configureTestingModule({
       imports: [SortingComponent, CommonModule, FormsModule],
       providers: [
         provideMockStore(),
         { provide: Store, useValue: { dispatch: jasmine.createSpy() } },
         {
-          provide: TokenStorageService,
-          useValue: tokenStorageServiceMock,
+          provide: LocalStorageService,
+          useValue: localStorageServiceMock,
         },
       ],
     }).compileComponents();

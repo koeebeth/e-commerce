@@ -3,14 +3,16 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import ButtonComponent from '../../shared/components/button/button.component';
 import { AppState } from '../../store/store';
-import { selectAccessToken, selectAnonymousToken, selectCart } from '../../store/selectors';
+import { selectAccessToken, selectAnonymousToken, selectCart, selectDiscounts } from '../../store/selectors';
 import { LineItem, CartBase } from '../../shared/services/commercetoolsApi/apitypes';
-import { Product } from '../../shared/services/products/productTypes';
+import { DiscountCode, Product } from '../../shared/services/products/productTypes';
 import ProductsService from '../../shared/services/products/products.service';
 import CartItemComponent from './cart-item/cart-item.component';
 import * as actions from '../../store/actions';
+import LocalStorageService from '../../shared/services/localStorage/localstorage.service';
 
 @Component({
   selector: 'app-cart',
@@ -24,44 +26,69 @@ export default class CartComponent {
 
   products: LineItem[] = [];
 
+  promoCodes: DiscountCode[] | null = null;
+
   productsInfo: (Product & LineItem)[] = [];
+
+  isPromoApplied: boolean = false;
 
   promoCodeForm = new FormGroup({
     code: new FormControl(''),
   });
 
+  promoCodeValue: string = '';
+
+  promoCodeId: string = '';
+
   isOpen: boolean = false;
+
 
   constructor(
     private store: Store<AppState>,
     private productService: ProductsService,
+    private localStorageService: LocalStorageService,
   ) {}
 
   ngOnInit() {
+    this.promoCodeValue = this.localStorageService.getPromoCode() || '';
+
+    this.store.select(selectDiscounts).subscribe((discounts) => {
+      if (discounts) {
+        this.promoCodes = discounts.results;
+      }
+    });
+
     this.store.select(selectCart).subscribe((cart) => {
       if (cart) {
         this.cart = cart;
         this.products = cart.lineItems;
         this.store.select(selectAccessToken).subscribe((token) => {
           if (token) {
-            this.productsInfo = Array(this.products.length);
-            this.products.forEach((product, idx) => {
-              const id = product.productId;
-              this.productService.getProductById(id, token).subscribe((productInfo) => {
-                const combinedProduct = { ...productInfo, ...product };
-                this.productsInfo[idx] = combinedProduct;
+
+            this.productsInfo = [];
+            forkJoin(
+              this.products.map((product) => this.productService.getProductById(product.productId, token)),
+            ).subscribe((productsInfo) => {
+              productsInfo.forEach((productInfo, i) => {
+                const combinedProduct = { ...productInfo, ...this.products[i] };
+                this.productsInfo.push(combinedProduct);
               });
+              this.checkPromoApplied();
             });
           } else {
             this.store.select(selectAnonymousToken).subscribe((anonToken) => {
               if (anonToken) {
-                this.productsInfo = Array(this.products.length);
-                this.products.forEach((product, idx) => {
-                  const id = product.productId;
-                  this.productService.getProductById(id, anonToken).subscribe((productInfo) => {
-                    const combinedProduct = { ...productInfo, ...product };
-                    this.productsInfo[idx] = combinedProduct;
+                this.productsInfo = [];
+                const requests = this.products.map((product) =>
+                  this.productService.getProductById(product.productId, anonToken),
+                );
+
+                forkJoin(requests).subscribe((productsInfo) => {
+                  productsInfo.forEach((productInfo, i) => {
+                    const combinedProduct = { ...productInfo, ...this.products[i] };
+                    this.productsInfo.push(combinedProduct);
                   });
+                  this.checkPromoApplied();
                 });
               }
             });
@@ -76,7 +103,47 @@ export default class CartComponent {
     return (total / 100).toFixed(2);
   }
 
-  onApplyPromo() {}
+  calcOrigTotal(): string {
+    const origTotal = this.cart?.lineItems.reduce((acc, item) => acc + item.price.value.centAmount * item.quantity, 0);
+    return (origTotal! / 100).toFixed(2);
+  }
+
+  onApplyPromo() {
+    this.promoCodeValue = this.promoCodeForm.get('code')?.value ?? '';
+    this.localStorageService.savePromoCode(this.promoCodeValue);
+
+    if (this.cart) {
+      this.store.dispatch(
+        actions.applyDiscount({
+          cartId: this.cart.id,
+          action: 'add',
+          discountCode: this.promoCodeValue,
+          cartVersion: this.cart.version,
+        }),
+      );
+    }
+  }
+
+  onRemovePromo() {
+    this.promoCodeId = this.promoCodes?.find((discount) => discount.code === this.promoCodeValue)?.id ?? '';
+    console.log('promoCodeId', this.promoCodeId);
+    if (this.cart?.lineItems) {
+      this.store.dispatch(
+        actions.applyDiscount({
+          cartId: this.cart.id,
+          action: 'remove',
+          discountCodeId: this.promoCodeId,
+          cartVersion: this.cart.version,
+        }),
+      );
+    }
+
+    this.localStorageService.clearPromoCode();
+  }
+
+  checkPromoApplied() {
+    this.isPromoApplied = this.cart?.lineItems.some((item) => item.discountedPricePerQuantity.length > 0) ?? false;
+
 
   clickDeleteCart() {
     this.isOpen = true;

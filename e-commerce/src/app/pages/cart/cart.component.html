@@ -1,16 +1,29 @@
 <div class="cart-page">
   <div class="cart">
+    <p *ngIf="isPromoApplied" class="promo__notification">
+      Please note that discounts and promo codes cannot be combined.
+    </p>
     <p *ngIf="products.length === 0" class="cart__empty">Nothing here :( <a routerLink="/catalog">Go to store</a></p>
     <div class="cart__items" *ngIf="products.length > 0">
       <app-cart-item *ngFor="let product of productsInfo" [product]="product" [cartBase]="cart"></app-cart-item>
     </div>
     <div class="cart__checkout" *ngIf="products.length > 0">
-      <p class="cart__total">
+      <p *ngIf="!isPromoApplied" class="cart__total">
         Total: <span>{{ calcTotal() }} $</span>
       </p>
+      <div *ngIf="isPromoApplied" class="cart__total-container">
+        <p class="cart__total_orig">
+          <span>{{ calcOrigTotal() }} $</span>
+        </p>
+        <p class="cart__total">
+          Total: <span>{{ calcTotal() }} $</span>
+        </p>
+      </div>
       <form class="cart__promo" [formGroup]="promoCodeForm">
-        <input type="text" placeholder="Promo Code" formControlName="code" />
-        <app-button content="Apply" (clickHandler)="onApplyPromo()"></app-button>
+        <input *ngIf="!isPromoApplied" type="text" placeholder="Promo Code" formControlName="code" />
+        <input *ngIf="isPromoApplied" readonly type="text" [placeholder]="promoCodeValue" formControlName="code" />
+        <app-button *ngIf="!isPromoApplied" content="Apply" (clickHandler)="onApplyPromo()"></app-button>
+        <app-button *ngIf="isPromoApplied" content="Remove" (clickHandler)="onRemovePromo()"></app-button>
       </form>
       <app-button btnType="link" content="Clear Cart" (clickHandler)="clickDeleteCart()">Clear</app-button>
       <app-button content="Checkout"></app-button>

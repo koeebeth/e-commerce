@@ -19,6 +19,26 @@
   grid-template-rows: 1fr auto;
 }
 
+.promo__notification {
+  text-align: center;
+  border-radius: 5px;
+  background-color: $color-secondary;
+  color: $color-primary-700;
+  font-size: 0.8rem;
+  height: 20px;
+  width: 100%;
+  padding-top: 5px;
+  position: relative;
+  top: -80px;
+  animation: slideDown 0.3s ease 1s forwards;
+
+  @keyframes slideDown {
+    to {
+      top: 0;
+    }
+  }
+}
+
 .cart__empty {
   text-align: center;
   color: $color-primary-700;
@@ -54,6 +74,10 @@
     &::placeholder {
       color: lightgray;
     }
+
+    &:read-only {
+      cursor: default;
+    }
   }
 }
 
@@ -72,8 +96,16 @@
 
   @media screen and (max-width: 620px) {
     flex-direction: column;
+    align-items: flex-start;
     gap: 15px;
   }
+}
+
+.cart__total-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
 .cart__total {
@@ -84,6 +116,13 @@
   }
 }
 
+
+.cart__total_orig {
+  color: $color-primary-600;
+  display: inline-block;
+  text-decoration: line-through;
+}
+  
 .confirmation {
   position: fixed;
   z-index: 100;
