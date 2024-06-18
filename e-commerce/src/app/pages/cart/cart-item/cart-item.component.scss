@@ -127,6 +127,15 @@
       background-color: $color-primary-500;
       cursor: pointer;
     }
+
+    &:disabled {
+      color: gray;
+
+      &:hover {
+        background-color: $color-primary-400;
+      }
+    }
+
   }
 
   p {

@@ -127,13 +127,13 @@ export default class EcommerceEffects {
         this.store.pipe(select(selectAccessToken)), // Select access token from store
       ),
       switchMap(([, accessToken]) =>
-        this.ecommerceApiService.getUserCart(accessToken).pipe(
+        this.cartService.getUserCart(accessToken).pipe(
           switchMap((response) => {
             if (response.status === 200) {
               const cart = response.body; // Assuming response.body contains the body of the response
               return of(actions.loadUserCartSuccess({ cartBase: cart! }));
             }
-            return this.ecommerceApiService.createUserCart(accessToken).pipe(
+            return this.cartService.createUserCart(accessToken).pipe(
               map((cartBase) => actions.loadUserCartSuccess({ cartBase })),
               catchError((error) => of(actions.loadUserCartFailure({ error }))),
             );
@@ -159,13 +159,25 @@ export default class EcommerceEffects {
                 action.action,
                 action.productId,
                 action.lineItemId,
+                action.quantity,
               )
               .pipe(
                 map((cartBase: CartBase) => {
-                  this.notificationService.showNotification(
-                    'success',
-                    `${action.action === 'add' ? 'Added to the Cart' : 'Removed from the Cart'}`,
-                  );
+                  let notificationMessage = '';
+                  switch (action.action) {
+                    case 'add':
+                      notificationMessage = 'Added to the Cart';
+                      break;
+                    case 'remove':
+                      notificationMessage = 'Removed from the Cart';
+                      break;
+                    case 'change-quantity':
+                      notificationMessage = 'Changed quantity of the Cart Item';
+                      break;
+                    default:
+                      break;
+                  }
+                  this.notificationService.showNotification('success', notificationMessage);
                   return actions.loadUpdateAnonymousCartSuccess({
                     cartBase,
                   });
