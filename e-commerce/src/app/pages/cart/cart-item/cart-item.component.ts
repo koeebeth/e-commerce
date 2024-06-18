@@ -55,27 +55,11 @@ export default class CartItemComponent {
   constructor(
     private router: Router,
     private localStorageService: LocalStorageService,
+    private store: Store<AppState>,
   ) {}
 
   ngOnInit() {
     this.promoCodeValue = this.localStorageService.getPromoCode() || '';
-    this.name = this.product.name?.['en-US'] || '';
-    this.imageUrl =
-      this.product.masterData?.current?.masterVariant?.images.filter((img) => img.label === 'main')[0].url || '';
-    this.quantity = this.product.quantity;
-    this.id = this.product.id;
-    this.totalPrice = (this.product.totalPrice.centAmount / 100).toFixed(2);
-    this.quantityPrice = (this.product.price.value.centAmount / 100).toFixed(2);
-
-    if (this.product.price.discounted) {
-      this.discountedPrice = (this.product.price.discounted.value.centAmount / 100).toFixed(2);
-      this.discountPercent =
-        100 - Math.round((this.product.price.discounted.value.centAmount / this.product.price.value.centAmount) * 100);
-      this.originalTotal = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
-
-  constructor(private store: Store<AppState>) {}
-
-  ngOnInit() {
     if (this.product) {
       this.name = this.product.name?.['en-US'] || '';
       this.imageUrl =
@@ -92,10 +76,20 @@ export default class CartItemComponent {
           Math.round((this.product.price.discounted.value.centAmount / this.product.price.value.centAmount) * 100);
         this.originalTotal = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
       }
+      if (this.product.discountedPricePerQuantity.length > 0) {
+        this.originalPrice = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
+        this.product.discountedPricePerQuantity.forEach((promo) => {
+          if (promo.quantity === this.quantity) {
+            this.promoPrice = (promo.discountedPrice.value.centAmount / 100).toFixed(2);
+            this.promoTotal = ((promo.discountedPrice.value.centAmount * this.quantity) / 100).toFixed(2);
+          }
+        });
+      }
     }
   }
 
-  onIncrease() {
+  onIncrease(event: Event) {
+    event.stopPropagation();
     if (this.cartBase && this.product) {
       this.store.dispatch(
         actions.loadUpdateAnonymousCart({
@@ -108,7 +102,8 @@ export default class CartItemComponent {
     }
   }
 
-  onDecrease() {
+  onDecrease(event: Event) {
+    event.stopPropagation();
     if (this.cartBase && this.product) {
       this.store.dispatch(
         actions.loadUpdateAnonymousCart({
@@ -131,20 +126,23 @@ export default class CartItemComponent {
         }),
       );
     }
-
-    if (this.product.discountedPricePerQuantity.length > 0) {
-      this.originalPrice = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
-      this.product.discountedPricePerQuantity.forEach((promo) => {
-        if (promo.quantity === this.quantity) {
-          this.promoPrice = (promo.discountedPrice.value.centAmount / 100).toFixed(2);
-          this.promoTotal = ((promo.discountedPrice.value.centAmount * this.quantity) / 100).toFixed(2);
-        }
-      });
+    if (this.product) {
+      if (this.product.discountedPricePerQuantity.length > 0) {
+        this.originalPrice = ((this.product.price.value.centAmount * this.quantity) / 100).toFixed(2);
+        this.product.discountedPricePerQuantity.forEach((promo) => {
+          if (promo.quantity === this.quantity) {
+            this.promoPrice = (promo.discountedPrice.value.centAmount / 100).toFixed(2);
+            this.promoTotal = ((promo.discountedPrice.value.centAmount * this.quantity) / 100).toFixed(2);
+          }
+        });
+      }
     }
   }
 
   onCardClick(event: Event) {
     event.stopPropagation();
-    this.router.navigate(['/catalog', this.category, this.product.productId]);
+    if (this.product) {
+      this.router.navigate(['/catalog', this.category, this.product.productId]);
+    }
   }
 }
