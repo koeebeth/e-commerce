@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { Address, AuthData, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo } from './apitypes';
+import { Address, AuthData, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo, CartBase } from './apitypes';
 import TokenStorageService from '../tokenStorage/tokenstorage.service';
 import * as actions from '../../../store/actions';
 import { AppState } from '../../../store/store';
@@ -33,6 +33,42 @@ export default class CommerceApiService {
       .set('Authorization', `Basic ${btoa(`${unauthVisitorAPI.ctpClientId}:${unauthVisitorAPI.ctpClientSecret}`)}`);
 
     return this.http.post<AuthData>(unAuthUrl, body.toString(), { headers });
+  }
+
+  createAnonymousCart(accessToken: string): Observable<CartBase> {
+    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/carts`;
+
+    const body = {
+      currency: 'USD',
+    };
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    return this.http.post<CartBase>(apiUrl, body, { headers });
+  }
+
+  createUserCart(accessToken: string): Observable<CartBase> {
+    const apiUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/carts`;
+
+    const body = {
+      currency: 'USD',
+    };
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    return this.http.post<CartBase>(apiUrl, JSON.stringify(body), { headers });
+  }
+
+  getUserCart(accessToken: string): Observable<HttpResponse<CartBase>> {
+    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/me/active-cart`;
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+
+    return this.http.get<CartBase>(apiUrl, { headers, observe: 'response' });
   }
 
   registration(customerDraft: CustomerDraft, anonToken: string, anonymousId: string = ''): Observable<CustomerDraft> {
