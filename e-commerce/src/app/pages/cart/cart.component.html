@@ -21,7 +21,7 @@
       </div>
       <form class="cart__promo" [formGroup]="promoCodeForm">
         <input *ngIf="!isPromoApplied" type="text" placeholder="Promo Code" formControlName="code" />
-        <input *ngIf="isPromoApplied" readonly type="text" placeholder="CYBERVAULT50" formControlName="code" />
+        <input *ngIf="isPromoApplied" readonly type="text" [placeholder]="promoCodeValue" formControlName="code" />
         <app-button *ngIf="!isPromoApplied" content="Apply" (clickHandler)="onApplyPromo()"></app-button>
         <app-button *ngIf="isPromoApplied" content="Remove" (clickHandler)="onRemovePromo()"></app-button>
       </form>

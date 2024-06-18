@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { CategoriesArray, Product } from '../../../shared/services/products/productTypes';
+import { Product } from '../../../shared/services/products/productTypes';
 import { LineItem } from '../../../shared/services/commercetoolsApi/apitypes';
 import ButtonComponent from '../../../shared/components/button/button.component';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import LocalStorageService from '../../../shared/services/localStorage/localstorage.service';
 
 @Component({
   selector: 'app-cart-item',
@@ -41,11 +41,17 @@ export default class CartItemComponent {
 
   originalPrice = '';
 
+  promoCodeValue: string = '';
+
   category: string | undefined = '';
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private localStorageService: LocalStorageService,
+  ) {}
 
   ngOnInit() {
+    this.promoCodeValue = this.localStorageService.getPromoCode() || '';
     this.name = this.product.name?.['en-US'] || '';
     this.imageUrl =
       this.product.masterData?.current?.masterVariant?.images.filter((img) => img.label === 'main')[0].url || '';

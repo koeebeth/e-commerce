@@ -11,7 +11,7 @@ import { DiscountCode, Product } from '../../shared/services/products/productTyp
 import ProductsService from '../../shared/services/products/products.service';
 import CartItemComponent from './cart-item/cart-item.component';
 import * as actions from '../../store/actions';
-import { Observable, forkJoin } from 'rxjs';
+import { forkJoin } from 'rxjs';
 import LocalStorageService from '../../shared/services/localStorage/localstorage.service';
 
 @Component({
@@ -62,18 +62,22 @@ export default class CartComponent {
                 const combinedProduct = { ...productInfo, ...this.products[i] };
                 this.productsInfo.push(combinedProduct);
               });
-              this.checkPromoApplyed();
+              this.checkPromoApplied();
             });
           } else {
             this.store.select(selectAnonymousToken).subscribe((anonToken) => {
               if (anonToken) {
                 this.productsInfo = [];
-                this.products.forEach((product) => {
-                  const id = product.productId;
-                  this.productService.getProductById(id, anonToken).subscribe((productInfo) => {
-                    const combinedProduct = { ...productInfo, ...product };
+                const requests = this.products.map((product) =>
+                  this.productService.getProductById(product.productId, anonToken),
+                );
+
+                forkJoin(requests).subscribe((productsInfo) => {
+                  productsInfo.forEach((productInfo, i) => {
+                    const combinedProduct = { ...productInfo, ...this.products[i] };
                     this.productsInfo.push(combinedProduct);
                   });
+                  this.checkPromoApplied();
                 });
               }
             });
@@ -126,7 +130,7 @@ export default class CartComponent {
     this.localStorageService.clearPromoCode();
   }
 
-  checkPromoApplyed() {
+  checkPromoApplied() {
     this.isPromoApplied = this.cart?.lineItems.some((item) => item.discountedPricePerQuantity.length > 0) ?? false;
   }
 }

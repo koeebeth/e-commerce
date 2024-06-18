@@ -11,7 +11,7 @@
 
     <p class="cart-item__total-price">{{ totalPrice }}$</p>
     <span *ngIf="discountedPrice" class="cart-item__discount-percent">-{{ discountPercent }}%</span>
-    <span *ngIf="promoPrice" class="cart-item__discount-percent">CYBERVAULT50</span>
+    <span *ngIf="promoPrice" class="cart-item__discount-percent">{{ promoCodeValue }}</span>
   </div>
   <div class="cart-item__controls">
     <app-button btnType="link" content="Remove" class="cart-item__remove"></app-button>
