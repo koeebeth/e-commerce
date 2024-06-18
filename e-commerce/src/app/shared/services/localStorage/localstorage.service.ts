@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export default class TokenStorageService {
+export default class LocalStorageService {
   getAuthToken(): string | null {
     return localStorage.getItem(`AuthRefresh`);
   }
@@ -34,5 +34,17 @@ export default class TokenStorageService {
 
   getCartId(): string | null {
     return localStorage.getItem('Cart ID');
+  }
+
+  savePromoCode(promo: string): void {
+    localStorage.setItem('Promo Code', promo);
+  }
+
+  getPromoCode(): string | null {
+    return localStorage.getItem('Promo Code');
+  }
+
+  clearPromoCode(): void {
+    localStorage.removeItem('Promo Code');
   }
 }

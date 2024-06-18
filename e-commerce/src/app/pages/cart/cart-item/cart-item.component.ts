@@ -41,10 +41,6 @@ export default class CartItemComponent {
 
   originalPrice = '';
 
-  categoryID: string = '';
-
-  categoryObjects$!: Observable<CategoriesArray | null>;
-
   category: string | undefined = '';
 
   constructor(private router: Router) {}

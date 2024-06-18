@@ -5,17 +5,17 @@ import { HttpClientTestingModule, HttpTestingController } from '@angular/common/
 import CommerceApiService from './commercetoolsapi.service';
 import { AuthData, CartBase, CustomerDraft } from './apitypes';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import TokenStorageService from '../tokenStorage/tokenstorage.service';
+import LocalStorageService from '../localStorage/localstorage.service';
 import * as actions from '../../../store/actions';
 
 describe('CommerceApiService', () => {
   let service: CommerceApiService;
   let httpMock: HttpTestingController;
   let storeMock: jasmine.SpyObj<Store>;
-  let tokenStorageServiceMock: jasmine.SpyObj<TokenStorageService>;
+  let localStorageServiceMock: jasmine.SpyObj<LocalStorageService>;
 
   beforeEach(() => {
-    tokenStorageServiceMock = jasmine.createSpyObj('TokenStorageService', ['getAuthToken', 'getAnonymousToken']);
+    localStorageServiceMock = jasmine.createSpyObj('LocalStorageService', ['getAuthToken', 'getAnonymousToken']);
     storeMock = jasmine.createSpyObj('Store', ['dispatch']);
 
     TestBed.configureTestingModule({
@@ -27,8 +27,8 @@ describe('CommerceApiService', () => {
           useValue: storeMock,
         },
         {
-          provide: TokenStorageService,
-          useValue: tokenStorageServiceMock,
+          provide: LocalStorageService,
+          useValue: localStorageServiceMock,
         },
       ],
     });
@@ -173,8 +173,8 @@ describe('CommerceApiService', () => {
   });
 
   it('should dispatch actions to load anonymous token if neither refresh nor anonymous tokens are present', () => {
-    tokenStorageServiceMock.getAuthToken.and.returnValue(null);
-    tokenStorageServiceMock.getAnonymousToken.and.returnValue(null);
+    localStorageServiceMock.getAuthToken.and.returnValue(null);
+    localStorageServiceMock.getAnonymousToken.and.returnValue(null);
 
     service.checkTokens();
 
@@ -182,8 +182,8 @@ describe('CommerceApiService', () => {
   });
 
   it('should dispatch action to refresh access token if refresh token is present', () => {
-    tokenStorageServiceMock.getAuthToken.and.returnValue('dummy-refresh-token');
-    tokenStorageServiceMock.getAnonymousToken.and.returnValue(null);
+    localStorageServiceMock.getAuthToken.and.returnValue('dummy-refresh-token');
+    localStorageServiceMock.getAnonymousToken.and.returnValue(null);
 
     service.checkTokens();
 
@@ -197,8 +197,8 @@ describe('CommerceApiService', () => {
   });
 
   it('should dispatch action to update anonymous token if anonymous token is present', () => {
-    tokenStorageServiceMock.getAuthToken.and.returnValue(null);
-    tokenStorageServiceMock.getAnonymousToken.and.returnValue('dummy-anonymous-token');
+    localStorageServiceMock.getAuthToken.and.returnValue(null);
+    localStorageServiceMock.getAnonymousToken.and.returnValue('dummy-anonymous-token');
 
     service.checkTokens();
 

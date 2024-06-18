@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { CategoriesArray, DiscountCode, Product, ProductsArray } from '../shared/services/products/productTypes';
+import { CategoriesArray, DiscountCodesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
 import {
   CartBase,
   CustomerDraft,
@@ -75,6 +75,13 @@ export const applyDiscount = createAction(
 );
 export const applyDiscountSuccess = createAction('[Discount] Load Discount Success', props<{ cartBase: CartBase }>());
 export const applyDiscountFailure = createAction('[Discount] Load Discount Failure', props<{ error: string }>());
+///
+export const getDiscountInfo = createAction('[Discount] Load Discount Info', props<{ discountCode: string }>());
+export const getDiscountInfoSuccess = createAction(
+  '[Discount] Load Discount Info',
+  props<{ discountCodesArray: DiscountCodesArray }>(),
+);
+export const getDiscountInfoFailure = createAction('[Discount] Load Discount Info', props<{ error: string }>());
 ///
 export const loadUpdateUserInfo = createAction('[User] Load Updating User Info', props<{ userInfo: CustomerInfo }>());
 export const loadUpdateUserInfoSuccess = createAction(

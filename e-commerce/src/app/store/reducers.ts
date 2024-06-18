@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 import * as actions from './actions';
-import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
+import { CategoriesArray, DiscountCodesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
 import {
   CartBase,
   CustomerDraft,
@@ -13,6 +13,7 @@ export interface EcommerceState {
   accessToken: string;
   anonymousToken: string;
   cartBase: CartBase | null;
+  discountCodesArray: DiscountCodesArray | null;
   products: ProductsArray | null;
   product: Product | null;
   categories: CategoriesArray | null;
@@ -32,6 +33,7 @@ export const initialState: EcommerceState = {
   accessToken: '',
   anonymousToken: '',
   cartBase: null,
+  discountCodesArray: null,
   products: null,
   product: null,
   categories: null,
@@ -69,6 +71,13 @@ export const ecommerceReducer = createReducer(
   ///
   on(actions.applyDiscountSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),
   on(actions.applyDiscountFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.getDiscountInfoSuccess, (state, { discountCodesArray }) => ({
+    ...state,
+    discountCodesArray,
+    loading: false,
+  })),
+  on(actions.getDiscountInfoFailure, (state, { error }) => ({ ...state, error, loading: false })),
   ///
   on(actions.loadUpdateAnonymousCart, (state) => ({ ...state, loading: true })),
   on(actions.loadUpdateAnonymousCartSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),

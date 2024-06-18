@@ -2,7 +2,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, mergeMap, of } from 'rxjs';
 import { authVisitorAPI } from '../../../../environment';
-import { CategoriesArray, DiscountCode, Product, ProductProjectionArray, ProductsArray } from './productTypes';
+import {
+  CategoriesArray,
+  DiscountCode,
+  DiscountCodesArray,
+  Product,
+  ProductProjectionArray,
+  ProductsArray,
+} from './productTypes';
 import { CartBase } from '../commercetoolsApi/apitypes';
 
 @Injectable({
@@ -127,10 +134,11 @@ export default class ProductsService {
     return this.http.post<CartBase>(url, body, { headers });
   }
 
-  getDiscountCode(discountCodeId: string, accessToken: string): Observable<DiscountCode> {
-    const apiUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/discount-codes/${discountCodeId}`;
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${accessToken}`);
+  getDiscountInfo(token: string): Observable<DiscountCodesArray> {
+    const apiUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/discount-codes`;
 
-    return this.http.get<DiscountCode>(apiUrl, { headers });
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<DiscountCodesArray>(apiUrl, { headers });
   }
 }

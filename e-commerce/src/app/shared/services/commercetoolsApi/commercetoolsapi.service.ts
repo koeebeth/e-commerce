@@ -4,7 +4,7 @@ import { Observable, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
 import { Address, AuthData, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo, CartBase } from './apitypes';
-import TokenStorageService from '../tokenStorage/tokenstorage.service';
+import LocalStorageService from '../localStorage/localstorage.service';
 import * as actions from '../../../store/actions';
 import { AppState } from '../../../store/store';
 
@@ -18,13 +18,13 @@ export default class CommerceApiService {
 
   constructor(
     private http: HttpClient,
-    private tokenStorageService: TokenStorageService,
+    private localStorageService: LocalStorageService,
     private store: Store<AppState>,
   ) {}
 
   login(username: string, password: string, anonymousToken: string): Observable<any> {
     const loginUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/login`;
-    const cartId = this.tokenStorageService.getCartId();
+    const cartId = this.localStorageService.getCartId();
 
     const body = {
       email: username,
@@ -283,8 +283,8 @@ export default class CommerceApiService {
   }
 
   checkTokens(): void {
-    const refreshToken = this.tokenStorageService.getAuthToken();
-    const refreshAnonymousToken = this.tokenStorageService.getAnonymousToken();
+    const refreshToken = this.localStorageService.getAuthToken();
+    const refreshAnonymousToken = this.localStorageService.getAnonymousToken();
 
     if (!refreshToken && !refreshAnonymousToken) {
       this.store.dispatch(actions.loadAnonymousToken());

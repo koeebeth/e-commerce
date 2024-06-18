@@ -19,7 +19,7 @@ import { Router } from '@angular/router';
 import CommerceApiService from '../shared/services/commercetoolsApi/commercetoolsapi.service';
 import { AuthData, CartBase, CustomerInfo, CustomerSignInResult } from '../shared/services/commercetoolsApi/apitypes';
 import * as actions from './actions';
-import TokenStorageService from '../shared/services/tokenStorage/tokenstorage.service';
+import LocalStorageService from '../shared/services/localStorage/localstorage.service';
 import { AppState } from './store';
 import { selectAccessToken, selectAnonymousToken, selectCartAnonId } from './selectors';
 import { NotificationService } from '../shared/services/notification/notification.service';
@@ -27,7 +27,7 @@ import ProductsService from '../shared/services/products/products.service';
 import CartService from '../shared/services/cart/cart.service';
 import {
   CategoriesArray,
-  DiscountCode,
+  DiscountCodesArray,
   Product,
   ProductProjectionArray,
   ProductsArray,
@@ -40,7 +40,7 @@ export default class EcommerceEffects {
     private ecommerceApiService: CommerceApiService,
     private productsService: ProductsService,
     private cartService: CartService,
-    private tokenStorageService: TokenStorageService,
+    private localStorageService: LocalStorageService,
     private notificationService: NotificationService,
     private store: Store<AppState>,
     private router: Router,
@@ -83,8 +83,8 @@ export default class EcommerceEffects {
         const { email, password } = action.accessData;
         return this.ecommerceApiService.authentication(email, password).pipe(
           map((accessData: AuthData) => {
-            this.tokenStorageService.saveAuthToken(accessData.refresh_token);
-            this.tokenStorageService.removeAnonymousToken();
+            this.localStorageService.saveAuthToken(accessData.refresh_token);
+            this.localStorageService.removeAnonymousToken();
             this.notificationService.showNotification('success', 'You have successfully logged in');
             return actions.loadAccsessTokenSuccess({
               accessToken: accessData.access_token,
@@ -111,7 +111,7 @@ export default class EcommerceEffects {
       mergeMap(() => {
         return this.ecommerceApiService.getAnonymousSessionToken().pipe(
           map((data: AuthData) => {
-            this.tokenStorageService.saveAnonymousToken(data.refresh_token);
+            this.localStorageService.saveAnonymousToken(data.refresh_token);
             return actions.loadAnonymousTokenSuccess({
               anonymousToken: data.access_token,
             });
@@ -134,7 +134,7 @@ export default class EcommerceEffects {
       mergeMap((action) => {
         return this.cartService.createAnonymousCart(action.anonymousToken).pipe(
           map((cartBase: CartBase) => {
-            this.tokenStorageService.saveCartId(cartBase.id);
+            this.localStorageService.saveCartId(cartBase.id);
             return actions.loadAnonymousCartSuccess({
               cartBase,
             });
@@ -169,6 +169,24 @@ export default class EcommerceEffects {
               catchError((error) => of(actions.loadUserCartFailure({ error }))),
             );
           }),
+        ),
+      ),
+    ),
+  );
+
+  getDiscountInfo$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.getDiscountInfo, actions.loadAnonymousCartSuccess, actions.loadUserCartSuccess),
+      take(1),
+      switchMap(() =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          switchMap(([anonToken, accessToken]) =>
+            this.productsService.getDiscountInfo(accessToken || anonToken).pipe(
+              map((discountCodesArray: DiscountCodesArray) => actions.getDiscountInfoSuccess({ discountCodesArray })),
+              catchError((error) => of(actions.getDiscountInfoFailure({ error: error.message }))),
+            ),
+          ),
         ),
       ),
     ),
@@ -435,8 +453,8 @@ export default class EcommerceEffects {
     this.actions$.pipe(
       ofType(actions.logout),
       tap(() => {
-        this.tokenStorageService.removeAuthToken();
-        this.tokenStorageService.removeAnonymousToken();
+        this.localStorageService.removeAuthToken();
+        this.localStorageService.removeAnonymousToken();
       }),
       mergeMap(() => of(actions.logoutSuccess())),
     ),

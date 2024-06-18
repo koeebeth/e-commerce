@@ -61,6 +61,14 @@ export interface ProductData {
   categoryOrderHints?: { [key: string]: string };
 }
 
+export interface DiscountCodesArray {
+  limit: number;
+  offset: number;
+  count: number;
+  total: number;
+  results: DiscountCode[];
+}
+
 export interface DiscountCode {
   id: string;
   version: number;

@@ -5,13 +5,14 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import ButtonComponent from '../../shared/components/button/button.component';
 import { AppState } from '../../store/store';
-import { selectAccessToken, selectAnonymousToken, selectCart } from '../../store/selectors';
+import { selectAccessToken, selectAnonymousToken, selectCart, selectDiscounts } from '../../store/selectors';
 import { LineItem, CartBase } from '../../shared/services/commercetoolsApi/apitypes';
 import { DiscountCode, Product } from '../../shared/services/products/productTypes';
 import ProductsService from '../../shared/services/products/products.service';
 import CartItemComponent from './cart-item/cart-item.component';
 import * as actions from '../../store/actions';
-import { forkJoin } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
+import LocalStorageService from '../../shared/services/localStorage/localstorage.service';
 
 @Component({
   selector: 'app-cart',
@@ -22,23 +23,31 @@ import { forkJoin } from 'rxjs';
 })
 export default class CartComponent {
   cart: CartBase | null = null;
-
   products: LineItem[] = [];
-
+  promoCodes: DiscountCode[] | null = null;
   productsInfo: (Product & LineItem)[] = [];
-
   isPromoApplied: boolean = false;
-
   promoCodeForm = new FormGroup({
     code: new FormControl(''),
   });
+  promoCodeValue: string = '';
+  promoCodeId: string = '';
 
   constructor(
     private store: Store<AppState>,
     private productService: ProductsService,
+    private localStorageService: LocalStorageService,
   ) {}
 
   ngOnInit() {
+    this.promoCodeValue = this.localStorageService.getPromoCode() || '';
+
+    this.store.select(selectDiscounts).subscribe((discounts) => {
+      if (discounts) {
+        this.promoCodes = discounts.results;
+      }
+    });
+
     this.store.select(selectCart).subscribe((cart) => {
       if (cart) {
         this.cart = cart;
@@ -85,13 +94,15 @@ export default class CartComponent {
   }
 
   onApplyPromo() {
-    const promoCode = this.promoCodeForm.get('code')?.value ?? '';
+    this.promoCodeValue = this.promoCodeForm.get('code')?.value ?? '';
+    this.localStorageService.savePromoCode(this.promoCodeValue);
+
     if (this.cart) {
       this.store.dispatch(
         actions.applyDiscount({
           cartId: this.cart.id,
           action: 'add',
-          discountCode: promoCode,
+          discountCode: this.promoCodeValue,
           cartVersion: this.cart.version,
         }),
       );
@@ -99,16 +110,20 @@ export default class CartComponent {
   }
 
   onRemovePromo() {
+    this.promoCodeId = this.promoCodes?.find((discount) => discount.code === this.promoCodeValue)?.id ?? '';
+    console.log('promoCodeId', this.promoCodeId);
     if (this.cart?.lineItems) {
       this.store.dispatch(
         actions.applyDiscount({
           cartId: this.cart.id,
           action: 'remove',
-          discountCodeId: 'bea3bbc0-333c-4998-b750-adfdc4ddf2c4',
+          discountCodeId: this.promoCodeId,
           cartVersion: this.cart.version,
         }),
       );
     }
+
+    this.localStorageService.clearPromoCode();
   }
 
   checkPromoApplyed() {
