@@ -1,6 +1,20 @@
 <section class="about_page">
   <h1 class="page__title">About Site Developers</h1>
   <div class="page__container">
+    <div class="summary_container">
+      <p class="summary">
+        <span>This project</span> is the result of our collective efforts, with
+        <span>each member contributing equally</span>. <br /><span>The project was developed using:</span> HTML, SCSS,
+        TypeScript, Angular for frontend part<br />and CommerceTools for Backend part. <br />So in this project we
+        organized the work in the way that <span>each team member could accomplish various tasks</span> , thereby we
+        learned more different things: whether it was integration with commercetools via API requests, creating new
+        components, work with routing or designing and implementing design solutions and so on. <br /><span
+          >For synchronization</span
+        >
+        and <span>control over the development stages</span>, we used a Jira board, as well as regular meetings and
+        daily updates in Discord.
+      </p>
+    </div>
     <div class="page__container">
       <div *ngFor="let dev of devsInfo" class="about_block">
         <div class="about_content__container">
@@ -14,7 +28,10 @@
               <img [src]="dev.gitLogo" alt="" />
               <a class="dev_title" target="_blank" [href]="dev.link">{{ dev.role }}</a>
             </div>
-            <div class="dev_description">{{ dev.text }}</div>
+            <div class="dev_description">
+              <div class="text_biography"><span>Brief member overview: </span> {{ dev.biography }}</div>
+              <div class="text_contributions"><span>Contributions: </span>{{ dev.contribution }}</div>
+            </div>
           </div>
         </div>
       </div>

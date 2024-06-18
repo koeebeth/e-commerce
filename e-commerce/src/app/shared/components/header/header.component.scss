@@ -3,6 +3,7 @@
 header {
   color: white;
   box-sizing: border-box;
+  font-size: 1.2rem;
   width: 100vw;
   display: flex;
   justify-content: space-between;
@@ -17,7 +18,14 @@ header {
   .logo {
     @include font-heading;
     font-size: 1.5rem;
+    padding-left: 100px;
     cursor: pointer;
+    transition-duration: 0.3s;
+
+    @media screen and (max-width: 550px) {
+      padding-left: 20px;
+      font-size: 1rem;
+    }
   }
 
   a {
@@ -28,7 +36,13 @@ header {
 
 .icon__container {
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 20px;
+
+  @media screen and (max-width: 550px) {
+    gap: 10px;
+  }
 
   .cart_icon,
   .about_icon {
@@ -42,6 +56,10 @@ header {
   .cart_icon img,
   .about_icon img {
     width: 30px;
+
+    @media screen and (max-width: 550px) {
+      width: 22px;
+    }
   }
 
   .cart_icon .item-count {

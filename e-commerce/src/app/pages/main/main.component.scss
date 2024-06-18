@@ -8,15 +8,25 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 40px;
+  height: 50px;
   background-color: $color-glass;
   backdrop-filter: blur(10px);
   color: $color-primary-700;
   letter-spacing: 1.2px;
+  font-size: 1.3rem;
   @include font-heading;
 
   span {
     color: $color-secondary;
+  }
+
+  @media screen and (max-width: 620px) {
+    height: 40px;
+    font-size: 1rem;
+  }
+  @media screen and (max-width: 450px) {
+    height: 40px;
+    font-size: 0.8rem;
   }
 }
 
