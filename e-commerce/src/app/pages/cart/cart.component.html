@@ -8,9 +8,14 @@
       <app-cart-item *ngFor="let product of productsInfo" [product]="product" [cartBase]="cart"></app-cart-item>
     </div>
     <div class="cart__checkout" *ngIf="products.length > 0">
-      <p *ngIf="!isPromoApplied" class="cart__total">
-        Total: <span>{{ calcTotal() }} $</span>
-      </p>
+      <div *ngIf="!isPromoApplied" class="cart__total-container">
+        <p class="cart__total_orig">
+          <span>{{ calcOrigTotal() }} $</span>
+        </p>
+        <p *ngIf="!isPromoApplied" class="cart__total">
+          Total: <span>{{ calcTotal() }} $</span>
+        </p>
+      </div>
       <div *ngIf="isPromoApplied" class="cart__total-container">
         <p class="cart__total_orig">
           <span>{{ calcOrigTotal() }} $</span>
