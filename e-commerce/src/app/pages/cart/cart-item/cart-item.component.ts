@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { Router } from '@angular/router';
 import { Product } from '../../../shared/services/products/productTypes';
 import { LineItem } from '../../../shared/services/commercetoolsApi/apitypes';
 import ButtonComponent from '../../../shared/components/button/button.component';
-import { Router } from '@angular/router';
 import LocalStorageService from '../../../shared/services/localStorage/localstorage.service';
 
 @Component({

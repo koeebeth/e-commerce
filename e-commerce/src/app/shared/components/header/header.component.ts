@@ -19,7 +19,9 @@ import { CartBase } from '../../services/commercetoolsApi/apitypes';
 })
 export default class HeaderComponent {
   authToken$!: Observable<string>;
+
   cart: CartBase | null = null;
+
   itemsCount: number = 0;
 
   constructor(private store: Store<AppState>) {}

@@ -1,15 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, mergeMap, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { authVisitorAPI } from '../../../../environment';
-import {
-  CategoriesArray,
-  DiscountCode,
-  DiscountCodesArray,
-  Product,
-  ProductProjectionArray,
-  ProductsArray,
-} from './productTypes';
+import { CategoriesArray, DiscountCodesArray, Product, ProductProjectionArray, ProductsArray } from './productTypes';
 import { CartBase } from '../commercetoolsApi/apitypes';
 
 @Injectable({
@@ -104,7 +97,7 @@ export default class ProductsService {
     discountCodeId?: string,
   ): Observable<CartBase> {
     const url = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/carts/${cartId}`;
-    let actions: object[] = [];
+    const actions: object[] = [];
 
     if (actionType === 'add') {
       actions.push({
@@ -123,7 +116,7 @@ export default class ProductsService {
 
     const body = {
       version: cartVersion,
-      actions: actions,
+      actions,
     };
 
     const headers = new HttpHeaders({

@@ -12,7 +12,6 @@ import {
   tap,
   withLatestFrom,
   exhaustMap,
-  forkJoin,
 } from 'rxjs';
 import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -57,7 +56,7 @@ export default class EcommerceEffects {
           map((customerSignIn: CustomerSignInResult) => {
             this.store.dispatch(actions.loadAccsessToken(action));
             return actions.loginUerSuccess({
-              customerSignIn: customerSignIn,
+              customerSignIn,
             });
           }),
           catchError((error) => {

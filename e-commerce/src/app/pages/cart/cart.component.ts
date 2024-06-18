@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { forkJoin } from 'rxjs';
 import ButtonComponent from '../../shared/components/button/button.component';
 import { AppState } from '../../store/store';
 import { selectAccessToken, selectAnonymousToken, selectCart, selectDiscounts } from '../../store/selectors';
@@ -11,7 +12,6 @@ import { DiscountCode, Product } from '../../shared/services/products/productTyp
 import ProductsService from '../../shared/services/products/products.service';
 import CartItemComponent from './cart-item/cart-item.component';
 import * as actions from '../../store/actions';
-import { forkJoin } from 'rxjs';
 import LocalStorageService from '../../shared/services/localStorage/localstorage.service';
 
 @Component({
@@ -23,14 +23,21 @@ import LocalStorageService from '../../shared/services/localStorage/localstorage
 })
 export default class CartComponent {
   cart: CartBase | null = null;
+
   products: LineItem[] = [];
+
   promoCodes: DiscountCode[] | null = null;
+
   productsInfo: (Product & LineItem)[] = [];
+
   isPromoApplied: boolean = false;
+
   promoCodeForm = new FormGroup({
     code: new FormControl(''),
   });
+
   promoCodeValue: string = '';
+
   promoCodeId: string = '';
 
   constructor(

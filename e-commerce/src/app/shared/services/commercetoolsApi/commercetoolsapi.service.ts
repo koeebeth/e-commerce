@@ -3,7 +3,16 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, mergeMap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { authVisitorAPI, unauthVisitorAPI } from '../../../../environment';
-import { Address, AuthData, CustomerDraft, CustomerInfo, PasswordChange, PersonalInfo, CartBase } from './apitypes';
+import {
+  Address,
+  AuthData,
+  CustomerDraft,
+  CustomerInfo,
+  PasswordChange,
+  PersonalInfo,
+  CartBase,
+  CustomerSignInResult,
+} from './apitypes';
 import LocalStorageService from '../localStorage/localstorage.service';
 import * as actions from '../../../store/actions';
 import { AppState } from '../../../store/store';
@@ -22,14 +31,14 @@ export default class CommerceApiService {
     private store: Store<AppState>,
   ) {}
 
-  login(username: string, password: string, anonymousToken: string): Observable<any> {
+  login(username: string, password: string, anonymousToken: string): Observable<CustomerSignInResult> {
     const loginUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/login`;
     const cartId = this.localStorageService.getCartId();
 
     const body = {
       email: username,
-      password: password,
-      cartId: cartId,
+      password,
+      cartId,
       anonymousCartSignInMode: 'MergeWithExistingCustomerCart',
     };
 
@@ -37,7 +46,7 @@ export default class CommerceApiService {
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${anonymousToken}`);
 
-    return this.http.post<any>(loginUrl, body, { headers });
+    return this.http.post<CustomerSignInResult>(loginUrl, body, { headers });
   }
 
   getAnonymousSessionToken(): Observable<AuthData> {
