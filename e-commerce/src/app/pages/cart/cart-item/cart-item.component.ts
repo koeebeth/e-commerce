@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { Product } from '../../../shared/services/products/productTypes';
+import { CategoriesArray, Product } from '../../../shared/services/products/productTypes';
 import { LineItem } from '../../../shared/services/commercetoolsApi/apitypes';
 import ButtonComponent from '../../../shared/components/button/button.component';
+import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-cart-item',
@@ -39,7 +41,13 @@ export default class CartItemComponent {
 
   originalPrice = '';
 
-  quantityPromoPrice = '';
+  categoryID: string = '';
+
+  categoryObjects$!: Observable<CategoriesArray | null>;
+
+  category: string | undefined = '';
+
+  constructor(private router: Router) {}
 
   ngOnInit() {
     this.name = this.product.name?.['en-US'] || '';
@@ -66,5 +74,10 @@ export default class CartItemComponent {
         }
       });
     }
+  }
+
+  onCardClick(event: Event) {
+    event.stopPropagation();
+    this.router.navigate(['/catalog', this.category, this.product.productId]);
   }
 }

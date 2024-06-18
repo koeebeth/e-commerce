@@ -29,7 +29,7 @@ export default class HeaderComponent {
     this.store.select(selectCart).subscribe((cart) => {
       if (cart) {
         this.cart = cart;
-          this.showCountItems();
+        this.showCountItems();
       }
     });
   }
