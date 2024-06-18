@@ -32,6 +32,8 @@ header {
 
   .cart_icon,
   .about_icon {
+    position: relative; /* Добавляем для позиционирования кружка */
+
     &:hover {
       transform: scale(1.05);
     }
@@ -40,5 +42,21 @@ header {
   .cart_icon img,
   .about_icon img {
     width: 30px;
+  }
+
+  .cart_icon .item-count {
+    position: absolute;
+    bottom: -5px; /* вертикаль */
+    right: -5px; /* горизонталь */
+    background-color: $color-secondary;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
   }
 }

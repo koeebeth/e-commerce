@@ -8,13 +8,14 @@
   <div class="icon__container">
     <div class="about_icon">
       <a routerLink="/about">
-        <img src="../../../../assets/icon-about.svg" alt="about icon">
+        <img src="../../../../assets/icon-about.svg" alt="about icon" />
       </a>
     </div>
     <div class="cart_icon">
       <a routerLink="/cart">
-        <img src="../../../../assets/cart.svg" alt="cart icon">
+        <img src="../../../../assets/cart.svg" alt="cart icon" />
       </a>
+      <span *ngIf="itemsCount > 0" class="item-count">{{ itemsCount }}</span>
     </div>
     <app-profile-authorized *ngIf="authToken$ | async"></app-profile-authorized>
     <app-profile-unauthorized *ngIf="(authToken$ | async) === ''"></app-profile-unauthorized>
