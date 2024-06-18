@@ -109,6 +109,19 @@ export const loadUpdateAnonymousCartFailure = createAction(
   '[Cart] Load Updating Cart Anonymous Failure',
   props<{ error: string }>(),
 );
+export const loadDeleteCart = createAction(
+  '[Cart] Load Delete Cart',
+  props<{
+    cartBase: CartBase;
+  }>(),
+);
+export const loadDeleteCartSuccess = createAction(
+  '[Cart] Load Delete Cart Success',
+  props<{
+    cartBase: CartBase;
+  }>(),
+);
+export const loadDeleteCartFailure = createAction('[Cart] Load Delete Cart Failure', props<{ error: string }>());
 ///
 export const loadAnonymousCartSuccess = createAction(
   '[Cart] Cart Anonymous Id Success',

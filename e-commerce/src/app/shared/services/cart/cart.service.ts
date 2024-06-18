@@ -103,4 +103,14 @@ export default class CartService {
 
     return this.http.post<CartBase>(apiUrl, body, { headers });
   }
+
+  deleteCart(accessToken: string, idCart: string, version: number): Observable<CartBase> {
+    const apiUrl = `${unauthVisitorAPI.ctpApiUrl}/${unauthVisitorAPI.ctpProjectKey}/me/carts/${idCart}?version=${version}`;
+
+    const headers = new HttpHeaders()
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${accessToken}`);
+
+    return this.http.delete<CartBase>(apiUrl, { headers });
+  }
 }

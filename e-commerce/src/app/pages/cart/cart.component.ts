@@ -10,6 +10,7 @@ import { LineItem, CartBase } from '../../shared/services/commercetoolsApi/apity
 import { Product } from '../../shared/services/products/productTypes';
 import ProductsService from '../../shared/services/products/products.service';
 import CartItemComponent from './cart-item/cart-item.component';
+import * as actions from '../../store/actions';
 
 @Component({
   selector: 'app-cart',
@@ -28,6 +29,8 @@ export default class CartComponent {
   promoCodeForm = new FormGroup({
     code: new FormControl(''),
   });
+
+  isOpen: boolean = false;
 
   constructor(
     private store: Store<AppState>,
@@ -74,4 +77,19 @@ export default class CartComponent {
   }
 
   onApplyPromo() {}
+
+  clickDeleteCart() {
+    this.isOpen = true;
+  }
+
+  deleteCart() {
+    if (this.cart) {
+      this.store.dispatch(actions.loadDeleteCart({ cartBase: this.cart }));
+    }
+    this.isOpen = false;
+  }
+
+  closeConfirmation() {
+    this.isOpen = false;
+  }
 }
