@@ -5,7 +5,7 @@
     </p>
     <p *ngIf="products.length === 0" class="cart__empty">Nothing here :( <a routerLink="/catalog">Go to store</a></p>
     <div class="cart__items" *ngIf="products.length > 0">
-      <app-cart-item *ngFor="let product of productsInfo" [product]="product"></app-cart-item>
+      <app-cart-item *ngFor="let product of productsInfo" [product]="product" [cartBase]="cart"></app-cart-item>
     </div>
     <div class="cart__checkout" *ngIf="products.length > 0">
       <p *ngIf="!isPromoApplied" class="cart__total">
@@ -25,8 +25,19 @@
         <app-button *ngIf="!isPromoApplied" content="Apply" (clickHandler)="onApplyPromo()"></app-button>
         <app-button *ngIf="isPromoApplied" content="Remove" (clickHandler)="onRemovePromo()"></app-button>
       </form>
-      <app-button btnType="link" content="Clear Cart">Clear</app-button>
+      <app-button btnType="link" content="Clear Cart" (clickHandler)="clickDeleteCart()">Clear</app-button>
       <app-button content="Checkout"></app-button>
+    </div>
+  </div>
+</div>
+<div class="confirmation" *ngIf="isOpen">
+  <div class="confirmation-container">
+    <div class="title-container">
+      <p>Are you sure?</p>
+    </div>
+    <div class="buttons-container">
+      <app-button content="Cancel" btnClass="primary" (clickHandler)="closeConfirmation()"></app-button>
+      <app-button content="Confirm" btnClass="primary" (clickHandler)="deleteCart()"></app-button>
     </div>
   </div>
 </div>

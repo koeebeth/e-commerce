@@ -116,8 +116,40 @@
   }
 }
 
+
 .cart__total_orig {
   color: $color-primary-600;
   display: inline-block;
   text-decoration: line-through;
+}
+  
+.confirmation {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  background-color: rgba($color-primary-100, 0.6);
+  overflow-y: auto;
+  display: flex;
+}
+
+.confirmation-container {
+  @include font-primary;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  max-width: 300px;
+  width: 40%;
+  border: 2px solid $color-primary-600;
+  border-radius: 10px;
+  padding: 20px;
+  background-color: $color-primary-700;
+
+  .buttons-container {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+  }
 }

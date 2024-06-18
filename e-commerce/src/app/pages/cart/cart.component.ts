@@ -40,6 +40,9 @@ export default class CartComponent {
 
   promoCodeId: string = '';
 
+  isOpen: boolean = false;
+
+
   constructor(
     private store: Store<AppState>,
     private productService: ProductsService,
@@ -61,6 +64,7 @@ export default class CartComponent {
         this.products = cart.lineItems;
         this.store.select(selectAccessToken).subscribe((token) => {
           if (token) {
+
             this.productsInfo = [];
             forkJoin(
               this.products.map((product) => this.productService.getProductById(product.productId, token)),
@@ -139,5 +143,20 @@ export default class CartComponent {
 
   checkPromoApplied() {
     this.isPromoApplied = this.cart?.lineItems.some((item) => item.discountedPricePerQuantity.length > 0) ?? false;
+
+
+  clickDeleteCart() {
+    this.isOpen = true;
+  }
+
+  deleteCart() {
+    if (this.cart) {
+      this.store.dispatch(actions.loadDeleteCart({ cartBase: this.cart }));
+    }
+    this.isOpen = false;
+  }
+
+  closeConfirmation() {
+    this.isOpen = false;
   }
 }

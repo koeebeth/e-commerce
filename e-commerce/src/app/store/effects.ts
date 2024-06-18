@@ -157,13 +157,13 @@ export default class EcommerceEffects {
         this.store.pipe(select(selectAccessToken)), // Select access token from store
       ),
       switchMap(([, accessToken]) =>
-        this.ecommerceApiService.getUserCart(accessToken).pipe(
+        this.cartService.getUserCart(accessToken).pipe(
           switchMap((response) => {
             if (response.status === 200) {
               const cart = response.body;
               return of(actions.loadUserCartSuccess({ cartBase: cart! }));
             }
-            return this.ecommerceApiService.createUserCart(accessToken).pipe(
+            return this.cartService.createUserCart(accessToken).pipe(
               map((cartBase) => actions.loadUserCartSuccess({ cartBase })),
               catchError((error) => of(actions.loadUserCartFailure({ error }))),
             );
@@ -248,13 +248,25 @@ export default class EcommerceEffects {
                 action.action,
                 action.productId,
                 action.lineItemId,
+                action.quantity,
               )
               .pipe(
                 map((cartBase: CartBase) => {
-                  this.notificationService.showNotification(
-                    'success',
-                    `${action.action === 'add' ? 'Added to the Cart' : 'Removed from the Cart'}`,
-                  );
+                  let notificationMessage = '';
+                  switch (action.action) {
+                    case 'add':
+                      notificationMessage = 'Added to the Cart';
+                      break;
+                    case 'remove':
+                      notificationMessage = 'Removed from the Cart';
+                      break;
+                    case 'change-quantity':
+                      notificationMessage = 'Changed quantity of the Cart Item';
+                      break;
+                    default:
+                      break;
+                  }
+                  this.notificationService.showNotification('success', notificationMessage);
                   return actions.loadUpdateAnonymousCartSuccess({
                     cartBase,
                   });
@@ -267,6 +279,31 @@ export default class EcommerceEffects {
                   ),
                 ),
               ),
+          ),
+        ),
+      ),
+    ),
+  );
+
+  deleteCart$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(actions.loadDeleteCart),
+      switchMap((action) =>
+        combineLatest([this.store.select(selectAnonymousToken), this.store.select(selectAccessToken)]).pipe(
+          filter(([anonToken, accessToken]) => !!anonToken || !!accessToken),
+          take(1),
+          switchMap(([anonToken, accessToken]) =>
+            this.cartService.deleteCart(accessToken || anonToken, action.cartBase.id, action.cartBase.version).pipe(
+              switchMap(() => this.cartService.createAnonymousCart(accessToken || anonToken)),
+              map((cartBase: CartBase) => actions.loadDeleteCartSuccess({ cartBase })),
+              catchError((error) =>
+                of(
+                  actions.loadDeleteCartFailure({
+                    error: error.message,
+                  }),
+                ),
+              ),
+            ),
           ),
         ),
       ),
