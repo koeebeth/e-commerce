@@ -55,9 +55,9 @@ export default class CatalogPageComponent {
     this.filters$.pipe(takeUntil(this.unsubscribe$)).subscribe((filters) => {
       this.filters = filters;
       if (Object.keys(filters).length === 0) {
-        this.store.dispatch(actions.loadProducts({ offset: 0, limit: 10 }));
+        this.store.dispatch(actions.loadProducts({ offset: 0, limit: 4 }));
       } else {
-        this.store.dispatch(actions.loadFilter({ filters, offset: 0, limit: 10 }));
+        this.store.dispatch(actions.loadFilter({ filters, offset: 0, limit: 4 }));
       }
     });
     this.sort$.pipe(takeUntil(this.unsubscribe$)).subscribe((sort) => {
