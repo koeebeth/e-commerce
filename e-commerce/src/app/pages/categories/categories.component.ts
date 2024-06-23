@@ -30,6 +30,7 @@ export default class CategoriesComponent {
   ) {}
 
   ngOnInit(): void {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     this.categoryImgPath = '/assets/';
     this.store.dispatch(actions.loadCategories({ offset: 0, limit: 20 }));
     this.categories$ = this.store.select(selecCategories);

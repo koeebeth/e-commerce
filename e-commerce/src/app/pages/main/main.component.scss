@@ -1,5 +1,35 @@
 @import '../../../styles.scss';
 
+.promo-notification {
+  position: fixed;
+  top: 64px;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  background-color: $color-glass;
+  backdrop-filter: blur(10px);
+  color: $color-primary-700;
+  letter-spacing: 1.2px;
+  font-size: 1.3rem;
+  @include font-heading;
+
+  span {
+    color: $color-secondary;
+  }
+
+  @media screen and (max-width: 620px) {
+    height: 40px;
+    font-size: 1rem;
+  }
+  @media screen and (max-width: 450px) {
+    height: 40px;
+    font-size: 0.8rem;
+  }
+}
+
 .category-container {
   margin-top: 20px;
   @include font-heading;
@@ -14,6 +44,11 @@
   }
   @media screen and (max-width: 510px) {
     padding: 10px 25px;
+  }
+
+  .category-title {
+    font-weight: 800;
+    font-size: 1.7rem;
   }
 }
 

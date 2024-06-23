@@ -6,17 +6,17 @@ import { provideMockStore, MockStore } from '@ngrx/store/testing';
 import FilterComponent from './filter.component';
 import * as actions from '../../../store/actions';
 import { selecCategories } from '../../../store/selectors';
-import TokenStorageService from '../../../shared/services/tokenStorage/tokenstorage.service';
+import LocalStorageService from '../../../shared/services/localStorage/localstorage.service';
 
 describe('FilterComponent', () => {
   let component: FilterComponent;
   let fixture: ComponentFixture<FilterComponent>;
   let unsubscribe$: Subject<void>;
   let store: MockStore;
-  let tokenStorageServiceMock: jasmine.SpyObj<TokenStorageService>;
+  let localStorageServiceMock: jasmine.SpyObj<LocalStorageService>;
 
   beforeEach(async () => {
-    tokenStorageServiceMock = jasmine.createSpyObj('TokenStorageService', ['getAuthToken', 'getAnonymousToken']);
+    localStorageServiceMock = jasmine.createSpyObj('LocalStorageService', ['getAuthToken', 'getAnonymousToken']);
     await TestBed.configureTestingModule({
       imports: [FilterComponent],
       providers: [
@@ -32,8 +32,8 @@ describe('FilterComponent', () => {
           useValue: { url: '/catalog' },
         },
         {
-          provide: TokenStorageService,
-          useValue: tokenStorageServiceMock,
+          provide: LocalStorageService,
+          useValue: localStorageServiceMock,
         },
       ],
     }).compileComponents();
@@ -56,8 +56,8 @@ describe('FilterComponent', () => {
   });
 
   it('should dispatch loadFilter action with correct filters', () => {
-    tokenStorageServiceMock.getAuthToken.and.returnValue(null);
-    tokenStorageServiceMock.getAnonymousToken.and.returnValue(null);
+    localStorageServiceMock.getAuthToken.and.returnValue(null);
+    localStorageServiceMock.getAnonymousToken.and.returnValue(null);
 
     const mockCategoryFilters = { category1: ['value1'], category2: ['value2'] };
     spyOn(component, 'getCategoryFilters').and.returnValue(mockCategoryFilters);
@@ -117,8 +117,8 @@ describe('FilterComponent', () => {
 
   describe('getCategories', () => {
     it('should dispatch the loadCategories action', () => {
-      tokenStorageServiceMock.getAuthToken.and.returnValue(null);
-      tokenStorageServiceMock.getAnonymousToken.and.returnValue(null);
+      localStorageServiceMock.getAuthToken.and.returnValue(null);
+      localStorageServiceMock.getAnonymousToken.and.returnValue(null);
 
       const dispatchSpy = spyOn(store, 'dispatch');
 

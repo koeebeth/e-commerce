@@ -1,0 +1,27 @@
+<div class="cart-item" (click)="onCardClick($event)" (keydown.enter)="onCardClick($event)" tabindex="0">
+  <div class="cart-item__image">
+    <img [src]="imageUrl" [alt]="name" />
+  </div>
+  <div class="cart-item__name">
+    {{ name }}
+  </div>
+  <div class="cart-item__total">
+    <p *ngIf="discountedPrice" class="cart-item__total-discounted">{{ originalTotal }}$</p>
+    <p *ngIf="promoPrice" class="cart-item__total-discounted">{{ originalPrice }}$</p>
+
+    <p class="cart-item__total-price">{{ totalPrice }}$</p>
+    <span *ngIf="discountedPrice" class="cart-item__discount-percent">-{{ discountPercent }}%</span>
+    <span *ngIf="promoPrice" class="cart-item__discount-percent">{{ promoCodeValue }}</span>
+  </div>
+  <div class="cart-item__controls">
+    <app-button btnType="link" content="Remove" class="cart-item__remove" (clickHandler)="onRemove()"></app-button>
+    <div class="cart-item__buttons">
+      <button (click)="onIncrease($event)">+</button>
+      <p class="cart-item__quantity">{{ quantity }}</p>
+      <button (click)="onDecrease($event)" [disabled]="quantity < 2">-</button>
+    </div>
+    <div class="cart-item__quantity-price">
+      {{ discountedPrice ? discountedPrice : promoPrice ? totalPrice : quantityPrice }} x {{ quantity }}
+    </div>
+  </div>
+</div>

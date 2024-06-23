@@ -1,12 +1,19 @@
 import { createReducer, on } from '@ngrx/store';
 import * as actions from './actions';
-import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
-import { CartBase, CustomerDraft, CustomerInfo } from '../shared/services/commercetoolsApi/apitypes';
+import { CategoriesArray, DiscountCodesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
+import {
+  CartBase,
+  CustomerDraft,
+  CustomerInfo,
+  CustomerSignInResult,
+} from '../shared/services/commercetoolsApi/apitypes';
 
 export interface EcommerceState {
+  customerSignIn: CustomerSignInResult | null;
   accessToken: string;
   anonymousToken: string;
   cartBase: CartBase | null;
+  discountCodesArray: DiscountCodesArray | null;
   products: ProductsArray | null;
   product: Product | null;
   categories: CategoriesArray | null;
@@ -22,9 +29,11 @@ export interface EcommerceState {
 }
 
 export const initialState: EcommerceState = {
+  customerSignIn: null,
   accessToken: '',
   anonymousToken: '',
   cartBase: null,
+  discountCodesArray: null,
   products: null,
   product: null,
   categories: null,
@@ -42,6 +51,10 @@ export const initialState: EcommerceState = {
 export const ecommerceReducer = createReducer(
   initialState,
   ///
+  on(actions.loginUser, (state) => ({ ...state, loading: true })),
+  on(actions.loginUerSuccess, (state, { customerSignIn }) => ({ ...state, customerSignIn, loading: false })),
+  on(actions.loginUerFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
   on(actions.loadAccsessToken, (state) => ({ ...state, loading: true })),
   on(actions.loadAccsessTokenSuccess, (state, { accessToken }) => ({ ...state, accessToken, loading: false })),
   on(actions.loadAccsessTokenFailure, (state, { error }) => ({ ...state, error, loading: false })),
@@ -52,6 +65,27 @@ export const ecommerceReducer = createReducer(
   ///
   on(actions.loadAnonymousCartSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),
   on(actions.loadAnonymousCartFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.loadUserCartSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),
+  on(actions.loadUserCartFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.applyDiscountSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),
+  on(actions.applyDiscountFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.getDiscountInfoSuccess, (state, { discountCodesArray }) => ({
+    ...state,
+    discountCodesArray,
+    loading: false,
+  })),
+  on(actions.getDiscountInfoFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.loadUpdateAnonymousCart, (state) => ({ ...state, loading: true })),
+  on(actions.loadUpdateAnonymousCartSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),
+  on(actions.loadUpdateAnonymousCartFailure, (state, { error }) => ({ ...state, error, loading: false })),
+  ///
+  on(actions.loadDeleteCart, (state) => ({ ...state, loading: true })),
+  on(actions.loadDeleteCartSuccess, (state, { cartBase }) => ({ ...state, cartBase, loading: false })),
+  on(actions.loadDeleteCartFailure, (state, { error }) => ({ ...state, error, loading: false })),
   ///
   on(actions.loadRegistration, (state) => ({ ...state, loading: true })),
   on(actions.loadRegistrationSuccess, (state) => ({ ...state, loading: false })),

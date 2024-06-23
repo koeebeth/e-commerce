@@ -9,7 +9,13 @@
         {{ name }}
       </p>
       <div [ngStyle]="originalPriceStyles()" class="price-container">
-        <div *ngIf="discountPercnt > 0" class="discount">{{ discountPercnt }}%</div>
+        <div *ngIf="discountPercnt > 0" class="discount">-{{ discountPercnt }}%</div>
+        <div class="button-container">
+          <button [disabled]="!!this.lineItem" (click)="addToCart($event)">
+            <img src="../../../../../assets/cart.svg" width="10" height="10" alt="cart" />
+            <span>Buy</span>
+          </button>
+        </div>
         <div class="prices-variant">
           <div class="original-price" *ngIf="discountPercnt > 0">{{ originalPrice | currency }}</div>
           <div class="discounted-price">

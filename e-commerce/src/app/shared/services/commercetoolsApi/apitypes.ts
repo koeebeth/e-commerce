@@ -6,6 +6,10 @@ export interface AuthData {
   refresh_token: string;
 }
 
+export interface CustomerSignInResult {
+  customer: CustomerDraft;
+  cart: CartBase;
+}
 export interface CustomerDraft {
   email: string;
   password: string;
@@ -51,7 +55,7 @@ export interface CustomerSignin {
   email: string;
   password: string;
   anonymousCart?: CartResourceIdentifier;
-  anonymousId?: string;
+  anonymousId: string;
   updateProductData?: boolean;
 }
 
@@ -84,9 +88,27 @@ export interface CartBase {
 export interface LineItem {
   id: string;
   productId: string;
+  discountedPricePerQuantity: DiscountedLineItemPriceForQuantity[];
   quantity: number;
-  price: Money;
+  price: {
+    value: Money;
+  };
   totalPrice: Money;
+}
+
+export interface DiscountedLineItemPriceForQuantity {
+  discountedPrice: DiscountedLineItemPrice;
+  quantity: number;
+}
+
+export interface DiscountedLineItemPrice {
+  includedDiscounts: DiscountedLineItemPortion[];
+  value: Money;
+}
+
+export interface DiscountedLineItemPortion {
+  discount: Reference;
+  discountedAmount: Money;
 }
 
 export interface Money {
@@ -123,4 +145,9 @@ export interface PersonalInfo {
 export interface PasswordChange {
   currentPassword: string;
   newPassword: string;
+}
+
+export interface Reference {
+  typeId: string;
+  id: string;
 }

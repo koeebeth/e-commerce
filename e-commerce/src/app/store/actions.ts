@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { CategoriesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
+import { CategoriesArray, DiscountCodesArray, Product, ProductsArray } from '../shared/services/products/productTypes';
 import {
   CartBase,
   CustomerDraft,
@@ -7,7 +7,15 @@ import {
   CustomerSignin,
   PasswordChange,
   Address,
+  CustomerSignInResult,
 } from '../shared/services/commercetoolsApi/apitypes';
+
+export const loginUser = createAction('[Auth] Login User', props<{ accessData: CustomerSignin }>());
+export const loginUerSuccess = createAction(
+  '[Auth] Login User Success',
+  props<{ customerSignIn: CustomerSignInResult }>(),
+);
+export const loginUerFailure = createAction('[Auth] Load Access Token Failure', props<{ error: string }>());
 
 export const loadAccsessToken = createAction('[Auth] Load Access Token', props<{ accessData: CustomerSignin }>());
 export const refreshAccsessToken = createAction(
@@ -50,7 +58,31 @@ export const loadAnonymousTokenFailure = createAction(
 export const loadUserInfo = createAction('[Auth] Load User Info');
 export const loadUserInfoSuccess = createAction('[Auth] Load User Success', props<{ userInfo: CustomerInfo }>());
 export const loadUserInfoFailure = createAction('[Auth] Load User Failure', props<{ error: string }>());
-
+///
+export const loadUserCart = createAction('[Cart] Load User Cart');
+export const loadUserCartSuccess = createAction('[Cart] Load User Cart Success', props<{ cartBase: CartBase }>());
+export const loadUserCartFailure = createAction('[Cart] Load User Cart Failure', props<{ error: string }>());
+///
+export const applyDiscount = createAction(
+  '[Discount] Load Discount',
+  props<{
+    cartId: string;
+    action: 'add' | 'remove';
+    cartVersion: number;
+    discountCode?: string;
+    discountCodeId?: string;
+  }>(),
+);
+export const applyDiscountSuccess = createAction('[Discount] Load Discount Success', props<{ cartBase: CartBase }>());
+export const applyDiscountFailure = createAction('[Discount] Load Discount Failure', props<{ error: string }>());
+///
+export const getDiscountInfo = createAction('[Discount] Load Discount Info', props<{ discountCode: string }>());
+export const getDiscountInfoSuccess = createAction(
+  '[Discount] Load Discount Info',
+  props<{ discountCodesArray: DiscountCodesArray }>(),
+);
+export const getDiscountInfoFailure = createAction('[Discount] Load Discount Info', props<{ error: string }>());
+///
 export const loadUpdateUserInfo = createAction('[User] Load Updating User Info', props<{ userInfo: CustomerInfo }>());
 export const loadUpdateUserInfoSuccess = createAction(
   '[User] Load Updating User Success',
@@ -87,7 +119,38 @@ export const loadUpdateUserAddressesFailure = createAction(
   '[User] Load Updating User Addresses',
   props<{ error: string }>(),
 );
-
+export const loadUpdateAnonymousCart = createAction(
+  '[Cart] Load Updating Cart Anonymous',
+  props<{
+    action: 'add' | 'remove' | 'change-quantity';
+    lineItemId?: string;
+    productId?: string;
+    quantity?: number;
+    cartBase: CartBase;
+  }>(),
+);
+export const loadUpdateAnonymousCartSuccess = createAction(
+  '[Cart] Load Updating Cart Anonymous Success',
+  props<{ cartBase: CartBase }>(),
+);
+export const loadUpdateAnonymousCartFailure = createAction(
+  '[Cart] Load Updating Cart Anonymous Failure',
+  props<{ error: string }>(),
+);
+export const loadDeleteCart = createAction(
+  '[Cart] Load Delete Cart',
+  props<{
+    cartBase: CartBase;
+  }>(),
+);
+export const loadDeleteCartSuccess = createAction(
+  '[Cart] Load Delete Cart Success',
+  props<{
+    cartBase: CartBase;
+  }>(),
+);
+export const loadDeleteCartFailure = createAction('[Cart] Load Delete Cart Failure', props<{ error: string }>());
+///
 export const loadAnonymousCartSuccess = createAction(
   '[Cart] Cart Anonymous Id Success',
   props<{ cartBase: CartBase }>(),

@@ -18,8 +18,9 @@ export default class SliderComponent {
   ];
 
   images = [
-    { src: '../../../../assets/Enshrouded.jpg', alt: 'Enshrouded' },
-    { src: '../../../../assets/banishers.jpeg', alt: 'Banishers' },
-    { src: '../../../../assets/BALDURS_GATE.jpeg', alt: 'Baldurs Gate' },
+    { src: '../../../../assets/overwatch3.jpeg', alt: 'Overwatch' },
+    { src: '../../../../assets/overwatch.jpg', alt: 'Overwatch' },
+    { src: '../../../../assets/overwatch2.jpeg', alt: 'Overwatch' },
+    { src: '../../../../assets/overwatch1.jpeg', alt: 'Overwatch' },
   ];
 }

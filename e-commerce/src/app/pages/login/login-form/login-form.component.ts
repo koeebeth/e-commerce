@@ -48,7 +48,7 @@ export default class LoginFormComponent {
   }
 
   onSubmit() {
-    this.store.dispatch(actions.loadAccsessToken({ accessData: this.loginForm.value }));
+    this.store.dispatch(actions.loginUser({ accessData: this.loginForm.value }));
   }
 
   onKeyup() {

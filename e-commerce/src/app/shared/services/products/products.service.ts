@@ -2,7 +2,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { authVisitorAPI } from '../../../../environment';
-import { CategoriesArray, Product, ProductProjectionArray, ProductsArray } from './productTypes';
+import { CategoriesArray, DiscountCodesArray, Product, ProductProjectionArray, ProductsArray } from './productTypes';
+import { CartBase } from '../commercetoolsApi/apitypes';
 
 @Injectable({
   providedIn: 'root',
@@ -85,5 +86,52 @@ export default class ProductsService {
     });
 
     return this.http.get<ProductProjectionArray>(url, { headers, params });
+  }
+
+  manageDiscountCode(
+    accessToken: string,
+    cartId: string,
+    actionType: 'add' | 'remove',
+    cartVersion: number,
+    discountCode?: string,
+    discountCodeId?: string,
+  ): Observable<CartBase> {
+    const url = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/carts/${cartId}`;
+    const actions: object[] = [];
+
+    if (actionType === 'add') {
+      actions.push({
+        action: 'addDiscountCode',
+        code: discountCode,
+      });
+    } else if (actionType === 'remove') {
+      actions.push({
+        action: 'removeDiscountCode',
+        discountCode: {
+          typeId: 'discount-code',
+          id: discountCodeId,
+        },
+      });
+    }
+
+    const body = {
+      version: cartVersion,
+      actions,
+    };
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    });
+
+    return this.http.post<CartBase>(url, body, { headers });
+  }
+
+  getDiscountInfo(token: string): Observable<DiscountCodesArray> {
+    const apiUrl = `${authVisitorAPI.ctpApiUrl}/${authVisitorAPI.ctpProjectKey}/discount-codes`;
+
+    const headers = new HttpHeaders().set('Content-Type', 'application/json').set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<DiscountCodesArray>(apiUrl, { headers });
   }
 }
