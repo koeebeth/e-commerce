@@ -60,7 +60,9 @@ export default class ProductComponent {
 
   lineItemId: string = '';
 
-  categoryID: string = '';
+  categoryIDs!: string[];
+
+  categories: string[] = [];
 
   category: string | undefined = '';
 
@@ -124,11 +126,18 @@ export default class ProductComponent {
   getCategory() {
     this.store.dispatch(actions.loadCategories({ offset: 0, limit: 10 }));
     this.categoryObjects$ = this.store.select((state) => state.app.categories);
+
     this.categoryObjects$.subscribe((categories) => {
       if (this.product?.masterData?.current?.categories) {
-        this.categoryID = this.product?.masterData?.current?.categories[0].id;
-        const category = categories?.results.find((c) => c.id === this.categoryID);
-        this.category = category?.name['en-US'];
+        this.categoryIDs = this.product.masterData.current.categories.map((categoryRef) => categoryRef.id);
+        this.categories = [];
+
+        this.categoryIDs.forEach((categoryID) => {
+          const category = categories?.results.find((c) => c.id === categoryID);
+          if (category?.name['en-US']) {
+            this.categories.push(category.name['en-US']);
+          }
+        });
       }
     });
   }

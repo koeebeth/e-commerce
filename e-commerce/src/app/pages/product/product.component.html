@@ -9,7 +9,9 @@
   <div class="product-information">
     <div class="description-container">
       <h1>{{ name }}</h1>
-      <div class="category">{{ category }}</div>
+      <div class="categories-container">
+        <div *ngFor="let category of categories" class="category">{{ category }}</div>
+      </div>
       <p class="description">
         {{ description }}
       </p>
