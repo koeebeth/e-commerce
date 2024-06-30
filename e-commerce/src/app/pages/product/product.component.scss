@@ -43,6 +43,14 @@ h1 {
   font-size: 2rem;
 }
 
+.categories-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
 .category {
   background: $color-primary-300;
   padding: 5px 10px;
