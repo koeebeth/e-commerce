@@ -1,22 +1,42 @@
 export const authVisitorAPI = {
   production: false,
-  ctpProjectKey: 'online-games',
-  ctpClientSecret: '5POMAiwPHpyci0qNeVB7yFuEITQ-cUtH',
-  ctpClientId: 'yLTc8E8DucmLjISt68qyO3XH',
+  ctpProjectKey: 'ecom-games',
+  ctpClientSecret: 'Gm5x-W5YVOrhWgEE6On4xRPo6Uaao2CJ',
+  ctpClientId: 'PgclNHTUcEEymUsuP9KljMKy',
   ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
   ctpApiUrl: 'https://api.europe-west1.gcp.commercetools.com',
-  ctpScopes: 'manage_project:online-games',
+  ctpScopes: 'manage_project:ecom-games',
 };
 
 export const unauthVisitorAPI = {
   production: false,
-  ctpProjectKey: 'online-games',
-  ctpClientSecret: '5POMAiwPHpyci0qNeVB7yFuEITQ-cUtH',
-  ctpClientId: 'yLTc8E8DucmLjISt68qyO3XH',
+  ctpProjectKey: 'ecom-games',
+  ctpClientSecret: 'Gm5x-W5YVOrhWgEE6On4xRPo6Uaao2CJ',
+  ctpClientId: 'PgclNHTUcEEymUsuP9KljMKy',
   ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
   ctpApiUrl: 'https://api.europe-west1.gcp.commercetools.com',
-  ctpScopes: 'manage_project:online-games',
+  ctpScopes: 'manage_project:ecom-games',
 };
+
+// export const authVisitorAPI = {
+//   production: false,
+//   ctpProjectKey: 'online-games',
+//   ctpClientSecret: '5POMAiwPHpyci0qNeVB7yFuEITQ-cUtH',
+//   ctpClientId: 'yLTc8E8DucmLjISt68qyO3XH',
+//   ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
+//   ctpApiUrl: 'https://api.europe-west1.gcp.commercetools.com',
+//   ctpScopes: 'manage_project:online-games',
+// };
+
+// export const unauthVisitorAPI = {
+//   production: false,
+//   ctpProjectKey: 'online-games',
+//   ctpClientSecret: '5POMAiwPHpyci0qNeVB7yFuEITQ-cUtH',
+//   ctpClientId: 'yLTc8E8DucmLjISt68qyO3XH',
+//   ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
+//   ctpApiUrl: 'https://api.europe-west1.gcp.commercetools.com',
+//   ctpScopes: 'manage_project:online-games',
+// };
 
 // export const authVisitorAPI = {
 //   production: false,
