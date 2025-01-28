@@ -1,42 +1,24 @@
 export const authVisitorAPI = {
   production: false,
-  ctpProjectKey: 'ecom-games',
-  ctpClientSecret: 'Gm5x-W5YVOrhWgEE6On4xRPo6Uaao2CJ',
-  ctpClientId: 'PgclNHTUcEEymUsuP9KljMKy',
-  ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
+  ctpProjectKey: 'games-store',
+  ctpClientId: 'HptA07venZOGfIbdilx9Y34G',
+  ctpClientSecret: 'R2dw2WR6mcrYLfJ2kIsPp7LCP205f-8o',
   ctpApiUrl: 'https://api.europe-west1.gcp.commercetools.com',
-  ctpScopes: 'manage_project:ecom-games',
+  ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
+  ctpScopes:
+    'view_cart_discounts:games-store view_types:games-store manage_orders:games-store manage_my_shopping_lists:games-store view_orders:games-store manage_my_orders:games-store manage_my_payments:games-store manage_shipping_methods:games-store view_attribute_groups:games-store view_discount_codes:games-store view_categories:games-store view_stores:games-store view_published_products:games-store view_products:games-store manage_my_profile:games-store view_tax_categories:games-store view_payments:games-store',
 };
 
 export const unauthVisitorAPI = {
   production: false,
-  ctpProjectKey: 'ecom-games',
-  ctpClientSecret: 'Gm5x-W5YVOrhWgEE6On4xRPo6Uaao2CJ',
-  ctpClientId: 'PgclNHTUcEEymUsuP9KljMKy',
-  ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
+  ctpProjectKey: 'games-store',
+  ctpClientId: '9fRoUIB5sdo25PA0iDM-aHPs',
+  ctpClientSecret: '9qMEkF40xFSYTAI6yRQA17YWuGjAPNFh',
   ctpApiUrl: 'https://api.europe-west1.gcp.commercetools.com',
-  ctpScopes: 'manage_project:ecom-games',
+  ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
+  ctpScopes:
+    'view_cart_discounts:games-store view_messages:games-store view_published_products:games-store view_types:games-store view_shopping_lists:games-store manage_customers:games-store manage_orders:games-store manage_my_shopping_lists:games-store manage_my_orders:games-store view_standalone_prices:games-store create_anonymous_token:games-store view_categories:games-store view_stores:games-store manage_my_profile:games-store view_tax_categories:games-store',
 };
-
-// export const authVisitorAPI = {
-//   production: false,
-//   ctpProjectKey: 'online-games',
-//   ctpClientSecret: '5POMAiwPHpyci0qNeVB7yFuEITQ-cUtH',
-//   ctpClientId: 'yLTc8E8DucmLjISt68qyO3XH',
-//   ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
-//   ctpApiUrl: 'https://api.europe-west1.gcp.commercetools.com',
-//   ctpScopes: 'manage_project:online-games',
-// };
-
-// export const unauthVisitorAPI = {
-//   production: false,
-//   ctpProjectKey: 'online-games',
-//   ctpClientSecret: '5POMAiwPHpyci0qNeVB7yFuEITQ-cUtH',
-//   ctpClientId: 'yLTc8E8DucmLjISt68qyO3XH',
-//   ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
-//   ctpApiUrl: 'https://api.europe-west1.gcp.commercetools.com',
-//   ctpScopes: 'manage_project:online-games',
-// };
 
 // export const authVisitorAPI = {
 //   production: false,
