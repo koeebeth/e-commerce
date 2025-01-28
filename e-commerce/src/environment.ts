@@ -12,12 +12,12 @@ export const authVisitorAPI = {
 export const unauthVisitorAPI = {
   production: false,
   ctpProjectKey: 'games-store',
-  ctpClientId: '9fRoUIB5sdo25PA0iDM-aHPs',
-  ctpClientSecret: '9qMEkF40xFSYTAI6yRQA17YWuGjAPNFh',
+  ctpClientId: 'fGhlFuEp3jBarwWgFa-ISs_b',
+  ctpClientSecret: 'sZL6ClsJYfAsCLHoE94eH4uWb7m7eae6',
   ctpApiUrl: 'https://api.europe-west1.gcp.commercetools.com',
   ctpAuthUrl: 'https://auth.europe-west1.gcp.commercetools.com',
   ctpScopes:
-    'view_cart_discounts:games-store view_messages:games-store view_published_products:games-store view_types:games-store view_shopping_lists:games-store manage_customers:games-store manage_orders:games-store manage_my_shopping_lists:games-store manage_my_orders:games-store view_standalone_prices:games-store create_anonymous_token:games-store view_categories:games-store view_stores:games-store manage_my_profile:games-store view_tax_categories:games-store',
+    'view_cart_discounts:games-store view_messages:games-store view_types:games-store view_shopping_lists:games-store manage_customers:games-store manage_orders:games-store manage_my_shopping_lists:games-store manage_my_orders:games-store view_standalone_prices:games-store create_anonymous_token:games-store view_categories:games-store view_stores:games-store view_published_products:games-store view_products:games-store manage_my_profile:games-store view_tax_categories:games-store',
 };
 
 // export const authVisitorAPI = {
